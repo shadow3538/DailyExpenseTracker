@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:DailyExpenseTracker"
+             x:Class="DailyExpenseTracker.ReportPage"
+             Title="{local:T 'রিপোর্ট'}">
+    <Grid RowDefinitions="Auto,*">
+        <VerticalStackLayout Grid.Row="0" Padding="16,10,16,6">
+            <local:RangePanel x:Name="RangeBox" />
+        </VerticalStackLayout>
+
+        <ScrollView Grid.Row="1">
+            <VerticalStackLayout Padding="16,8,16,24" Spacing="14">
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <Border Grid.Column="0" Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="{local:T 'মোট খরচ'}" StyleClass="Muted" />
+                            <Label x:Name="TotalLabel" StyleClass="Big" />
+                            <Label x:Name="DaysInfo" StyleClass="Muted" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource Card}">
+                        <VerticalStackLayout Spacing="6">
+                            <Label x:Name="CmpTitle" Text="{local:T 'লিমিটের তুলনায়'}" StyleClass="Muted" />
+                            <Label x:Name="CmpLabel" StyleClass="Big" />
+                            <Label x:Name="CmpInfo" StyleClass="Muted" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <Border x:Name="LimitBox" Style="{StaticResource Card}" IsVisible="False">
+                    <VerticalStackLayout Spacing="8">
+                        <Label x:Name="LimitLabel" FontSize="15" />
+                        <ContentView x:Name="LimitBarHost" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label Text="{local:T 'কোন খাতে কত শতাংশ'}" StyleClass="H2" Margin="0,6,0,0" />
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout x:Name="ItemsStack" Spacing="14" />
+                </Border>
+
+                <!-- History: all days -->
+                <Label Text="{local:T 'হিসাব হিস্টোরি (দিন ধরে)'}" StyleClass="H2" Margin="0,10,0,0" />
+                <Label x:Name="HistTotal" StyleClass="Muted" />
+                <Label x:Name="HistCmp" FontSize="13" FontAttributes="Bold" />
+                <VerticalStackLayout x:Name="ListStack" Spacing="8" />
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>

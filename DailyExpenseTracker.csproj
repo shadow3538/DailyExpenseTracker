@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFrameworks>net9.0-android</TargetFrameworks>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>DailyExpenseTracker</RootNamespace>
+    <UseMaui>true</UseMaui>
+    <SingleProject>true</SingleProject>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <ApplicationTitle>পকেটনামা</ApplicationTitle>
+    <ApplicationId>com.abdulmalek.dailyexpense</ApplicationId>
+    <ApplicationDisplayVersion>5.9</ApplicationDisplayVersion>
+    <ApplicationVersion>14</ApplicationVersion>
+    <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
+
+    <!-- Keep app light -->
+    <InvariantGlobalization>true</InvariantGlobalization>
+    <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'">
+    <AndroidPackageFormat>apk</AndroidPackageFormat>
+    <AndroidUseAapt2>true</AndroidUseAapt2>
+
+    <!-- Real phones only -->
+    <RuntimeIdentifier>android-arm64</RuntimeIdentifier>
+
+    <!-- AOT off: smaller -->
+    <RunAOTCompilation>false</RunAOTCompilation>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+
+    <!-- Trim unused code -->
+    <PublishTrimmed>true</PublishTrimmed>
+    <TrimMode>partial</TrimMode>
+    <AndroidLinkMode>SdkOnly</AndroidLinkMode>
+    <UseSystemResourceKeys>true</UseSystemResourceKeys>
+
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#3A97F6" />
+    <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#3A97F6" BaseSize="128,128" />
+    <!-- Tab bar icons -->
+    <MauiImage Include="Resources\Images\*.svg" BaseSize="24,24" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl" Version="1.9.172" />
+  </ItemGroup>
+</Project>

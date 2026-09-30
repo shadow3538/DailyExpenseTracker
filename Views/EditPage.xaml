@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:DailyExpenseTracker"
+             x:Class="DailyExpenseTracker.EditPage"
+             Title="{local:T 'খরচ এডিট করুন'}">
+    <ScrollView>
+        <VerticalStackLayout Padding="16,14,16,28" Spacing="12">
+
+            <!-- Category and option -->
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="10">
+                    <Label Text="{local:T 'ক্যাটাগরি'}" StyleClass="Muted" />
+                    <FlexLayout x:Name="CatBox" Wrap="Wrap" Direction="Row" />
+                    <Label x:Name="OptTitle" Text="{local:T 'অপশন'}" StyleClass="Muted" Margin="0,4,0,0" />
+                    <FlexLayout x:Name="ChipsBox" Wrap="Wrap" Direction="Row" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Amount -->
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="{local:T 'টাকা'}" StyleClass="Muted" />
+                    <Border StrokeThickness="1" Stroke="{DynamicResource LineBrush}" Padding="12,0" BackgroundColor="{DynamicResource FieldColor}">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                        <Entry x:Name="AmountEntry" Keyboard="Numeric" Placeholder="{local:T '৳ টাকা'}" FontSize="22" FontAttributes="Bold" />
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Note -->
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="6">
+                    <Label x:Name="NoteTitle" Text="{local:T 'নোট (ঐচ্ছিক)'}" StyleClass="Muted" />
+                    <Border StrokeThickness="1" Stroke="{DynamicResource LineBrush}" Padding="12,0" BackgroundColor="{DynamicResource FieldColor}">
+                        <Border.StrokeShape><RoundRectangle CornerRadius="12" /></Border.StrokeShape>
+                        <Editor x:Name="NoteEntry" Placeholder="{local:T 'নোট লিখুন'}" AutoSize="TextChanges" MinimumHeightRequest="48" />
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Date and time -->
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="{local:T 'তারিখ ও সময়'}" StyleClass="Muted" />
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="4">
+                        <Button Grid.Column="0" Text="◀" StyleClass="Ghost" WidthRequest="52" Clicked="OnPrevDay" />
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="0">
+                            <Label x:Name="DayHint" StyleClass="Muted" HorizontalTextAlignment="Center" />
+                            <DatePicker x:Name="DatePick" Format="dd MMMM yyyy" HorizontalOptions="Center" DateSelected="OnDateSelected" />
+                        </VerticalStackLayout>
+                        <Button x:Name="NextDayBtn" Grid.Column="2" Text="▶" StyleClass="Ghost" WidthRequest="52" Clicked="OnNextDay" />
+                    </Grid>
+                    <TimePicker x:Name="TimePick" Format="hh:mm tt" HorizontalOptions="Center" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="{local:T '✔ সেভ করুন'}" HeightRequest="54" Margin="0,8,0,0" Clicked="OnSave" />
+            <Button Text="{local:T '🗑 এই খরচ মুছুন'}" StyleClass="OutlineRed" HeightRequest="50" Clicked="OnDelete" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

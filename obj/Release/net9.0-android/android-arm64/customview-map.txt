@@ -1,0 +1,106 @@
+@string/appbar_scrolling_view_behavior;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\layout\fragment_backstack.xml
+@string/appbar_scrolling_view_behavior;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\layout\navigationlayout.xml
+adaptive-icon;obj\Release\net9.0-android\android-arm64\resizetizer\r\mipmap-anydpi-v26\appicon.xml
+adaptive-icon;obj\Release\net9.0-android\android-arm64\resizetizer\r\mipmap-anydpi-v26\appicon_round.xml
+alpha;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\anim\enterfromleft.xml
+alpha;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\anim\exittoleft.xml
+alpha;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_default_enter_anim.xml
+alpha;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_default_exit_anim.xml
+alpha;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_default_pop_enter_anim.xml
+alpha;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_default_pop_exit_anim.xml
+androidx.coordinatorlayout.widget.CoordinatorLayout;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\layout\shellcontent.xml
+androidx.coordinatorlayout.widget.CoordinatorLayout;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\layout\navigationlayout.xml
+androidx.drawerlayout.widget.DrawerLayout;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\layout\drawer_layout.xml
+androidx.fragment.app.FragmentContainerView;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\layout\fragment_backstack.xml
+androidx.fragment.app.FragmentContainerView;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\layout\navigationlayout.xml
+appwidget-provider;obj\Release\net9.0-android\android-arm64\res\xml\expense_widget_info.xml
+attr;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\values\attr.xml
+background;obj\Release\net9.0-android\android-arm64\resizetizer\r\mipmap-anydpi-v26\appicon.xml
+background;obj\Release\net9.0-android\android-arm64\resizetizer\r\mipmap-anydpi-v26\appicon_round.xml
+bitmap;obj\Release\net9.0-android\android-arm64\resizetizer\sp\drawable\maui_splash_image.xml
+bitmap;obj\Release\net9.0-android\android-arm64\resizetizer\sp\drawable-v31\maui_splash_image.xml
+cache-path;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\161\jl\res\xml\microsoft_maui_essentials_fileprovider_file_paths.xml
+color;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\values\colors.xml
+color;obj\Release\net9.0-android\android-arm64\resizetizer\sp\values\maui_colors.xml
+com.google.android.material.appbar.AppBarLayout;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\layout\flyoutcontent.xml
+com.google.android.material.appbar.AppBarLayout;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\layout\shellcontent.xml
+com.google.android.material.appbar.AppBarLayout;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\layout\navigationlayout.xml
+corners;obj\Release\net9.0-android\android-arm64\res\drawable\widget_bar_track.xml
+corners;obj\Release\net9.0-android\android-arm64\res\drawable\widget_bg.xml
+corners;obj\Release\net9.0-android\android-arm64\res\drawable\widget_btn_pill.xml
+corners;obj\Release\net9.0-android\android-arm64\res\drawable\widget_card.xml
+declare-styleable;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\values\attr.xml
+external-cache-path;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\161\jl\res\xml\microsoft_maui_essentials_fileprovider_file_paths.xml
+external-path;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\161\jl\res\xml\microsoft_maui_essentials_fileprovider_file_paths.xml
+foreground;obj\Release\net9.0-android\android-arm64\resizetizer\r\mipmap-anydpi-v26\appicon.xml
+foreground;obj\Release\net9.0-android\android-arm64\resizetizer\r\mipmap-anydpi-v26\appicon_round.xml
+gradient;obj\Release\net9.0-android\android-arm64\res\drawable\widget_bg.xml
+ImageView;obj\Release\net9.0-android\android-arm64\res\layout\widget_large.xml
+ImageView;obj\Release\net9.0-android\android-arm64\res\layout\widget_medium.xml
+ImageView;obj\Release\net9.0-android\android-arm64\res\layout\widget_small.xml
+item;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\159\jl\res\values\values.xml
+item;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\drawable\maui_splash.xml
+item;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\values\styles.xml
+item;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\values-v35\styles.xml
+item;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\165\jl\res\values\values.xml
+item;obj\Release\net9.0-android\android-arm64\resizetizer\sp\drawable\maui_splash_image.xml
+item;obj\Release\net9.0-android\android-arm64\resizetizer\sp\drawable-v31\maui_splash_image.xml
+layer-list;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\drawable\maui_splash.xml
+layer-list;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\drawable\maui_splash_image.xml
+layer-list;obj\Release\net9.0-android\android-arm64\resizetizer\sp\drawable\maui_splash_image.xml
+layer-list;obj\Release\net9.0-android\android-arm64\resizetizer\sp\drawable-v31\maui_splash_image.xml
+LinearLayout;obj\Release\net9.0-android\android-arm64\res\layout\widget_large.xml
+LinearLayout;obj\Release\net9.0-android\android-arm64\res\layout\widget_medium.xml
+LinearLayout;obj\Release\net9.0-android\android-arm64\res\layout\widget_small.xml
+microsoft.maui.controls.platform.compatibility.ShellFlyoutLayout;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\layout\flyoutcontent.xml
+monochrome;obj\Release\net9.0-android\android-arm64\resizetizer\r\mipmap-anydpi-v26\appicon.xml
+monochrome;obj\Release\net9.0-android\android-arm64\resizetizer\r\mipmap-anydpi-v26\appicon_round.xml
+path;obj\Release\net9.0-android\android-arm64\res\drawable\ic_notify.xml
+paths;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\161\jl\res\xml\microsoft_maui_essentials_fileprovider_file_paths.xml
+resources;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\values\strings.xml
+resources;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\159\jl\res\values\values.xml
+resources;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\values\attr.xml
+resources;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\values\colors.xml
+resources;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\values\styles.xml
+resources;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\values-v35\styles.xml
+resources;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\165\jl\res\values\values.xml
+resources;obj\Release\net9.0-android\android-arm64\res\values\strings.xml
+resources;obj\Release\net9.0-android\android-arm64\resizetizer\sp\values\maui_colors.xml
+set;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\anim\enterfromleft.xml
+set;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\anim\enterfromright.xml
+set;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\anim\exittoleft.xml
+set;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\anim\exittoright.xml
+set;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_default_enter_anim.xml
+set;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_default_exit_anim.xml
+set;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_default_pop_enter_anim.xml
+set;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_default_pop_exit_anim.xml
+set;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_modal_default_enter_anim.xml
+set;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_modal_default_exit_anim.xml
+shape;obj\Release\net9.0-android\android-arm64\res\drawable\widget_bar_track.xml
+shape;obj\Release\net9.0-android\android-arm64\res\drawable\widget_bg.xml
+shape;obj\Release\net9.0-android\android-arm64\res\drawable\widget_btn_circle.xml
+shape;obj\Release\net9.0-android\android-arm64\res\drawable\widget_btn_pill.xml
+shape;obj\Release\net9.0-android\android-arm64\res\drawable\widget_card.xml
+solid;obj\Release\net9.0-android\android-arm64\res\drawable\widget_bar_track.xml
+solid;obj\Release\net9.0-android\android-arm64\res\drawable\widget_btn_circle.xml
+solid;obj\Release\net9.0-android\android-arm64\res\drawable\widget_btn_pill.xml
+solid;obj\Release\net9.0-android\android-arm64\res\drawable\widget_card.xml
+string;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\values\strings.xml
+string;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\159\jl\res\values\values.xml
+string;obj\Release\net9.0-android\android-arm64\res\values\strings.xml
+style;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\values\styles.xml
+style;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\values-v35\styles.xml
+TextView;obj\Release\net9.0-android\android-arm64\res\layout\widget_large.xml
+TextView;obj\Release\net9.0-android\android-arm64\res\layout\widget_medium.xml
+TextView;obj\Release\net9.0-android\android-arm64\res\layout\widget_small.xml
+translate;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\anim\enterfromleft.xml
+translate;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\anim\enterfromright.xml
+translate;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\anim\exittoleft.xml
+translate;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\158\jl\res\anim\exittoright.xml
+translate;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_default_enter_anim.xml
+translate;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_default_exit_anim.xml
+translate;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_default_pop_enter_anim.xml
+translate;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_default_pop_exit_anim.xml
+translate;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_modal_default_enter_anim.xml
+translate;D:\My Apps\DailyExpenseTracker\obj\Release\net9.0-android\android-arm64\lp\160\jl\res\anim\nav_modal_default_exit_anim.xml
+vector;obj\Release\net9.0-android\android-arm64\res\drawable\ic_notify.xml

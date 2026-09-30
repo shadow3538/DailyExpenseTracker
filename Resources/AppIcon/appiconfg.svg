@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="456" height="456" viewBox="0 0 456 456">
+  <g transform="translate(228 236) scale(0.84) translate(-228 -240)">
+    <!-- growth line: dots on the left, arrow on the right (middle part hides behind the notes) -->
+    <path d="M92 240 L138 196 L182 222 L300 142 L346 106" fill="none" stroke="#2E9E5B" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="92" cy="240" r="12" fill="#D7F7E0" stroke="#2E9E5B" stroke-width="6"/>
+    <circle cx="138" cy="196" r="12" fill="#D7F7E0" stroke="#2E9E5B" stroke-width="6"/>
+    <polygon points="372,86 362,118 340,92" fill="#2E9E5B" stroke="#2E9E5B" stroke-width="6" stroke-linejoin="round"/>
+
+    <!-- three fanned notes -->
+    <g stroke="#2F8F57" stroke-width="7" stroke-linejoin="round">
+      <rect x="146" y="112" width="92" height="118" rx="10" fill="#A9EBAE" transform="rotate(-20 192 230)"/>
+      <rect x="182" y="96" width="92" height="128" rx="10" fill="#B9F0BC" transform="rotate(-3 228 230)"/>
+      <rect x="220" y="112" width="92" height="118" rx="10" fill="#C9F6CB" transform="rotate(18 266 230)"/>
+    </g>
+    <!-- emblem on the right note -->
+    <g transform="rotate(18 266 230)">
+      <circle cx="266" cy="160" r="20" fill="#7ED88A" stroke="#2F8F57" stroke-width="6"/>
+      <path d="M258 152 H276 M259 152 C259 146 274 146 274 155 C274 162 262 164 259 174 H276" fill="none" stroke="#2F8F57" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    </g>
+
+    <!-- shadow -->
+    <ellipse cx="228" cy="386" rx="112" ry="11" fill="#1F6FC7" fill-opacity="0.45"/>
+
+    <!-- wallet -->
+    <rect x="116" y="212" width="224" height="160" rx="26" fill="#3FB98A" stroke="#1E6B5A" stroke-width="9"/>
+    <path d="M132 246 C132 232 142 224 156 224 H300" fill="none" stroke="#8CE0BD" stroke-width="8" stroke-linecap="round"/>
+    <!-- clasp tab -->
+    <rect x="286" y="266" width="76" height="56" rx="18" fill="#37AC80" stroke="#1E6B5A" stroke-width="9"/>
+    <circle cx="328" cy="294" r="13" fill="#8CE0BD" stroke="#1E6B5A" stroke-width="5"/>
+    <circle cx="328" cy="294" r="5" fill="#F5C542"/>
+  </g>
+</svg>

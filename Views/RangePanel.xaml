@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:DailyExpenseTracker"
+             x:Class="DailyExpenseTracker.RangePanel">
+    <VerticalStackLayout Spacing="10">
+
+        <!-- 1) Current mode -->
+        <Border x:Name="CurrentCard" StrokeThickness="0" Padding="12,12,12,14">
+            <Border.StrokeShape><RoundRectangle CornerRadius="22" /></Border.StrokeShape>
+            <VerticalStackLayout Spacing="2">
+                <Label x:Name="ModeLabel" FontSize="13" FontAttributes="Bold" HorizontalTextAlignment="Center" />
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Button x:Name="PrevBtn" Grid.Column="0" Text="◀" WidthRequest="52" HeightRequest="44"
+                            BackgroundColor="Transparent" TextColor="White" FontSize="18" Padding="0" Clicked="OnPrev" />
+                    <Label x:Name="TitleLabel" Grid.Column="1" TextColor="White" FontSize="21" FontAttributes="Bold"
+                           HorizontalTextAlignment="Center" VerticalOptions="Center" />
+                    <Button x:Name="NextBtn" Grid.Column="2" Text="▶" WidthRequest="52" HeightRequest="44"
+                            BackgroundColor="Transparent" TextColor="White" FontSize="18" Padding="0" Clicked="OnNext" />
+                </Grid>
+                <Label x:Name="InfoLabel" FontSize="13" HorizontalTextAlignment="Center" />
+            </VerticalStackLayout>
+        </Border>
+
+        <!-- 2) Mode buttons -->
+        <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+            <Button x:Name="MonthBtn" Grid.Column="0" HeightRequest="48" FontSize="14" CornerRadius="24"
+                    BorderWidth="1.5" Clicked="OnMonthMode" />
+            <Button x:Name="RangeBtn" Grid.Column="1" HeightRequest="48" FontSize="14" CornerRadius="24"
+                    BorderWidth="1.5" Clicked="OnEdit" />
+        </Grid>
+
+        <!-- 3) Range form -->
+        <Border x:Name="FormCard" Style="{StaticResource Card}" Padding="14,12" IsVisible="False"
+                Stroke="{StaticResource RangeColor}" StrokeThickness="1.5">
+            <VerticalStackLayout Spacing="8">
+                <Label x:Name="FormTitle" StyleClass="H2" TextColor="{StaticResource RangeColor}" />
+
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="12">
+                    <Label Grid.Row="0" Grid.Column="0" Text="{local:T 'শুরুর তারিখ'}" StyleClass="Muted" />
+                    <Label Grid.Row="0" Grid.Column="1" Text="{local:T 'শেষ তারিখ'}" StyleClass="Muted" />
+                    <Border Grid.Row="1" Grid.Column="0" Style="{StaticResource Field}" Padding="8,0">
+                        <DatePicker x:Name="FromPick" Format="dd MMM yyyy" DateSelected="OnFormChanged" />
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1" Style="{StaticResource Field}" Padding="8,0">
+                        <DatePicker x:Name="ToPick" Format="dd MMM yyyy" DateSelected="OnFormChanged" />
+                    </Border>
+                </Grid>
+
+                <Label Text="{local:T 'এই রেঞ্জে মোট কত টাকা খরচ করবেন (লিমিট)'}" StyleClass="Muted" Margin="0,4,0,0" />
+                <Border Style="{StaticResource Field}">
+                    <Entry x:Name="LimitEntry" Keyboard="Numeric" Placeholder="{local:T '৳ রেঞ্জের মোট লিমিট'}" TextChanged="OnLimitChanged" />
+                </Border>
+                <Label x:Name="PreviewLabel" FontSize="13" TextColor="{StaticResource RangeColor}" FontAttributes="Bold" />
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="8" Margin="0,4,0,0">
+                    <Button Grid.Column="0" Text="{local:T 'বাতিল'}" StyleClass="Outline" HeightRequest="46"
+                            TextColor="{StaticResource RangeColor}" BorderColor="{StaticResource RangeColor}" Clicked="OnCancel" />
+                    <Button Grid.Column="1" Text="{local:T '✔ রেঞ্জ সেট করুন'}" HeightRequest="46"
+                            BackgroundColor="{StaticResource RangeColor}" Clicked="OnSave" />
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+    </VerticalStackLayout>
+</ContentView>

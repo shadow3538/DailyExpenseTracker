@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:DailyExpenseTracker"
+             x:Class="DailyExpenseTracker.ProfileEditPage"
+             Title="{local:T 'প্রোফাইল এডিট'}">
+    <ScrollView>
+        <VerticalStackLayout Padding="16,14,16,28" Spacing="12">
+
+            <!-- Photo -->
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
+                    <ContentView x:Name="AvatarHost" HorizontalOptions="Center" />
+                    <Grid ColumnDefinitions="Auto,Auto" ColumnSpacing="8" HorizontalOptions="Center">
+                        <Button Grid.Column="0" Text="{local:T '📷 ছবি বদলান'}" StyleClass="Outline" HeightRequest="42" FontSize="14" Padding="16,0" Clicked="OnPickPhoto" />
+                        <Button x:Name="RemoveBtn" Grid.Column="1" Text="{local:T 'ছবি সরান'}" StyleClass="OutlineRed" HeightRequest="42" FontSize="14" Padding="16,0" Clicked="OnRemovePhoto" />
+                    </Grid>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Main info -->
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="{local:T 'নাম'}" StyleClass="Muted" />
+                    <Border Style="{StaticResource Field}"><Entry x:Name="NameEntry" Placeholder="{local:T 'আপনার নাম'}" MaxLength="50" /></Border>
+
+                    <Label Text="{local:T 'মোবাইল নম্বর'}" StyleClass="Muted" Margin="0,6,0,0" />
+                    <Border Style="{StaticResource Field}"><Entry x:Name="PhoneEntry" Keyboard="Telephone" Placeholder="01XXXXXXXXX" MaxLength="20" /></Border>
+
+                    <Label Text="{local:T 'ইমেইল'}" StyleClass="Muted" Margin="0,6,0,0" />
+                    <Border Style="{StaticResource Field}"><Entry x:Name="EmailEntry" Keyboard="Email" Placeholder="name@example.com" MaxLength="80" /></Border>
+
+                    <Label Text="{local:T 'পেশা'}" StyleClass="Muted" Margin="0,6,0,0" />
+                    <Border Style="{StaticResource Field}"><Entry x:Name="JobEntry" Placeholder="{local:T 'যেমন: ছাত্র, চাকরিজীবী, ব্যবসায়ী'}" MaxLength="50" /></Border>
+
+                    <Label Text="{local:T 'ঠিকানা'}" StyleClass="Muted" Margin="0,6,0,0" />
+                    <Border Style="{StaticResource Field}"><Entry x:Name="AddressEntry" Placeholder="{local:T 'এলাকা, শহর'}" MaxLength="120" /></Border>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Birth date -->
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="6">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="{local:T 'জন্মতারিখ'}" StyleClass="Muted" VerticalOptions="Center" />
+                        <Switch x:Name="DobSwitch" Grid.Column="1" OnColor="{StaticResource Primary}" Toggled="OnDobToggled" />
+                    </Grid>
+                    <Border x:Name="DobBox" Style="{StaticResource Field}" IsVisible="False">
+                        <DatePicker x:Name="DobPick" Format="dd MMMM yyyy" />
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Gender and blood -->
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="{local:T 'লিঙ্গ'}" StyleClass="Muted" />
+                    <FlexLayout x:Name="GenderBox" Wrap="Wrap" Direction="Row" />
+                    <Label Text="{local:T 'রক্তের গ্রুপ'}" StyleClass="Muted" Margin="0,6,0,0" />
+                    <FlexLayout x:Name="BloodBox" Wrap="Wrap" Direction="Row" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- About me -->
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="{local:T 'আমার সম্পর্কে (ঐচ্ছিক)'}" StyleClass="Muted" />
+                    <Border Style="{StaticResource Field}">
+                        <Editor x:Name="BioEditor" Placeholder="{local:T 'নিজের সম্পর্কে কয়েক লাইন'}" AutoSize="TextChanges" MinimumHeightRequest="70" MaxLength="200" />
+                    </Border>
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="{local:T '✔ প্রোফাইল সেভ করুন'}" HeightRequest="54" Margin="0,8,0,0" Clicked="OnSave" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

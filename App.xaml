@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:DailyExpenseTracker"
+             x:Class="DailyExpenseTracker.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Primary">#00897B</Color>
+            <Color x:Key="PrimaryDark">#00695C</Color>
+            <Color x:Key="Bg">#F3F6F6</Color>
+            <Color x:Key="Ink">#1B1F23</Color>
+            <Color x:Key="MutedText">#6B7785</Color>
+            <Color x:Key="LineColor">#E3E9EC</Color>
+            <Color x:Key="RedText">#C0392B</Color>
+            <!-- Theme.cs overrides these -->
+            <Color x:Key="SurfaceColor">#FFFFFF</Color>
+            <Color x:Key="FieldColor">#F7FAFA</Color>
+            <Color x:Key="PlaceholderCol">#9AA5B1</Color>
+            <Color x:Key="BarColor">#00897B</Color>
+            <Color x:Key="TabUnselected">#8A94A0</Color>
+            <Color x:Key="SepColor">#DDE3E8</Color>
+            <SolidColorBrush x:Key="LineBrush" Color="#E3E9EC" />
+            <!-- Range mode colors -->
+            <Color x:Key="RangeColor">#5C4DB1</Color>
+            <Color x:Key="RangeDark">#3F3480</Color>
+            <Color x:Key="RangeSoft">#ECE9F9</Color>
+
+            <Style TargetType="ContentPage" ApplyToDerivedTypes="True">
+                <Setter Property="BackgroundColor" Value="{DynamicResource Bg}" />
+            </Style>
+
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="{DynamicResource Ink}" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            <Style TargetType="Label" Class="Muted">
+                <Setter Property="TextColor" Value="{DynamicResource MutedText}" />
+                <Setter Property="FontSize" Value="13" />
+            </Style>
+            <Style TargetType="Label" Class="H2">
+                <Setter Property="FontSize" Value="18" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+            <Style TargetType="Label" Class="Big">
+                <Setter Property="FontSize" Value="24" />
+                <Setter Property="FontAttributes" Value="Bold" />
+            </Style>
+
+            <Style x:Key="Card" TargetType="Border">
+                <Setter Property="BackgroundColor" Value="{DynamicResource SurfaceColor}" />
+                <Setter Property="Stroke" Value="{DynamicResource LineBrush}" />
+                <Setter Property="StrokeThickness" Value="1" />
+                <Setter Property="Padding" Value="16,14" />
+                <Setter Property="StrokeShape">
+                    <Setter.Value>
+                        <RoundRectangle CornerRadius="20" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <!-- Input box frame -->
+            <Style x:Key="Field" TargetType="Border">
+                <Setter Property="BackgroundColor" Value="{DynamicResource FieldColor}" />
+                <Setter Property="Stroke" Value="{DynamicResource LineBrush}" />
+                <Setter Property="StrokeThickness" Value="1" />
+                <Setter Property="Padding" Value="12,0" />
+                <Setter Property="StrokeShape">
+                    <Setter.Value>
+                        <RoundRectangle CornerRadius="12" />
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <Style TargetType="Entry">
+                <Setter Property="TextColor" Value="{DynamicResource Ink}" />
+                <Setter Property="PlaceholderColor" Value="{DynamicResource PlaceholderCol}" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            <Style TargetType="Picker">
+                <Setter Property="TextColor" Value="{DynamicResource Ink}" />
+                <Setter Property="TitleColor" Value="{DynamicResource PlaceholderCol}" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            <Style TargetType="Editor">
+                <Setter Property="TextColor" Value="{DynamicResource Ink}" />
+                <Setter Property="PlaceholderColor" Value="{DynamicResource PlaceholderCol}" />
+            </Style>
+            <Style TargetType="TimePicker">
+                <Setter Property="TextColor" Value="{DynamicResource Ink}" />
+                <Setter Property="FontSize" Value="17" />
+            </Style>
+            <Style TargetType="DatePicker">
+                <Setter Property="TextColor" Value="{DynamicResource Ink}" />
+                <Setter Property="FontSize" Value="17" />
+            </Style>
+
+            <Style TargetType="Button">
+                <Setter Property="BackgroundColor" Value="{DynamicResource Primary}" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="CornerRadius" Value="16" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="FontSize" Value="16" />
+            </Style>
+            <Style TargetType="Button" Class="Ghost">
+                <Setter Property="BackgroundColor" Value="Transparent" />
+                <Setter Property="TextColor" Value="{DynamicResource Primary}" />
+                <Setter Property="FontSize" Value="20" />
+            </Style>
+            <Style TargetType="Button" Class="Outline">
+                <Setter Property="BackgroundColor" Value="{DynamicResource SurfaceColor}" />
+                <Setter Property="TextColor" Value="{DynamicResource Primary}" />
+                <Setter Property="BorderColor" Value="{DynamicResource Primary}" />
+                <Setter Property="BorderWidth" Value="1.5" />
+            </Style>
+            <Style TargetType="Button" Class="OutlineRed">
+                <Setter Property="BackgroundColor" Value="{DynamicResource SurfaceColor}" />
+                <Setter Property="TextColor" Value="{DynamicResource RedText}" />
+                <Setter Property="BorderColor" Value="{DynamicResource RedText}" />
+                <Setter Property="BorderWidth" Value="1.5" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>

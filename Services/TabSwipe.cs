@@ -2,7 +2,6 @@ using Android.Views;
 
 namespace DailyExpenseTracker;
 
-// Horizontal swipe between
 public static class TabSwipe
 {
     static readonly string[] Order = { "home", "add", "report", "calc", "settings" };
@@ -12,7 +11,6 @@ public static class TabSwipe
     static long _t0;
     static bool _track;
 
-    // Views that scroll
     public static void Guard(VisualElement v)
     {
         Guards.RemoveAll(w => !w.TryGetTarget(out _));
@@ -39,9 +37,9 @@ public static class TabSwipe
                 _track = false;
                 float dens = ctx.Resources?.DisplayMetrics?.Density ?? 2f;
                 float dx = e.RawX - _x0, dy = e.RawY - _y0;
-                if (Math.Abs(dx) < 90 * dens) return;          // too short
-                if (Math.Abs(dx) < Math.Abs(dy) * 2.2f) return; // not horizontal
-                if (e.EventTime - _t0 > 700) return;            // too slow
+                if (Math.Abs(dx) < 90 * dens) return;
+                if (Math.Abs(dx) < Math.Abs(dy) * 2.2f) return;
+                if (e.EventTime - _t0 > 700) return;
                 Fire(dx < 0 ? 1 : -1);
                 break;
         }
@@ -87,13 +85,13 @@ public static class TabSwipe
                 if (a == null) return;
                 if (a.IsOpen)
                 {
-                    if (step > 0) _ = a.CloseAsync();   // swipe left closes
+                    if (step > 0) _ = a.CloseAsync();
                     return;
                 }
                 int i = Array.IndexOf(Order, Ui.CurrentRoute ?? "home");
                 if (i < 0) return;
                 int n = i + step;
-                if (n < 0) { _ = a.OpenAsync(); return; }   // first tab: open drawer
+                if (n < 0) { _ = a.OpenAsync(); return; }
                 if (n >= Order.Length) return;
                 _ = Ui.GoTo(Order[n]);
             }
@@ -102,16 +100,13 @@ public static class TabSwipe
     }
 }
 
-// Detects soft keyboard
 public static class KeyboardWatcher
 {
     public static bool Visible { get; private set; }
     public static double HeightDp { get; private set; }
 
-    // Pages subscribe in
     public static event Action? Changed;
 
-    // Single handler owned
     public static Action? ShellHandler;
 
     static bool _hooked;

@@ -15,9 +15,11 @@ public class MainApplication : MauiApplication
     public override void OnCreate()
     {
         base.OnCreate();
-        // Refresh widget on
+
+        // Widget refresh
         Store.Changed += () => ExpenseWidget.Refresh(this);
-        // Re-arm reminder alarms
+
+        // Alarm restore
         _ = Reminders.RescheduleAsync();
     }
 

@@ -33,7 +33,6 @@ public partial class EditPage : ContentPage
         _ = LoadChoicesAsync();
     }
 
-    // Back closes page
     protected override bool OnBackButtonPressed()
     {
         _ = CloseAsync();
@@ -46,7 +45,7 @@ public partial class EditPage : ContentPage
         {
             _cats = await Store.GetCategoriesAsync();
             _choices = await Store.GetChoicesAsync();
-            // Deleted category still
+
             if (_cats.All(c => c.Name != _cat))
                 _cats.Add(new ExpenseCategory { Id = -1, Name = _cat, Icon = Ui.ItemIcon(_cat), Color = "#00897B", IsFreeText = _item == _cat });
             BuildChips();
@@ -56,10 +55,9 @@ public partial class EditPage : ContentPage
 
     ExpenseCategory? CurCat => _cats.FirstOrDefault(c => c.Name == _cat);
 
-    // Category chips, then
     void BuildChips()
     {
-        // category
+
         CatBox.Children.Clear();
         foreach (var cat in _cats)
         {
@@ -87,7 +85,6 @@ public partial class EditPage : ContentPage
             CatBox.Children.Add(chip);
         }
 
-        // option
         ChipsBox.Children.Clear();
         var cur = CurCat;
         bool free = cur == null || cur.IsFreeText;
@@ -100,7 +97,7 @@ public partial class EditPage : ContentPage
         if (free) return;
 
         var names = _choices.Where(x => x.CategoryId == cur!.Id).Select(x => x.Name).ToList();
-        if (!names.Contains(_item)) names.Add(_item);   // Deleted option still editable
+        if (!names.Contains(_item)) names.Add(_item);
         var color = Ui.ItemColor(cur!.Name);
         foreach (var name in names)
         {
@@ -130,8 +127,6 @@ public partial class EditPage : ContentPage
             TextColor = selected ? Colors.White : Ui.Ink
         }
     };
-
-    // date
 
     void RefreshDateUi()
     {

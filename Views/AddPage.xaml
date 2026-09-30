@@ -8,7 +8,6 @@
         <ScrollView x:Name="MainScroll">
             <VerticalStackLayout x:Name="MainStack" Padding="16,14,16,90" Spacing="12">
 
-                <!-- Day picker: prev -->
                 <Border Style="{StaticResource Card}" Padding="6,4">
                     <Grid ColumnDefinitions="Auto,*,Auto">
                         <Button Grid.Column="0" Text="◀" StyleClass="Ghost" WidthRequest="52" Clicked="OnPrevDay" />
@@ -21,13 +20,11 @@
                     </Grid>
                 </Border>
 
-                <!-- 1) Category tiles -->
                 <Label Text="{local:T 'কীসের খরচ? ধরন বেছে নিন'}" StyleClass="Muted" />
                 <ScrollView x:Name="CatScroll" Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Margin="-16,0">
                     <HorizontalStackLayout x:Name="CatBar" Spacing="10" Padding="16,2" />
                 </ScrollView>
 
-                <!-- 2) Selected category -->
                 <Border x:Name="PanelCard" Style="{StaticResource Card}" Padding="14,12">
                     <VerticalStackLayout Spacing="10">
                         <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
@@ -38,7 +35,6 @@
                             </VerticalStackLayout>
                         </Grid>
 
-                        <!-- Option category: note -->
                         <VerticalStackLayout x:Name="OptionsBox" Spacing="10">
                             <Border Style="{StaticResource Field}">
                                 <Entry x:Name="NoteEntry" Placeholder="{local:T 'নোট (ঐচ্ছিক)'}" />
@@ -46,7 +42,6 @@
                             <VerticalStackLayout x:Name="RowsStack" Spacing="10" />
                         </VerticalStackLayout>
 
-                        <!-- Free-text category: what -->
                         <VerticalStackLayout x:Name="FreeBox" Spacing="10" IsVisible="False">
                             <Border Style="{StaticResource Field}">
                                 <Entry x:Name="WhatEntry" Placeholder="{local:T 'কী কিনলেন?'}" />

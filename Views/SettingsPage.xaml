@@ -6,7 +6,7 @@
              Title="{local:T 'সেটিংস'}">
     <ScrollView>
         <VerticalStackLayout Padding="18,16,18,30" Spacing="10">
-            <!-- Profile -->
+
             <Border Style="{StaticResource Card}" Padding="14,14">
                 <VerticalStackLayout Spacing="12">
                     <Grid ColumnDefinitions="Auto,*" ColumnSpacing="14">
@@ -26,21 +26,16 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- loans + salary -->
             <VerticalStackLayout x:Name="FinanceHost" Spacing="10" Margin="0,4,0,0" />
 
-            <!-- notifications/limits + language/theme -->
             <VerticalStackLayout x:Name="PrefHost" Spacing="10" Margin="0,6,0,0" />
 
-            <!-- categories summary card -->
             <VerticalStackLayout x:Name="CatHost" Margin="0,10,0,0" />
             <Label Text="{local:T 'খরচ যোগ করার সময় আগে ক্যাটাগরি বাছবেন। \'অপশন\' ক্যাটাগরিতে ভিতর থেকে বেছে নেবেন (যেমন খাওয়া → দুপুর); \'লেখা\' ক্যাটাগরিতে কী কিনলেন নিজে লিখবেন (যেমন কেনাকাটা)। নাম বদলালে আগের হিসাবেও বদলায়; মুছলে আগের হিসাব মুছবে না।'}" StyleClass="Muted" FontSize="12" Margin="4,0,4,0" />
 
-            <!-- backup card (built -->
             <VerticalStackLayout x:Name="BackupHost" Margin="0,10,0,0" />
             <Label x:Name="BackupNote" StyleClass="Muted" FontSize="12" Margin="4,0,4,0" />
 
-            <!-- about / developer -->
             <VerticalStackLayout x:Name="AboutHost" Spacing="10" Margin="0,14,0,0" />
         </VerticalStackLayout>
     </ScrollView>

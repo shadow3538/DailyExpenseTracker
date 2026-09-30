@@ -1,6 +1,5 @@
 namespace DailyExpenseTracker;
 
-// Light / dark
 public static class Theme
 {
     public const string Light = "light";
@@ -13,7 +12,6 @@ public static class Theme
         private set => Preferences.Default.Set("theme", value);
     }
 
-    // Dark colors active?
     public static bool IsDark
     {
         get
@@ -25,7 +23,6 @@ public static class Theme
         }
     }
 
-    // Apply on start
     public static void Apply()
     {
         try
@@ -43,7 +40,6 @@ public static class Theme
         catch { }
     }
 
-    // Push theme colors
     static void PushResources()
     {
         var r = Application.Current?.Resources;
@@ -63,7 +59,6 @@ public static class Theme
         r["TabUnselected"] = IsDark ? Color.FromArgb("#7C8A96") : Color.FromArgb("#8A94A0");
     }
 
-    // Save mode and
     public static async Task SetAsync(string mode, bool goToSettings = true)
     {
         Mode = mode is Dark or Light ? mode : System;
@@ -71,7 +66,6 @@ public static class Theme
         await RebuildAsync(goToSettings);
     }
 
-    // Follow phone theme
     public static void HookSystemChange()
     {
         try

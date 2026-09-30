@@ -4,7 +4,6 @@ using DailyExpenseTracker.Models;
 
 namespace DailyExpenseTracker;
 
-// Calculator (+
 public class CalculatorPage : ContentPage
 {
     string _expr = "";
@@ -13,14 +12,13 @@ public class CalculatorPage : ContentPage
     readonly Label _exprLbl = new() { FontSize = 20, TextColor = Ui.Muted, HorizontalTextAlignment = TextAlignment.End, LineBreakMode = LineBreakMode.HeadTruncation, MaxLines = 1 };
     readonly Label _resLbl = new() { FontSize = 50, FontAttributes = FontAttributes.Bold, HorizontalTextAlignment = TextAlignment.End, LineBreakMode = LineBreakMode.HeadTruncation, MaxLines = 1 };
 
-    // Add-to-expense form
     readonly Picker _catPick = new() { TextColor = Ui.Ink, FontSize = 16 };
     readonly Picker _optPick = new() { TextColor = Ui.Ink, FontSize = 16 };
     readonly Border _optBox;
     readonly Entry _note = new() { FontSize = 16, MaxLength = 100 };
     readonly DatePicker _date = new() { Format = "dd MMM yyyy", TextColor = Ui.Ink };
-    readonly Button _addBtn = new() { HeightRequest = 52, FontSize = 16 };          // form Add button
-    readonly Button _offerBtn = new() { HeightRequest = 52, FontSize = 16, IsVisible = false };   // shown after "="
+    readonly Button _addBtn = new() { HeightRequest = 52, FontSize = 16 };
+    readonly Button _offerBtn = new() { HeightRequest = 52, FontSize = 16, IsVisible = false };
     readonly Button _cancelBtn = new() { HeightRequest = 48, FontSize = 15, StyleClass = new[] { "Outline" } };
     Border _formCard = null!;
     ScrollView _formScroll = null!;
@@ -37,7 +35,6 @@ public class CalculatorPage : ContentPage
     {
         Title = L.T("ক্যালকুলেটর", "Calculator");
 
-        // display
         var disp = new VerticalStackLayout { Spacing = 0, VerticalOptions = LayoutOptions.End };
         disp.Add(_exprLbl);
         disp.Add(_resLbl);
@@ -51,7 +48,6 @@ public class CalculatorPage : ContentPage
             StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(22) }
         };
 
-        // keypad
         var keys = new Grid { ColumnSpacing = 6, RowSpacing = 5, VerticalOptions = LayoutOptions.Fill };
         _keys = keys;
         for (int c = 0; c < 4; c++) keys.ColumnDefinitions.Add(new ColumnDefinition(GridLength.Star));
@@ -69,7 +65,6 @@ public class CalculatorPage : ContentPage
             for (int c = 0; c < 4; c++)
                 keys.Add(Key(layout[r, c]), c, r);
 
-        // add card
         _optBox = FUi.Field(_optPick);
         _note.Placeholder = L.T("নোট (ঐচ্ছিক)", "Note (optional)");
         _cancelBtn.Text = L.T("বাতিল", "Cancel");
@@ -98,8 +93,6 @@ public class CalculatorPage : ContentPage
         _formCard = FUi.Card(add, Ui.Primary.WithAlpha(0.45f), 14);
         _formCard.IsVisible = false;
 
-        // Rows: display (2x)
-        // Form replaces keypad
         _formScroll = new ScrollView { Content = _formCard, IsVisible = false };
         var root = new Grid
         {
@@ -107,7 +100,7 @@ public class CalculatorPage : ContentPage
             RowSpacing = 8,
             RowDefinitions =
             {
-                new RowDefinition(new GridLength(2.6, GridUnitType.Star)),   // result area (about 2x)
+                new RowDefinition(new GridLength(2.6, GridUnitType.Star)),
                 new RowDefinition(new GridLength(5, GridUnitType.Star)),
                 new RowDefinition(GridLength.Auto)
             }
@@ -141,8 +134,6 @@ public class CalculatorPage : ContentPage
         _shown = false;
         Store.Changed -= OnStoreChanged;
     }
-
-    // keys
 
     View Key(string k)
     {
@@ -195,7 +186,7 @@ public class CalculatorPage : ContentPage
                 if (_expr == "−") break;
                 if (IsOp(_expr[^1]))
                 {
-                    // replace previous operator
+
                     _expr = _expr.Substring(0, _expr.Length - 1) + k;
                 }
                 else _expr += k;
@@ -215,7 +206,7 @@ public class CalculatorPage : ContentPage
                 }
                 break;
 
-            default:   // digit
+            default:
                 if (_justEvaled) { _expr = ""; _justEvaled = false; }
                 if (_expr.EndsWith("%")) _expr += "×";
                 if (CurrentNumber().Length >= 12) break;
@@ -251,9 +242,6 @@ public class CalculatorPage : ContentPage
         return thousands ? v.ToString("#,##0.##", Fmt.Inv) : v.ToString("0.##", Fmt.Inv);
     }
 
-    // evaluate
-
-    // Evaluate expression; ok=false
     static decimal Evaluate(string expr, out bool ok)
     {
         ok = false;
@@ -264,7 +252,6 @@ public class CalculatorPage : ContentPage
             while (s.Length > 0 && IsOp(s[^1])) s = s.Substring(0, s.Length - 1);
             if (s.Length == 0 || s == "−") return 0;
 
-            // tokens: (op, number
             var items = new List<(char Op, decimal Val, bool Pct)>();
             char op = '+';
             int i = 0;
@@ -286,7 +273,6 @@ public class CalculatorPage : ContentPage
             }
             if (items.Count == 0) return 0;
 
-            // Pass 1: x
             var terms = new List<(bool Neg, decimal Val, bool PurePct)>();
             int k = 0;
             while (k < items.Count)
@@ -303,7 +289,7 @@ public class CalculatorPage : ContentPage
                     if (items[j].Op == '×') val *= f;
                     else
                     {
-                        if (f == 0) return 0;   // divide by zero
+                        if (f == 0) return 0;
                         val /= f;
                     }
                     pure = false;
@@ -313,7 +299,6 @@ public class CalculatorPage : ContentPage
                 k = j;
             }
 
-            // Pass 2: +
             decimal total = 0;
             for (int t = 0; t < terms.Count; t++)
             {
@@ -333,11 +318,8 @@ public class CalculatorPage : ContentPage
         }
     }
 
-    // add to expenses
-
     void UpdateDayHint() => _dayHint.Text = Fmt.DayHint(_date.Date);
 
-    // Optional add: "="
     void UpdateAddArea(decimal? v)
     {
         bool can = _justEvaled && v != null && v > 0;

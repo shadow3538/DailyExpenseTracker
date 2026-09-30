@@ -2,7 +2,6 @@ using DailyExpenseTracker.Data;
 
 namespace DailyExpenseTracker;
 
-// Profile view page
 public partial class ProfilePage : ContentPage
 {
     public ProfilePage()
@@ -34,7 +33,6 @@ public partial class ProfilePage : ContentPage
         Store.Changed -= OnChanged;
     }
 
-    // Back closes page
     protected override bool OnBackButtonPressed()
     {
         _ = CloseAsync();
@@ -81,7 +79,6 @@ public partial class ProfilePage : ContentPage
         catch { }
     }
 
-    // Info row: icon
     static View Row(string icon, string title, string value)
     {
         var has = !string.IsNullOrWhiteSpace(value);

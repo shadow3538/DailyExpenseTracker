@@ -5,7 +5,8 @@ public partial class App : Application
     public App()
     {
         InitializeComponent();
-        Theme.Apply();          // Apply saved theme
+        // Apply theme
+        Theme.Apply();
         Theme.HookSystemChange();
     }
 

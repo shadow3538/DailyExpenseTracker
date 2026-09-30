@@ -2,7 +2,6 @@ using SQLite;
 
 namespace DailyExpenseTracker.Models;
 
-// Debt direction
 public class Loan
 {
     [PrimaryKey, AutoIncrement]
@@ -10,7 +9,7 @@ public class Loan
     public bool IOwe { get; set; }
     public string Person { get; set; } = "";
     public decimal Amount { get; set; }
-    // Paid amount
+
     public decimal Paid { get; set; }
     public bool HasDue { get; set; }
     public DateTime DueDate { get; set; }

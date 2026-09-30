@@ -7,7 +7,6 @@
     <ScrollView>
         <VerticalStackLayout Padding="16,14,16,28" Spacing="12">
 
-            <!-- Photo -->
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="10" HorizontalOptions="Center">
                     <ContentView x:Name="AvatarHost" HorizontalOptions="Center" />
@@ -18,7 +17,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Main info -->
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="6">
                     <Label Text="{local:T 'নাম'}" StyleClass="Muted" />
@@ -38,7 +36,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Birth date -->
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="6">
                     <Grid ColumnDefinitions="*,Auto">
@@ -51,7 +48,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Gender and blood -->
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="8">
                     <Label Text="{local:T 'লিঙ্গ'}" StyleClass="Muted" />
@@ -61,7 +57,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- About me -->
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="6">
                     <Label Text="{local:T 'আমার সম্পর্কে (ঐচ্ছিক)'}" StyleClass="Muted" />

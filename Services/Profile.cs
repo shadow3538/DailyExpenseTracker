@@ -2,10 +2,9 @@ using System.Globalization;
 
 namespace DailyExpenseTracker;
 
-// User profile (offline)
 public static class Profile
 {
-    // Refresh pages
+
     public static event Action? Changed;
 
     public static void ResetListeners() => Changed = null;
@@ -30,7 +29,6 @@ public static class Profile
         set => S("dob", value?.ToString("yyyy-MM-dd", Fmt.Inv));
     }
 
-    // Age from birth
     public static int? Age
     {
         get
@@ -44,7 +42,6 @@ public static class Profile
         }
     }
 
-    // Saved photo path
     public static string? PhotoPath
     {
         get
@@ -56,18 +53,15 @@ public static class Profile
         }
     }
 
-    // Profile empty?
     public static bool IsEmpty =>
         Name.Length == 0 && PhotoPath == null && Phone.Length == 0 && Email.Length == 0;
 
-    // First letter of
     public static string InitialOf(string? name)
     {
         if (string.IsNullOrWhiteSpace(name)) return "";
         return StringInfo.GetNextTextElement(name.Trim()).ToUpperInvariant();
     }
 
-    // Finalize photo on
     public static void CommitPhoto(string? tempPath, bool remove)
     {
         try

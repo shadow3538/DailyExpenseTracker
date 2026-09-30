@@ -12,25 +12,22 @@ public partial class AddPage : ContentPage
     ExpenseCategory? _sel;
     int _toastId;
     bool _appeared;
-    bool _pickedPast;   // user picked a past date
+    bool _pickedPast;
     bool _saving;
 
     public AddPage()
     {
         InitializeComponent();
         Store.Changed -= OnStoreChanged;
-        TabSwipe.Guard(CatScroll);   // sideways scroller
+        TabSwipe.Guard(CatScroll);
         Track(NoteEntry, NoteEntry);
         Track(WhatEntry, WhatEntry);
         Track(FreeAmount, FreeAmount);
         RootChrome.Attach(this);
     }
 
-    // keyboard
-
     View? _focusView;
 
-    // Keep focused field
     void Track(Entry e, View row)
     {
         e.Focused += (_, _) => { _focusView = row; _ = ScrollToAsync(row); };
@@ -41,13 +38,12 @@ public partial class AddPage : ContentPage
     {
         try
         {
-            await Task.Delay(230);   // wait for keyboard
+            await Task.Delay(230);
             await MainScroll.ScrollToAsync(v, ScrollToPosition.Center, true);
         }
         catch { }
     }
 
-    // Extra bottom space
     void OnKeyboard()
     {
         MainStack.Padding = new Thickness(16, 14, 16, KeyboardWatcher.Visible ? KeyboardWatcher.HeightDp + 30 : 90);
@@ -66,7 +62,7 @@ public partial class AddPage : ContentPage
         KeyboardWatcher.Changed += OnKeyboard;
         try
         {
-            // Date passed from
+
             if (Ui.PendingAddDate is DateTime pd)
             {
                 Ui.PendingAddDate = null;
@@ -75,7 +71,6 @@ public partial class AddPage : ContentPage
                 _pickedPast = DatePick.Date.Date < DateTime.Today;
             }
 
-            // No future dates
             DatePick.MaximumDate = DateTime.Today;
             if (!_pickedPast && DatePick.Date.Date != DateTime.Today) DatePick.Date = DateTime.Today;
             RefreshDateUi();
@@ -97,8 +92,6 @@ public partial class AddPage : ContentPage
         Store.Changed -= OnStoreChanged;
         KeyboardWatcher.Changed -= OnKeyboard;
     }
-
-    // date
 
     DateTime SelectedDay => DatePick.Date.Date;
 
@@ -124,14 +117,11 @@ public partial class AddPage : ContentPage
         if (SelectedDay < DateTime.Today) DatePick.Date = SelectedDay.AddDays(1);
     }
 
-    // category
-
     async Task LoadCategoriesAsync()
     {
         _cats = await Store.GetCategoriesAsync();
         _choices = await Store.GetChoicesAsync();
 
-        // Keep last selection
         var last = _sel?.Name ?? Preferences.Default.Get("add_cat", "");
         _sel = _cats.FirstOrDefault(c => c.Name == last) ?? _cats.FirstOrDefault();
 
@@ -139,7 +129,6 @@ public partial class AddPage : ContentPage
         BuildPanel(force: true);
     }
 
-    // Category tiles; selected
     void BuildCatBar()
     {
         CatBar.Children.Clear();
@@ -199,7 +188,6 @@ public partial class AddPage : ContentPage
         catch (Exception ex) { AppLog.Error("Add.CategoryAnimation", ex); }
     }
 
-    // Options rows or
     void BuildPanel(bool force = false)
     {
         var cat = _sel;
@@ -307,7 +295,7 @@ public partial class AddPage : ContentPage
             var isToday = day == DateTime.Today;
             await Store.AddAsync(new Expense
             {
-                // Past day: that
+
                 Date = isToday ? DateTime.Now : day + DateTime.Now.TimeOfDay,
                 Item = name,
                 Category = _sel?.Name ?? "",
@@ -316,7 +304,7 @@ public partial class AddPage : ContentPage
             });
             entry.Text = "";
             NoteEntry.Text = "";
-            // keyboard stays open
+
             var msg = name + ": " + Fmt.Money(amt) + L.T(" যোগ হয়েছে");
             if (!isToday) msg += " (" + day.ToString("dd MMM", Fmt.Inv) + ")";
             await ShowToast(msg, true);
@@ -329,7 +317,6 @@ public partial class AddPage : ContentPage
         finally { _saving = false; }
     }
 
-    // Free-text category add
     async void OnFreeAdd(object? sender, EventArgs e)
     {
         if (_saving) return;

@@ -7,9 +7,15 @@ public partial class AppShell : Shell
         InitializeComponent();
         Navigated += OnShellNavigated;
         KeyboardWatcher.ShellHandler = OnKeyboard;
+
+        // Update check
+        _ = Task.Run(async () =>
+        {
+            await Task.Delay(4000);
+            await UpdateChecker.OnAppStartAsync();
+        });
     }
 
-    // Hide tab bar
     void OnKeyboard()
     {
         try
@@ -19,7 +25,6 @@ public partial class AppShell : Shell
         catch { }
     }
 
-    // Track tabs
     void OnShellNavigated(object? sender, ShellNavigatedEventArgs e)
     {
         try
@@ -41,12 +46,11 @@ public partial class AppShell : Shell
         catch { }
     }
 
-    // Handle back
     protected override bool OnBackButtonPressed()
     {
         try
         {
-            // close drawer first
+
             if (RootChrome.Active is { IsOpen: true } chrome)
             {
                 _ = chrome.CloseAsync();

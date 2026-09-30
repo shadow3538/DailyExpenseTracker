@@ -2,14 +2,10 @@ using Microsoft.Maui.Controls.Shapes;
 
 namespace DailyExpenseTracker;
 
-// Hint
-// Helpers: open links
-// Hint
 public static class InfoLinks
 {
     public static bool Has(string? s) => !string.IsNullOrWhiteSpace(s);
 
-    // Make a launchable
     public static string Normalize(string value, string url)
     {
         var u = (Has(url) ? url : value).Trim();
@@ -43,7 +39,6 @@ public static class InfoLinks
         catch (Exception ex) { AppLog.Error("Info.Copy", ex); }
     }
 
-    // Share the download
     public static async Task ShareAppAsync()
     {
         if (!Has(AppInfo.DownloadUrl))
@@ -67,7 +62,6 @@ public static class InfoLinks
         catch (Exception ex) { AppLog.Error("Info.Share", ex); }
     }
 
-    // Row with icon
     public static View Row(string icon, string title, string? sub, Action? onTap = null, bool chevron = false)
     {
         var col = new VerticalStackLayout { Spacing = 1, VerticalOptions = LayoutOptions.Center };
@@ -94,16 +88,12 @@ public static class InfoLinks
     }
 }
 
-// Hint
-// About the app
-// Hint
 public class AboutAppPage : ModalBase
 {
     public AboutAppPage() : base(L.T("অ্যাপ সম্পর্কে", "About the app"))
     {
         var root = NewRoot();
 
-        // header
         var head = new VerticalStackLayout { Spacing = 4, HorizontalOptions = LayoutOptions.Center, Margin = new Thickness(0, 4, 0, 6) };
         head.Add(new Border
         {
@@ -135,7 +125,6 @@ public class AboutAppPage : ModalBase
             TextColor = Ui.Muted
         });
 
-        // features
         root.Add(new Label { Text = L.T("✨ ফিচার", "✨ Features"), StyleClass = new[] { "H2" }, Margin = new Thickness(0, 8, 0, 0) });
         var feats = new VerticalStackLayout { Spacing = 14 };
         foreach (var f in AppInfo.Features)
@@ -146,7 +135,6 @@ public class AboutAppPage : ModalBase
         }
         root.Add(FUi.Card(feats, null, 14));
 
-        // download
         root.Add(new Label { Text = L.T("⬇️ ডাউনলোড", "⬇️ Download"), StyleClass = new[] { "H2" }, Margin = new Thickness(0, 8, 0, 0) });
         var dl = new VerticalStackLayout { Spacing = 10 };
         if (InfoLinks.Has(AppInfo.DownloadUrl))
@@ -176,7 +164,54 @@ public class AboutAppPage : ModalBase
         }
         root.Add(FUi.Card(dl, null, 14));
 
-        // developer
+        if (InfoLinks.Has(AppInfo.GitHubUrl))
+        {
+            root.Add(new Label { Text = L.T("🔄 আপডেট", "🔄 Updates"), StyleClass = new[] { "H2" }, Margin = new Thickness(0, 8, 0, 0) });
+            var up = new VerticalStackLayout { Spacing = 10 };
+            var status = new Label { FontSize = 14 };
+            up.Add(status);
+            var btn = FUi.Btn(L.T("🔍 এখনই চেক করুন", "🔍 Check now"), Ui.Primary, false, () => { }, 44);
+            var open = FUi.Btn(L.T("⬇️ নতুন ভার্সন ডাউনলোড", "⬇️ Download the new version"), Ui.Primary, true, () => { }, 44);
+            open.IsVisible = false;
+            string openUrl = "";
+
+            void Show(bool known, string latest)
+            {
+                if (known)
+                {
+                    status.Text = L.T($"নতুন ভার্সন {latest} পাওয়া যাচ্ছে (আপনার ভার্সন {AppInfo.Version})।", $"Version {latest} is available (you have {AppInfo.Version}).");
+                    status.TextColor = Ui.Orange;
+                    openUrl = InfoLinks.Has(UpdateChecker.LatestUrl) ? UpdateChecker.LatestUrl : AppInfo.DownloadUrl;
+                    open.IsVisible = true;
+                }
+                else
+                {
+                    status.Text = L.T($"আপনি সর্বশেষ ভার্সন (v{AppInfo.Version}) ব্যবহার করছেন।", $"You are on the latest version (v{AppInfo.Version}).");
+                    status.TextColor = Ui.Muted;
+                    open.IsVisible = false;
+                }
+            }
+            Show(UpdateChecker.UpdateKnown, UpdateChecker.LatestSeen);
+            open.Clicked += (_, _) => _ = InfoLinks.OpenAsync(openUrl);
+            btn.Clicked += async (_, _) =>
+            {
+                btn.IsEnabled = false;
+                status.Text = L.T("চেক করা হচ্ছে…", "Checking…");
+                status.TextColor = Ui.Muted;
+                var r = await UpdateChecker.CheckAsync(notify: false);
+                if (!r.Ok)
+                {
+                    status.Text = L.T("চেক করা যায়নি। ইন্টারনেট আছে কি না দেখুন।", "Could not check. Please check your internet connection.");
+                    status.TextColor = Ui.Red;
+                }
+                else Show(r.HasUpdate, r.Latest);
+                btn.IsEnabled = true;
+            };
+            up.Add(btn);
+            up.Add(open);
+            root.Add(FUi.Card(up, null, 14));
+        }
+
         root.Add(new Label { Text = L.T("👨‍💻 ডেভেলপার", "👨‍💻 Developer"), StyleClass = new[] { "H2" }, Margin = new Thickness(0, 8, 0, 0) });
         var dev = new VerticalStackLayout { Spacing = 10 };
         foreach (var d in AppInfo.Developers)
@@ -190,16 +225,12 @@ public class AboutAppPage : ModalBase
     }
 }
 
-// Hint
-// Developer details (opened
-// Hint
 public class DeveloperPage : ModalBase
 {
     public DeveloperPage() : base(L.T("ডেভেলপার সম্পর্কে", "About the developer"))
     {
         var root = NewRoot();
 
-        // header: each developer
         foreach (var d in AppInfo.Developers)
         {
             if (!InfoLinks.Has(d.Name)) continue;
@@ -231,7 +262,6 @@ public class DeveloperPage : ModalBase
         if (InfoLinks.Has(bio))
             root.Add(FUi.Card(new Label { Text = bio, FontSize = 14 }, null, 14));
 
-        // extra info
         var extra = new VerticalStackLayout { Spacing = 14 };
         int extraCount = 0;
         foreach (var x in AppInfo.DevExtra)
@@ -243,7 +273,6 @@ public class DeveloperPage : ModalBase
         }
         if (extraCount > 0) root.Add(FUi.Card(extra, null, 14));
 
-        // contacts
         var contacts = new VerticalStackLayout { Spacing = 14 };
         int contactCount = 0;
         foreach (var c in AppInfo.DevContacts)
@@ -259,7 +288,6 @@ public class DeveloperPage : ModalBase
             root.Add(FUi.Card(contacts, null, 14));
         }
 
-        // app + download
         root.Add(new Label { Text = L.T("📦 অ্যাপ", "📦 App"), StyleClass = new[] { "H2" }, Margin = new Thickness(0, 6, 0, 0) });
         var app = new VerticalStackLayout { Spacing = 14 };
         app.Add(InfoLinks.Row("💰", L.T(AppInfo.AppNameBn, AppInfo.AppNameEn), "v" + AppInfo.Version));
@@ -272,9 +300,6 @@ public class DeveloperPage : ModalBase
     }
 }
 
-// Hint
-// Report a bug
-// Hint
 public class BugReportPage : ModalBase
 {
     readonly Editor _msg = new()
@@ -297,7 +322,6 @@ public class BugReportPage : ModalBase
             "কোনো বাগ পেলে বা মতামত থাকলে এখানে জানান। কী করার সময় সমস্যা হলো তা লিখলে ঠিক করতে সুবিধা হয়।",
             "Found a bug or have an idea? Tell us here. Describing what you were doing helps us fix it."), 14));
 
-        // type chips
         var kinds = new Grid { ColumnSpacing = 8, ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Star) } };
         AddChip(kinds, 0, "bug", "🐞", L.T("বাগ", "Bug"));
         AddChip(kinds, 1, "feedback", "💬", L.T("ফিডব্যাক", "Feedback"));
@@ -410,7 +434,7 @@ public class BugReportPage : ModalBase
                 }
                 catch (Exception ex)
                 {
-                    // no mail app
+
                     AppLog.Error("Report.Email", ex);
                 }
             }

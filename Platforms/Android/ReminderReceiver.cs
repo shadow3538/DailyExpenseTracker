@@ -3,7 +3,6 @@ using Android.Content;
 
 namespace DailyExpenseTracker;
 
-// Show notification
 [BroadcastReceiver(Enabled = true, Exported = true)]
 [IntentFilter(new[] { Intent.ActionBootCompleted, Intent.ActionMyPackageReplaced })]
 public class ReminderReceiver : BroadcastReceiver
@@ -18,15 +17,23 @@ public class ReminderReceiver : BroadcastReceiver
         {
             try
             {
+                // Restore alarms
                 if (action == Intent.ActionBootCompleted || action == Intent.ActionMyPackageReplaced)
                 {
                     await Reminders.RescheduleAsync();
+                    UpdateChecker.Schedule(context);
+                }
+                // Check update
+                else if (action == UpdateChecker.ActUpdate)
+                {
+                    await UpdateChecker.CheckAsync(notify: true);
+                    UpdateChecker.Schedule(context);
                 }
                 else if (action == Reminders.ActDaily)
                 {
                     Reminders.Show(context, intent.GetStringExtra("title") ?? "", intent.GetStringExtra("text") ?? "",
                         intent.GetStringExtra("route") ?? "add", intent.GetIntExtra("code", 9001));
-                    if (Reminders.DailyOn) Reminders.ScheduleDaily(context);   // schedule tomorrow
+                    if (Reminders.DailyOn) Reminders.ScheduleDaily(context);
                 }
                 else if (action.StartsWith(Reminders.ActLoan))
                 {

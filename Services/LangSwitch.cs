@@ -1,20 +1,18 @@
 namespace DailyExpenseTracker;
 
-// Switch language: names
 public static class LangSwitch
 {
     static bool _busy;
 
     public static async Task ApplyAsync(string lang, bool goToSettings)
     {
-        if (_busy) return;          // Ignore double tap
+        if (_busy) return;
         _busy = true;
         try
         {
             Ui.Toast(L.T("অপেক্ষা করুন...", "Please wait..."));
             await Task.Yield();
 
-            // Quiet mode: no
             Data.Store.Quiet = true;
             try
             {
@@ -33,7 +31,6 @@ public static class LangSwitch
     }
 }
 
-// Rebuild AppShell (language
 public static class AppRebuild
 {
     static bool _running;
@@ -46,10 +43,9 @@ public static class AppRebuild
         {
             await MainThread.InvokeOnMainThreadAsync(async () =>
             {
-                // Let button click
+
                 await Task.Delay(80);
 
-                // Old pages stop
                 Data.Store.ResetListeners();
                 Profile.ResetListeners();
 

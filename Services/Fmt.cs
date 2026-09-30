@@ -22,7 +22,6 @@ public static class Fmt
     static string[] Days => L.IsEn ? EnDays : BnDays;
     static string[] DaysShort => L.IsEn ? EnDaysShort : BnDaysShort;
 
-    // Small hint under
     public static string DayHint(DateTime d)
     {
         if (d.Date == DateTime.Today) return L.T("আজ", "Today");
@@ -30,20 +29,16 @@ public static class Fmt
         return Days[(int)d.DayOfWeek];
     }
 
-    // Weekday name under
     public static string BnDayShort(DateTime d) => d.Date == DateTime.Today ? L.T("আজ", "Today") : DaysShort[(int)d.DayOfWeek];
 
-    // Short amount: 1250
     public static string Short(decimal v) =>
         v >= 1000 ? (v / 1000).ToString("0.#", Inv) + "k" : v.ToString("0", Inv);
 
     public static string Money(decimal v) => AppSettings.Currency + v.ToString("N2", Inv);
 
-    // Money without decimals
     public static string Money0(decimal v) =>
         AppSettings.Currency + (v == Math.Round(v) ? v.ToString("N0", Inv) : v.ToString("N2", Inv));
 
-    // Short date
     public static string DayMonth(DateTime d) => d.Day.ToString(Inv) + " " + Months[d.Month - 1];
 
     public static string BnWeekday(DateTime d) => Days[(int)d.DayOfWeek];
@@ -52,7 +47,6 @@ public static class Fmt
 
     public static string MonthTitle(DateTime d) => Months[d.Month - 1] + " " + d.Year.ToString(Inv);
 
-    // Range title
     public static string RangeTitle(DateTime a, DateTime b)
     {
         var left = a.Year == b.Year ? a.ToString("dd MMM", Inv) : a.ToString("dd MMM yyyy", Inv);
@@ -67,7 +61,6 @@ public static class Fmt
         return s;
     }
 
-    // Parse amount (Bangla
     public static bool TryAmount(string? s, out decimal value)
     {
         value = 0;

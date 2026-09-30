@@ -7,7 +7,6 @@
     <ScrollView>
         <VerticalStackLayout Padding="16,14,16,28" Spacing="12">
 
-            <!-- Category and option -->
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="10">
                     <Label Text="{local:T 'ক্যাটাগরি'}" StyleClass="Muted" />
@@ -17,7 +16,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Amount -->
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="6">
                     <Label Text="{local:T 'টাকা'}" StyleClass="Muted" />
@@ -28,7 +26,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Note -->
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="6">
                     <Label x:Name="NoteTitle" Text="{local:T 'নোট (ঐচ্ছিক)'}" StyleClass="Muted" />
@@ -39,7 +36,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Date and time -->
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout Spacing="6">
                     <Label Text="{local:T 'তারিখ ও সময়'}" StyleClass="Muted" />

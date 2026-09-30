@@ -66,8 +66,6 @@ public partial class SettingsPage : ContentPage
         await BuildBackupCardAsync();
     }
 
-    // loans & salary
-
     async Task RefreshFinanceAsync()
     {
         try
@@ -127,15 +125,10 @@ public partial class SettingsPage : ContentPage
         return b;
     }
 
-
-    // notifications / limits
-
-    // Two bordered boxes
     void BuildPrefBoxes()
     {
         PrefHost.Children.Clear();
 
-        // notifications
         int active = (Reminders.DailyOn ? 1 : 0) + (Reminders.LoanOn ? 1 : 0);
         var nBody = new VerticalStackLayout { Spacing = 2 };
         nBody.Add(new Label { Text = active.ToString(Fmt.Inv) + L.T("টি চালু", " active"), FontSize = 20, FontAttributes = FontAttributes.Bold, TextColor = active > 0 ? Ui.Green : Ui.Muted });
@@ -147,7 +140,6 @@ public partial class SettingsPage : ContentPage
             TextColor = Ui.Muted
         });
 
-        // limits
         var lBody = new VerticalStackLayout { Spacing = 2 };
         lBody.Add(new Label { Text = L.T("দৈনিক ", "Daily ") + (AppSettings.DailyLimit > 0 ? Fmt.Money0(AppSettings.DailyLimit) : L.T("নেই", "none")), FontSize = 14, FontAttributes = FontAttributes.Bold });
         lBody.Add(new Label { Text = L.T("মাসিক ", "Monthly ") + (AppSettings.MonthlyLimit > 0 ? Fmt.Money0(AppSettings.MonthlyLimit) : L.T("নেই", "none")), FontSize = 14, FontAttributes = FontAttributes.Bold });
@@ -157,11 +149,9 @@ public partial class SettingsPage : ContentPage
             MiniCard("📏", L.T("লিমিট", "Limits"), lBody, Ui.Orange, () => Ui.OpenModal(this, new LimitsPage())));
         PrefHost.Add(FUi.Box(g1));
 
-        // language
         var gBody = new VerticalStackLayout { Spacing = 2 };
         gBody.Add(new Label { Text = L.IsEn ? "English" : "বাংলা", FontSize = 20, FontAttributes = FontAttributes.Bold });
 
-        // theme
         var tBody = new VerticalStackLayout { Spacing = 2 };
         var tIcon = Theme.Mode == Theme.Dark ? "🌙 " : Theme.Mode == Theme.Light ? "☀️ " : "📱 ";
         tBody.Add(new Label { Text = tIcon + RootChrome.ThemeName(), FontSize = 20, FontAttributes = FontAttributes.Bold });
@@ -180,7 +170,6 @@ public partial class SettingsPage : ContentPage
         return g;
     }
 
-    // Small tappable card
     static View MiniCard(string icon, string title, View body, Color color, Action onTap)
     {
         var v = new VerticalStackLayout { Spacing = 4 };
@@ -203,8 +192,6 @@ public partial class SettingsPage : ContentPage
         b.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(onTap) });
         return b;
     }
-
-    // categories summary
 
     async Task BuildCategoryCardAsync()
     {
@@ -244,8 +231,6 @@ public partial class SettingsPage : ContentPage
         }
         catch (Exception ex) { AppLog.Error("Settings.Cats", ex); }
     }
-
-    // backup card
 
     async Task BuildBackupCardAsync()
     {
@@ -298,8 +283,6 @@ public partial class SettingsPage : ContentPage
         }
         catch (Exception ex) { AppLog.Error("Settings.Backup", ex); }
     }
-
-    // about / developer
 
     void BuildAboutSection()
     {

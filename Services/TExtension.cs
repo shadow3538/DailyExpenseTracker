@@ -2,7 +2,6 @@ using Microsoft.Maui.Controls.Xaml;
 
 namespace DailyExpenseTracker;
 
-// XAML translation: Text="{local:T
 [ContentProperty(nameof(Text))]
 public class TExtension : IMarkupExtension<string>
 {

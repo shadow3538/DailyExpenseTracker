@@ -281,7 +281,7 @@ public static partial class L
         ["ব্যাকআপ ফাইল গুগল ড্রাইভ, হোয়াটসঅ্যাপ বা ফোনের ফাইলে রাখতে পারবেন। ফোন বদলালে বা অ্যাপ মুছলে সেই ফাইল থেকে সব ফিরিয়ে আনা যাবে।"] = "You can keep the backup file on Google Drive, WhatsApp or phone files. If you change phones or delete the app, restore everything from that file.",
         ["⬆ ব্যাকআপ নিন (ড্রাইভ / ফাইলে সেভ)"] = "⬆ Back up (Drive / save file)",
         ["⬇ ব্যাকআপ থেকে ফিরিয়ে আনুন"] = "⬇ Restore from backup",
-        // Default names
+
         ["পুরুষ"] = "Male",
         ["ক্যালকুলেটর"] = "Calculator",
         ["হিসাব হিস্টোরি (দিন ধরে)"] = "History (day by day)",

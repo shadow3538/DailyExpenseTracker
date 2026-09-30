@@ -1,38 +1,34 @@
 namespace DailyExpenseTracker;
 
-// App metadata
 public static class AppInfo
 {
     public const string AppNameBn = "পকেটনামা";
     public const string AppNameEn = "PocketNama";
     public const string Version = "5.9";
 
-    // Release links
-    public const string DownloadUrl = "";
-    public const string GitHubUrl = "";
-    public const string ReportEmail = "";
+    public const string DownloadUrl = "https://github.com/shadow3538/DailyExpenseTracker/releases/latest";
 
-    // Developer
+    public const string GitHubUrl = "https://github.com/shadow3538/DailyExpenseTracker";
+
+    public const string ReportEmail = "shuvroakash68@gmail.com";
+
     public static readonly (string Icon, string Name, string NoteBn, string NoteEn)[] Developers =
     {
         ("👤", "Abdul Malek", "", ""),
     };
 
-    // Developer bio
     public const string DevBioBn = "";
     public const string DevBioEn = "";
 
-    // Developer contacts
     public static readonly (string Icon, string LabelBn, string LabelEn, string Value, string Url)[] DevContacts =
     {
-        ("✉️", "ইমেইল", "Email", "", ""),               // Email link
-        ("📞", "ফোন", "Phone", "", ""),                  // Phone link
-        ("🐙", "গিটহাব", "GitHub", "", ""),              // GitHub link
+        ("✉️", "ইমেইল", "Email", "shuvroakash68@gmail.com", "mailto:shuvroakash68@gmail.com"),
+        ("📞", "ফোন", "Phone", "", ""),
+        ("🐙", "গিটহাব", "GitHub", "github.com/shadow3538", "https://github.com/shadow3538"),
         ("📘", "ফেসবুক", "Facebook", "", ""),
-        ("💼", "লিংকডইন", "LinkedIn", "", ""),
+        ("💼", "লিংকডইন", "LinkedIn", "linkedin.com/in/md-abdul-malek-a0826833a", "https://www.linkedin.com/in/md-abdul-malek-a0826833a/"),
     };
 
-    // Developer details
     public static readonly (string Icon, string TitleBn, string TitleEn, string TextBn, string TextEn)[] DevExtra =
     {
         ("🎓", "শিক্ষা", "Education", "", ""),
@@ -40,7 +36,6 @@ public static class AppInfo
         ("📍", "ঠিকানা", "Location", "", ""),
     };
 
-    // App features
     public static readonly (string Icon, string TitleBn, string TitleEn, string TextBn, string TextEn)[] Features =
     {
         ("🏠", "হোম", "Home",
@@ -61,9 +56,6 @@ public static class AppInfo
         ("🔔", "রিমাইন্ডার", "Reminders",
             "নির্দিষ্ট সময়ে নোটিফিকেশন, যাতে খরচ লিখতে ভুলে না যান।",
             "Notifications at set times so you don't forget to log expenses."),
-        ("⬆️", "আপডেট নোটিফিকেশন", "Update alerts",
-            "নতুন ভার্সন এলে নোটিফিকেশন দিয়ে জানায়।",
-            "Checks GitHub daily and notifies when a newer release is available."),
         ("🤝", "ঋণ ও বেতন", "Loans & salary",
             "কাকে দিলেন, কার কাছে পাবেন এবং মাসের বেতনের হিসাব রাখা যায়।",
             "Track money you owe, money to receive and your monthly salary."),

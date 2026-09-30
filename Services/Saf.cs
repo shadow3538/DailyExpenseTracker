@@ -5,7 +5,6 @@ using AUri = Android.Net.Uri;
 
 namespace DailyExpenseTracker;
 
-// Storage Access Framework
 public static class Saf
 {
     public const int ReqTree = 7101;
@@ -13,7 +12,6 @@ public static class Saf
 
     static TaskCompletionSource<Intent?>? _tcs;
 
-    // Called from MainActivity.OnActivityResult
     public static void Complete(Result res, Intent? data)
     {
         var t = _tcs;
@@ -40,9 +38,6 @@ public static class Saf
         catch (Exception ex) { AppLog.Error("Saf.Persist", ex); }
     }
 
-    // pick
-
-    // Pick a folder
     public static async Task<string?> PickFolderAsync()
     {
         var i = new Intent(Intent.ActionOpenDocumentTree);
@@ -54,7 +49,6 @@ public static class Saf
         return uri.ToString();
     }
 
-    // Pick or create
     public static async Task<string?> PickNewFileAsync(string name)
     {
         var i = new Intent(Intent.ActionCreateDocument);
@@ -69,9 +63,6 @@ public static class Saf
         return uri.ToString();
     }
 
-    // names
-
-    // Provider name from
     public static string ProviderOf(string uriText)
     {
         try
@@ -87,7 +78,6 @@ public static class Saf
         catch { return ""; }
     }
 
-    // Readable name of
     public static string LabelOf(string uriText, bool folder)
     {
         try
@@ -113,9 +103,6 @@ public static class Saf
         return "";
     }
 
-    // write
-
-    // Write into a
     public static async Task<(bool Ok, bool Verified)> WriteFileAsync(string uriText, byte[] bytes)
     {
         var uri = AUri.Parse(uriText);
@@ -123,7 +110,6 @@ public static class Saf
         return await WriteUriAsync(uri, bytes);
     }
 
-    // Write (or overwrite)
     public static async Task<(bool Ok, bool Verified)> WriteInFolderAsync(string treeText, string fileName, byte[] bytes)
     {
         var tree = AUri.Parse(treeText);
@@ -133,7 +119,6 @@ public static class Saf
         var treeId = DocumentsContract.GetTreeDocumentId(tree);
         AUri? target = null;
 
-        // reuse same-name file
         var kids = DocumentsContract.BuildChildDocumentsUriUsingTree(tree, treeId);
         using (var c = cr.Query(kids!, new[] { DocumentsContract.Document.ColumnDocumentId, DocumentsContract.Document.ColumnDisplayName }, null, null, null))
         {
@@ -168,7 +153,6 @@ public static class Saf
             await os.FlushAsync();
         }
 
-        // check size on
         bool verified = false;
         try
         {

@@ -12,7 +12,7 @@
             <Color x:Key="MutedText">#6B7785</Color>
             <Color x:Key="LineColor">#E3E9EC</Color>
             <Color x:Key="RedText">#C0392B</Color>
-            <!-- Theme.cs overrides these -->
+
             <Color x:Key="SurfaceColor">#FFFFFF</Color>
             <Color x:Key="FieldColor">#F7FAFA</Color>
             <Color x:Key="PlaceholderCol">#9AA5B1</Color>
@@ -20,7 +20,7 @@
             <Color x:Key="TabUnselected">#8A94A0</Color>
             <Color x:Key="SepColor">#DDE3E8</Color>
             <SolidColorBrush x:Key="LineBrush" Color="#E3E9EC" />
-            <!-- Range mode colors -->
+
             <Color x:Key="RangeColor">#5C4DB1</Color>
             <Color x:Key="RangeDark">#3F3480</Color>
             <Color x:Key="RangeSoft">#ECE9F9</Color>
@@ -58,7 +58,6 @@
                 </Setter>
             </Style>
 
-            <!-- Input box frame -->
             <Style x:Key="Field" TargetType="Border">
                 <Setter Property="BackgroundColor" Value="{DynamicResource FieldColor}" />
                 <Setter Property="Stroke" Value="{DynamicResource LineBrush}" />

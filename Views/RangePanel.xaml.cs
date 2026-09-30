@@ -2,7 +2,6 @@ using DailyExpenseTracker.Data;
 
 namespace DailyExpenseTracker;
 
-// Period panel on
 public partial class RangePanel : ContentView
 {
     bool _sync;
@@ -10,7 +9,6 @@ public partial class RangePanel : ContentView
     DateTime _month = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
     bool _canNext;
 
-    // Month step (-1
     public event Action<int>? MonthStep;
 
     public RangePanel()
@@ -19,7 +17,6 @@ public partial class RangePanel : ContentView
         Render();
     }
 
-    // Called on load
     public void Refresh(DateTime month, bool canNext)
     {
         _month = month;
@@ -36,7 +33,6 @@ public partial class RangePanel : ContentView
             var dark = custom ? Ui.RangeDark : Ui.PrimaryDark;
             var soft = Color.FromArgb(custom ? "#DCD6F5" : "#CFF3EE");
 
-            // top card
             CurrentCard.Background = new LinearGradientBrush(
                 new GradientStopCollection
                 {
@@ -75,18 +71,15 @@ public partial class RangePanel : ContentView
                     (ml > 0 ? L.T(" · মাসিক লিমিট ") + Fmt.Money0(ml) : "");
             }
 
-            // bottom buttons
             Style(MonthBtn, Ui.Primary, !custom, !custom ? L.T("✓ মাস অনুযায়ী") : L.T("🗓 মাস অনুযায়ী"));
             Style(RangeBtn, Ui.RangeColor, custom, custom ? L.T("✎ রেঞ্জ এডিট করুন") : L.T("📅 রেঞ্জ অনুযায়ী"));
 
-            // form
             FormCard.IsVisible = _editing;
             FormTitle.Text = custom ? L.T("রেঞ্জ এডিট করুন") : L.T("রেঞ্জ ঠিক করুন");
         }
         catch { }
     }
 
-    // Selected filled, other
     static void Style(Button b, Color color, bool selected, string text)
     {
         b.Text = text;
@@ -99,7 +92,6 @@ public partial class RangePanel : ContentView
 
     void OnNext(object? sender, EventArgs e) => MonthStep?.Invoke(1);
 
-    // Open form with
     public void OpenEditor()
     {
         _sync = true;
@@ -128,7 +120,6 @@ public partial class RangePanel : ContentView
         Render();
     }
 
-    // Month button: leave
     void OnMonthMode(object? sender, EventArgs e)
     {
         var wasCustom = Period.IsCustom;
@@ -151,7 +142,7 @@ public partial class RangePanel : ContentView
     void OnFormChanged(object? sender, DateChangedEventArgs e)
     {
         if (_sync) return;
-        // Fix end before
+
         _sync = true;
         try
         {
@@ -213,7 +204,6 @@ public partial class RangePanel : ContentView
 
             Ui.Toast(L.T("✔ রেঞ্জ সেট হয়েছে: ") + Fmt.RangeTitle(from, to) + (lim > 0 ? L.T(" · লিমিট ") + Fmt.Money0(lim) : ""));
 
-            // Return to Home
             var back = Ui.ReturnRoute;
             Ui.ReturnRoute = null;
             if (!string.IsNullOrEmpty(back)) await Ui.GoTo(back);

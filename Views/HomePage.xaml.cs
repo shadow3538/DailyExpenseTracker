@@ -5,8 +5,8 @@ namespace DailyExpenseTracker;
 
 public partial class HomePage : ContentPage
 {
-    const double BarMax = 72;   // tallest chart bar height
-    const int LedgerRows = 7;   // recent days shown on Home
+    const double BarMax = 72;
+    const int LedgerRows = 7;
 
     static readonly Color OnDarkTrack = new Color(1f, 1f, 1f, 0.25f);
     static readonly Color OnDarkWarn = Color.FromArgb("#FFD180");
@@ -27,7 +27,6 @@ public partial class HomePage : ContentPage
     ContentView _titleAvatar = new();
     Label _titleName = new();
 
-    // Top bar: profile
     void BuildTitleView()
     {
         _titleName = new Label
@@ -81,7 +80,6 @@ public partial class HomePage : ContentPage
         catch (Exception ex) { AppLog.Error("Home.Animation", ex); }
     }
 
-    // Refresh only when
     void OnStoreChanged() { if (_appeared) _ = LoadAsync(); }
 
     protected override async void OnAppearing()
@@ -92,7 +90,7 @@ public partial class HomePage : ContentPage
         Store.Changed += OnStoreChanged;
         _animateDashboard = true;
         RefreshTitle();
-        WidgetNav.TryGo();   // Widget deep link
+        WidgetNav.TryGo();
         await LoadAsync();
         if (_animateDashboard)
         {
@@ -103,9 +101,8 @@ public partial class HomePage : ContentPage
         await AutoBackupOnceAsync();
     }
 
-    static bool _backupChecked;   // once per app launch
+    static bool _backupChecked;
 
-    // Run scheduled backup
     async Task AutoBackupOnceAsync()
     {
         try
@@ -139,7 +136,6 @@ public partial class HomePage : ContentPage
         Store.Changed -= OnStoreChanged;
     }
 
-    // Ask language on
     async Task AskLanguageOnceAsync()
     {
         try
@@ -159,11 +155,9 @@ public partial class HomePage : ContentPage
             var today = DateTime.Today;
             var monthStart = new DateTime(today.Year, today.Month, 1);
 
-            // Period: month or
             Period.Resolve(monthStart, out var pStart, out var pEnd);
             bool custom = Period.IsCustom;
 
-            // One query: period
             var from = pStart < today.AddDays(-6) ? pStart : today.AddDays(-6);
             var to = pEnd > today.AddDays(1) ? pEnd : today.AddDays(1);
             var all = await Store.GetRangeAsync(from, to);
@@ -186,7 +180,6 @@ public partial class HomePage : ContentPage
             BuildWeek(all, today);
             BuildLedger(pStart, pEnd, month, periodLimit, monthSpent, custom, today);
 
-            // Today's totals by
             BreakdownStack.Children.Clear();
             var names = cats.Select(c => c.Name).ToList();
             foreach (var extra in todays.Select(x => x.Cat).Distinct())
@@ -211,7 +204,6 @@ public partial class HomePage : ContentPage
                 BreakdownStack.Add(row);
             }
 
-            // Today's entries, newest
             EntriesStack.Children.Clear();
             if (todays.Count == 0)
             {
@@ -226,7 +218,6 @@ public partial class HomePage : ContentPage
         catch { }
     }
 
-    // Today card
     void ShowToday(decimal limit, decimal spent)
     {
         if (limit <= 0)
@@ -258,7 +249,6 @@ public partial class HomePage : ContentPage
         TodayLimitInfo.Text = L.T("লিমিট ") + Fmt.Money0(limit) + " · " + Pct(frac) + L.T(" খরচ");
     }
 
-    // Month card
     void ShowMonth(decimal limit, decimal spent, bool custom)
     {
         if (limit <= 0)
@@ -294,9 +284,6 @@ public partial class HomePage : ContentPage
 
     static string Pct(double frac) => Math.Round(frac * 100).ToString(Fmt.Inv) + "%";
 
-    // daily summary
-
-    // Ring, saved/over so
     void BuildLedger(DateTime pStart, DateTime pEnd, List<Expense> month, decimal periodLimit, decimal spent, bool custom, DateTime today)
     {
         LedgerTitle.Text = custom ? L.T("রেঞ্জের দিনের হিসাব") : L.T("মাসের দিনের হিসাব");
@@ -305,7 +292,6 @@ public partial class HomePage : ContentPage
         int totalDays = (pEnd - pStart).Days;
         int elapsed = Period.ElapsedDays(pStart, pEnd);
 
-        // ring
         if (periodLimit <= 0)
         {
             RingHost.Content = Ui.Ring(0, Ui.Primary, 124, 14);
@@ -339,7 +325,6 @@ public partial class HomePage : ContentPage
         RingLeftLabel.TextColor = left >= 0 ? Ui.Green : Ui.Red;
         RingDaysLabel.Text = elapsed.ToString(Fmt.Inv) + " / " + totalDays.ToString(Fmt.Inv) + L.T(" দিন কেটেছে");
 
-        // per-day
         var ledger = Period.Ledger(pStart, pEnd, month);
         if (ledger.Count == 0)
         {
@@ -364,25 +349,23 @@ public partial class HomePage : ContentPage
 
         BuildAdvice(ledger, pEnd, periodLimit, spent, today);
 
-        // day list (newest
         var rows = ledger.AsEnumerable().Reverse().Take(LedgerRows).ToList();
         var maxAbs = rows.Count == 0 ? 0 : rows.Max(r => Math.Abs(r.Diff));
         foreach (var r in rows) LedgerStack.Add(LedgerRow(r, maxAbs, today));
         MoreBtn.IsVisible = ledger.Count > LedgerRows;
     }
 
-    // How much to
     void BuildAdvice(List<DayBal> ledger, DateTime pEnd, decimal periodLimit, decimal spent, DateTime today)
     {
         var todayRow = ledger.FirstOrDefault(x => x.Day == today);
         if (todayRow == null)
         {
-            AdviceBox.IsVisible = false;   // period ended before today
+            AdviceBox.IsVisible = false;
             return;
         }
 
         var before = ledger.Where(x => x.Day < today).ToList();
-        var carry = before.Count == 0 ? 0m : before[before.Count - 1].Cum;   // carry up to yesterday
+        var carry = before.Count == 0 ? 0m : before[before.Count - 1].Cum;
         var canToday = todayRow.Allowed + carry;
 
         string msg;
@@ -408,8 +391,7 @@ public partial class HomePage : ContentPage
             bg = Ui.PrimarySoft;
         }
 
-        // Average allowed for
-        int daysLeft = (pEnd - today).Days;   // incl. today
+        int daysLeft = (pEnd - today).Days;
         var spentBeforeToday = spent - todayRow.Spent;
         var remaining = periodLimit - spentBeforeToday;
         if (daysLeft > 0)
@@ -426,7 +408,6 @@ public partial class HomePage : ContentPage
         AdviceBox.IsVisible = true;
     }
 
-    // Day row: date
     View LedgerRow(DayBal r, decimal maxAbs, DateTime today)
     {
         var day = r.Day == today ? L.T("আজ") : Fmt.DayMonth(r.Day);
@@ -470,7 +451,6 @@ public partial class HomePage : ContentPage
         return g;
     }
 
-    // Center line; red
     static View DivBar(decimal diff, decimal maxAbs)
     {
         double f = maxAbs > 0 ? Math.Min(1.0, (double)(Math.Abs(diff) / maxAbs)) : 0;
@@ -507,9 +487,6 @@ public partial class HomePage : ContentPage
         return g;
     }
 
-    // 7-day chart
-
-    // Daily bars; red
     void BuildWeek(List<Expense> all, DateTime today)
     {
         WeekChart.Children.Clear();
@@ -579,15 +556,11 @@ public partial class HomePage : ContentPage
         WeekHint.Text = hint;
     }
 
-    // taps
-
-    // Today card ->
     async void OnTodayCardTapped(object? sender, TappedEventArgs e)
     {
         try { Ui.OpenModal(this, new LimitsPage()); await Task.CompletedTask; } catch { }
     }
 
-    // Month card ->
     async void OnMonthCardTapped(object? sender, TappedEventArgs e)
     {
         try

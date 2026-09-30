@@ -5,7 +5,6 @@
              x:Class="DailyExpenseTracker.RangePanel">
     <VerticalStackLayout Spacing="10">
 
-        <!-- 1) Current mode -->
         <Border x:Name="CurrentCard" StrokeThickness="0" Padding="12,12,12,14">
             <Border.StrokeShape><RoundRectangle CornerRadius="22" /></Border.StrokeShape>
             <VerticalStackLayout Spacing="2">
@@ -22,7 +21,6 @@
             </VerticalStackLayout>
         </Border>
 
-        <!-- 2) Mode buttons -->
         <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
             <Button x:Name="MonthBtn" Grid.Column="0" HeightRequest="48" FontSize="14" CornerRadius="24"
                     BorderWidth="1.5" Clicked="OnMonthMode" />
@@ -30,7 +28,6 @@
                     BorderWidth="1.5" Clicked="OnEdit" />
         </Grid>
 
-        <!-- 3) Range form -->
         <Border x:Name="FormCard" Style="{StaticResource Card}" Padding="14,12" IsVisible="False"
                 Stroke="{StaticResource RangeColor}" StrokeThickness="1.5">
             <VerticalStackLayout Spacing="8">

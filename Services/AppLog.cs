@@ -2,7 +2,6 @@ using System.Diagnostics;
 
 namespace DailyExpenseTracker;
 
-// Diagnostic log; no
 public static class AppLog
 {
     public static void Error(string area, Exception ex)

@@ -3,18 +3,16 @@ using DailyExpenseTracker.Models;
 
 namespace DailyExpenseTracker.Data;
 
-// All data: expenses
 public static class Store
 {
     static SQLiteAsyncConnection? _db;
     static Task? _init;
     static int _notifyQueued;
 
-    // Refresh pages
     public static event Action? Changed;
-    // Mute change events
+
     public static volatile bool Quiet;
-    // Drop all listeners
+
     public static void ResetListeners()
     {
         Changed = null;
@@ -23,7 +21,7 @@ public static class Store
     static void Notify()
     {
         if (Quiet) return;
-        // Coalesce rapid changes
+
         if (Interlocked.Exchange(ref _notifyQueued, 1) != 0) return;
         MainThread.BeginInvokeOnMainThread(() =>
         {
@@ -55,7 +53,7 @@ public static class Store
     {
         var path = Path.Combine(FileSystem.AppDataDirectory, "hisab_simple.db3");
         var db = new SQLiteAsyncConnection(path);
-        // WAL + NORMAL
+
         await db.ExecuteScalarAsync<string>("PRAGMA journal_mode=WAL;");
         await db.ExecuteAsync("PRAGMA synchronous=NORMAL;");
         await db.CreateTableAsync<Expense>();
@@ -63,13 +61,12 @@ public static class Store
         await db.CreateTableAsync<ExpenseCategory>();
         await db.CreateTableAsync<Loan>();
         await db.CreateTableAsync<Salary>();
-        // These are safe
+
         await db.ExecuteAsync("CREATE INDEX IF NOT EXISTS IX_Expense_Category_Date ON Expense(Category, Date);");
         await db.ExecuteAsync("CREATE INDEX IF NOT EXISTS IX_Choice_CategoryId_Sort ON Choice(CategoryId, Sort);");
         await db.ExecuteAsync("CREATE INDEX IF NOT EXISTS IX_Loan_DueDate ON Loan(DueDate);");
         _db = db;
 
-        // One-time import from
         if (!Preferences.Default.Get("imported_v3", false))
         {
             try { await ImportOld(db); }
@@ -77,7 +74,6 @@ public static class Store
             Preferences.Default.Set("imported_v3", true);
         }
 
-        // v5.3 category migration
         if (!Preferences.Default.Get("categories_v53", false))
         {
             try { await MigrateCategories(db); }
@@ -91,8 +87,6 @@ public static class Store
 
         await RefreshStyles(db);
     }
-
-    // category migration
 
     static readonly string[] TransportWords = { "যাতায়াত", "ভাড়া", "বাস", "গাড়ি", "সিএনজি", "রিক্সা", "রিকশা", "ট্রেন", "মেট্রো", "লঞ্চ", "উবার", "পাঠাও" };
 
@@ -122,7 +116,6 @@ public static class Store
         var choices = await db.Table<Choice>().ToListAsync();
         var foodChoices = choices.Where(c => c.CategoryId == food.Id).ToList();
 
-        // Fresh install: default
         if (choices.All(c => c.CategoryId != 0) && foodChoices.Count == 0)
         {
             int i = 1;
@@ -130,7 +123,6 @@ public static class Store
                 await db.InsertAsync(new Choice { Name = n, Sort = i++, CategoryId = food.Id });
         }
 
-        // Map old options
         foreach (var c in choices.Where(c => c.CategoryId == 0))
         {
             if (c.Name.Equals("Extra", StringComparison.OrdinalIgnoreCase))
@@ -142,7 +134,6 @@ public static class Store
             await db.UpdateAsync(c);
         }
 
-        // Fill category on
         choices = await db.Table<Choice>().ToListAsync();
         foreach (var c in choices)
         {
@@ -152,18 +143,15 @@ public static class Store
                 "UPDATE Expense SET Category = ? WHERE Item = ? AND (Category IS NULL OR Category = '')",
                 cat.Name, c.Name);
         }
-        // Unmatched -> Extra
+
         await db.ExecuteAsync("UPDATE Expense SET Category = 'Extra' WHERE Category IS NULL OR Category = ''");
     }
 
-    // Cache colors/icons for
     static async Task RefreshStyles(SQLiteAsyncConnection db)
     {
         try { Ui.SetCategoryStyles(await db.Table<ExpenseCategory>().ToListAsync()); }
         catch (Exception ex) { AppLog.Error("RefreshStyles", ex); }
     }
-
-    // expenses
 
     public static async Task<List<Expense>> GetRangeAsync(DateTime start, DateTime endExclusive)
     {
@@ -172,7 +160,6 @@ public static class Store
         return list.OrderByDescending(e => e.Date).ThenByDescending(e => e.Id).ToList();
     }
 
-    // Stats for profile
     public static async Task<(int Count, decimal Total, DateTime? First)> GetStatsAsync()
     {
         var db = await Db();
@@ -203,8 +190,6 @@ public static class Store
         await db.DeleteAsync(e);
         Notify();
     }
-
-    // categories
 
     static readonly string[] CatPalette =
     {
@@ -242,7 +227,6 @@ public static class Store
         return true;
     }
 
-    // Rename also updates
     public static async Task<bool> RenameCategoryAsync(ExpenseCategory c, string newName)
     {
         newName = newName.Trim();
@@ -253,7 +237,7 @@ public static class Store
         var old = c.Name;
         c.Name = newName;
         await db.UpdateAsync(c);
-        // Free-text: Item =
+
         await db.ExecuteAsync("UPDATE Expense SET Item = ?, Category = ? WHERE Category = ? AND Item = ?", newName, newName, old, old);
         await db.ExecuteAsync("UPDATE Expense SET Category = ? WHERE Category = ?", newName, old);
         await RefreshStyles(db);
@@ -261,7 +245,6 @@ public static class Store
         return true;
     }
 
-    // Delete keeps old
     public static async Task DeleteCategoryAsync(ExpenseCategory c)
     {
         var db = await Db();
@@ -270,8 +253,6 @@ public static class Store
         await RefreshStyles(db);
         Notify();
     }
-
-    // options
 
     public static async Task<List<Choice>> GetChoicesAsync()
     {
@@ -293,7 +274,6 @@ public static class Store
         return true;
     }
 
-    // Rename also updates
     public static async Task<bool> RenameChoiceAsync(Choice c, string newName)
     {
         newName = newName.Trim();
@@ -311,15 +291,12 @@ public static class Store
         return true;
     }
 
-    // Delete keeps old
     public static async Task DeleteChoiceAsync(Choice c)
     {
         var db = await Db();
         await db.DeleteAsync(c);
         Notify();
     }
-
-    // default name localization
 
     static readonly (string Bn, string En)[] DefaultCats =
     {
@@ -339,7 +316,6 @@ public static class Store
         ("কী বাবদ খরচ? (লিখুন)", "What is it for? (type)")
     };
 
-    // Rename defaults to
     public static async Task LocalizeDefaultsAsync()
     {
         try
@@ -387,13 +363,11 @@ public static class Store
         catch { }
     }
 
-    // loans
-
     public static async Task<List<Loan>> GetLoansAsync(bool iOwe)
     {
         var db = await Db();
         var list = await db.Table<Loan>().Where(x => x.IOwe == iOwe).ToListAsync();
-        // Open loans first
+
         return list
             .OrderBy(x => x.Settled)
             .ThenBy(x => x.HasDue ? 0 : 1)
@@ -408,7 +382,6 @@ public static class Store
         return await db.Table<Loan>().ToListAsync();
     }
 
-    // (open total, open
     public static async Task<(decimal Total, int Count)> LoanTotalAsync(bool iOwe)
     {
         var list = await GetLoansAsync(iOwe);
@@ -431,8 +404,6 @@ public static class Store
         Notify();
         _ = Reminders.RescheduleAsync();
     }
-
-    // salary
 
     public static async Task<List<Salary>> GetSalariesAsync(DateTime start, DateTime endExclusive)
     {
@@ -461,8 +432,6 @@ public static class Store
         Notify();
     }
 
-    // backup / restore
-
     public static async Task<List<Expense>> GetAllExpensesAsync()
     {
         var db = await Db();
@@ -470,7 +439,6 @@ public static class Store
         return list.OrderBy(e => e.Date).ThenBy(e => e.Id).ToList();
     }
 
-    // Replace all data
     public static async Task ReplaceAllAsync(
         List<Expense> expenses,
         List<(int OldId, ExpenseCategory Cat)> cats,
@@ -519,8 +487,6 @@ public static class Store
         Notify();
         _ = Reminders.RescheduleAsync();
     }
-
-    // v3 import
 
     public class OldRow
     {

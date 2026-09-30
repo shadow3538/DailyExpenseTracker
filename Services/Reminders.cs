@@ -6,17 +6,13 @@ using DailyExpenseTracker.Data;
 
 namespace DailyExpenseTracker;
 
-// Reminders: daily +
 public static class Reminders
 {
     public const string ChannelId = "hisab_reminders";
-    public const string UpdateChannelId = "app_updates";
     public const string ActDaily = "hisab.reminder.daily";
     public const string ActLoan = "hisab.reminder.loan.";
     const int DailyCode = 9001;
     const int LoanCodeBase = 20000;
-
-    // settings
 
     public static bool DailyOn
     {
@@ -24,7 +20,6 @@ public static class Reminders
         set => Preferences.Default.Set("rem_daily_on", value);
     }
 
-    // Daily time in
     public static int DailyMinutes
     {
         get => Preferences.Default.Get("rem_daily_min", 21 * 60);
@@ -37,14 +32,12 @@ public static class Reminders
         set => Preferences.Default.Set("rem_loan_on", value);
     }
 
-    // Loan reminder time
     public static int LoanMinutes
     {
         get => Preferences.Default.Get("rem_loan_min", 9 * 60);
         set => Preferences.Default.Set("rem_loan_min", value);
     }
 
-    // Days before due
     public static int LoanDaysBefore
     {
         get => Preferences.Default.Get("rem_loan_days", 0);
@@ -57,8 +50,6 @@ public static class Reminders
         set => Preferences.Default.Set("rem_loan_ids", value);
     }
 
-    // Notification setup
-
     public static bool NotificationsAllowed()
     {
         try
@@ -68,7 +59,6 @@ public static class Reminders
         catch { return true; }
     }
 
-    // Ask notification permission
     public static void AskPermission()
     {
         try
@@ -79,19 +69,6 @@ public static class Reminders
             const string perm = "android.permission.POST_NOTIFICATIONS";
             if (act.CheckSelfPermission(perm) != global::Android.Content.PM.Permission.Granted)
                 act.RequestPermissions(new[] { perm }, 4711);
-        }
-        catch { }
-    }
-
-    static void EnsureUpdateChannel(Context ctx)
-    {
-        try
-        {
-            if ((int)Build.VERSION.SdkInt < 26) return;
-            var nm = (NotificationManager?)ctx.GetSystemService(Context.NotificationService);
-            if (nm == null || nm.GetNotificationChannel(UpdateChannelId) != null) return;
-            var ch = new NotificationChannel(UpdateChannelId, L.T("অ্যাপ আপডেট", "App updates"), NotificationImportance.Default);
-            nm.CreateNotificationChannel(ch);
         }
         catch { }
     }
@@ -108,8 +85,6 @@ public static class Reminders
         }
         catch { }
     }
-
-    // Show notification
 
     public static void Show(Context ctx, string title, string text, string route, int id)
     {
@@ -135,44 +110,12 @@ public static class Reminders
         catch { }
     }
 
-    public static bool ShowUpdate(string title, string text, string url)
-    {
-        try
-        {
-            if (!NotificationsAllowed()) return false;
-            var ctx = global::Android.App.Application.Context;
-            EnsureUpdateChannel(ctx);
-
-            var intent = new Intent(Intent.ActionView, global::Android.Net.Uri.Parse(url));
-            intent.AddFlags(ActivityFlags.NewTask);
-            var id = 9901;
-            var pi = PendingIntent.GetActivity(ctx, id, intent, PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable);
-
-            var notification = new NotificationCompat.Builder(ctx, UpdateChannelId)
-                .SetSmallIcon(Resource.Drawable.ic_notify)
-                .SetContentTitle(title)
-                .SetContentText(text)
-                .SetStyle(new NotificationCompat.BigTextStyle().BigText(text))
-                .SetAutoCancel(true)
-                .SetContentIntent(pi)
-                .Build();
-
-            var nm = (NotificationManager?)ctx.GetSystemService(Context.NotificationService);
-            nm?.Notify(id, notification);
-            return true;
-        }
-        catch { return false; }
-    }
-
-    // Test notification
     public static void ShowTest()
     {
         var ctx = global::Android.App.Application.Context;
         Show(ctx, L.T("পকেটনামা", "PocketNama"),
             L.T("নোটিফিকেশন ঠিকমতো কাজ করছে ✔", "Notifications are working ✔"), "home", 9999);
     }
-
-    // alarms
 
     static PendingIntent Pi(Context ctx, string action, int code, string? title = null, string? text = null, string? route = null)
     {
@@ -208,7 +151,6 @@ public static class Reminders
 
     static AlarmManager? Mgr(Context ctx) => (AlarmManager?)ctx.GetSystemService(Context.AlarmService);
 
-    // Next daily reminder
     public static void ScheduleDaily(Context ctx)
     {
         var am = Mgr(ctx);
@@ -226,7 +168,6 @@ public static class Reminders
         try { Mgr(ctx)?.Cancel(Pi(ctx, ActDaily, DailyCode)); } catch { }
     }
 
-    // Re-arm reminders
     public static async Task RescheduleAsync()
     {
         try
@@ -235,7 +176,6 @@ public static class Reminders
             var am = Mgr(ctx);
             if (am == null) return;
 
-            // Cancel old loan
             foreach (var s in LoanIds.Split(',', StringSplitOptions.RemoveEmptyEntries))
             {
                 if (!int.TryParse(s, out var lid)) continue;
@@ -243,6 +183,7 @@ public static class Reminders
             }
             LoanIds = "";
             CancelDaily(ctx);
+            UpdateChecker.Schedule(ctx);
 
             if (DailyOn) ScheduleDaily(ctx);
 

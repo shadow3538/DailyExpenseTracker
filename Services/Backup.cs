@@ -4,14 +4,11 @@ using DailyExpenseTracker.Models;
 
 namespace DailyExpenseTracker;
 
-// Backup / restore
 public static class Backup
 {
     const int FormatVersion = 1;
     const string AppId = "DailyExpenseTracker";
     static readonly string DateFmt = "yyyy-MM-dd'T'HH:mm:ss";
-
-    // prefs
 
     public const string Ask = "ask", Folder = "folder", OneFile = "file";
     const string FixedName = "PocketNama-Backup.json";
@@ -19,11 +16,10 @@ public static class Backup
     static string P(string k) => Preferences.Default.Get(k, "");
     static void P(string k, string v) => Preferences.Default.Set(k, v);
 
-    // ask / folder
     public static string Mode { get => Preferences.Default.Get("bk_mode", Ask); set => P("bk_mode", value); }
     public static string TargetUri { get => P("bk_uri"); set => P("bk_uri", value); }
     public static string TargetLabel { get => P("bk_label"); set => P("bk_label", value); }
-    // off / daily
+
     public static string Freq { get => Preferences.Default.Get("bk_freq", "off"); set => P("bk_freq", value); }
     public static string LastWhere { get => P("bk_where"); private set => P("bk_where", value); }
     public static string LastError { get => P("bk_error"); private set => P("bk_error", value); }
@@ -67,7 +63,6 @@ public static class Backup
 
     public static DateTime? NextDue => Interval is TimeSpan i ? (LastBackup ?? DateTime.Now) + i : null;
 
-    // Entries added since
     public static async Task<int> NewSinceLastAsync()
     {
         var st = await Store.GetStatsAsync();
@@ -82,15 +77,12 @@ public static class Backup
         _ => L.T("যখন চাইব", "Manual")
     };
 
-    // One-line place summary
     public static string TargetSummary()
     {
         if (!HasLinked) return L.T("প্রতিবার জিজ্ঞেস করবে", "Ask every time");
         var icon = Mode == Folder ? "📁 " : "☁️ ";
         return icon + (TargetLabel.Length > 0 ? TargetLabel : L.T("লিংক করা আছে", "Linked"));
     }
-
-    // build json
 
     static async Task<(string Json, int Count)> BuildJsonAsync()
     {
@@ -179,11 +171,8 @@ public static class Backup
         return (root.ToJsonString(), expenses.Count);
     }
 
-    // run backup
-
     static bool _busy;
 
-    // Back up to
     public static async Task<(bool Ok, string Message)> RunAsync(bool interactive)
     {
         if (_busy) return (false, L.T("ব্যাকআপ চলছে...", "Backup in progress..."));
@@ -242,7 +231,6 @@ public static class Backup
         finally { _busy = false; }
     }
 
-    // App start: run
     public static async Task<(bool Ran, bool Ok, string Message)> AutoIfDueAsync()
     {
         if (!IsDue || !HasLinked) return (false, true, "");
@@ -250,7 +238,6 @@ public static class Backup
         return (true, r.Ok, r.Message);
     }
 
-    // Share a copy
     public static async Task ShareCopyAsync()
     {
         var (json, _) = await BuildJsonAsync();
@@ -287,9 +274,6 @@ public static class Backup
         return o;
     }
 
-    // restore
-
-    // Read file, replace
     public static async Task<(bool Ok, string Message)> RestoreAsync(FileResult file)
     {
         try
@@ -304,7 +288,6 @@ public static class Backup
             if (((int?)root["version"] ?? 0) > FormatVersion)
                 return (false, L.T("ফাইলটা নতুন ভার্সনের অ্যাপে বানানো; অ্যাপ আপডেট করে চেষ্টা করুন"));
 
-            // expenses
             var expenses = new List<Expense>();
             foreach (var n in root["expenses"] as JsonArray ?? new JsonArray())
             {
@@ -322,7 +305,6 @@ public static class Backup
                 });
             }
 
-            // categories & options
             var cats = new List<(int OldId, ExpenseCategory Cat)>();
             foreach (var n in root["categories"] as JsonArray ?? new JsonArray())
             {
@@ -352,7 +334,6 @@ public static class Backup
             if (cats.Count == 0 && expenses.Count == 0)
                 return (false, L.T("ফাইলে কোনো ডেটা পাওয়া যায়নি"));
 
-            // loans & salary
             List<Loan>? loans = null;
             if (root["loans"] is JsonArray la)
             {
@@ -393,7 +374,6 @@ public static class Backup
 
             await Store.ReplaceAllAsync(expenses, cats, choices, loans, salaries);
 
-            // limits
             if (root["settings"] is JsonObject st)
             {
                 AppSettings.DailyLimit = (decimal)((double?)st["dailyLimit"] ?? 0);
@@ -410,7 +390,6 @@ public static class Backup
                 catch { }
             }
 
-            // profile
             if (root["profile"] is JsonObject pr) RestoreProfile(pr);
 
             LastBackup = DateTime.Now;

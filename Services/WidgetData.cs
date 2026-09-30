@@ -9,7 +9,6 @@ public class WidgetDay
     public decimal Allowed { get; set; }
 }
 
-// Widget numbers; same
 public class WidgetData
 {
     public DateTime Today { get; set; }
@@ -18,7 +17,7 @@ public class WidgetData
     public decimal PeriodSpent { get; set; }
     public decimal PeriodLimit { get; set; }
     public bool Custom { get; set; }
-    // Last 7 days
+
     public List<WidgetDay> Week { get; set; } = new();
 
     public static async Task<WidgetData> LoadAsync()

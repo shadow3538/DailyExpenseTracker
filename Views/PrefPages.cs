@@ -4,7 +4,6 @@ using DailyExpenseTracker.Models;
 
 namespace DailyExpenseTracker;
 
-// Base for full-screen
 public abstract class ModalBase : ContentPage
 {
     protected ModalBase(string title)
@@ -27,9 +26,6 @@ public abstract class ModalBase : ContentPage
     protected static VerticalStackLayout NewRoot() => new() { Padding = new Thickness(16, 16, 16, 30), Spacing = 12 };
 }
 
-// Hint
-// Language
-// Hint
 public class LanguagePage : ModalBase
 {
     public LanguagePage() : base(L.T("ভাষা", "Language"))
@@ -44,13 +40,10 @@ public class LanguagePage : ModalBase
     async Task Pick(string code)
     {
         if ((code == "en") == L.IsEn) { await CloseAsync(); return; }
-        await LangSwitch.ApplyAsync(code, goToSettings: true);   // rebuilds whole app
+        await LangSwitch.ApplyAsync(code, goToSettings: true);
     }
 }
 
-// Hint
-// Theme
-// Hint
 public class ThemePage : ModalBase
 {
     public ThemePage() : base(L.T("থিম", "Theme"))
@@ -67,13 +60,10 @@ public class ThemePage : ModalBase
     async Task Pick(string mode)
     {
         if (Theme.Mode == mode) { await CloseAsync(); return; }
-        await Theme.SetAsync(mode, goToSettings: true);   // rebuilds whole app
+        await Theme.SetAsync(mode, goToSettings: true);
     }
 }
 
-// Hint
-// Limits
-// Hint
 public class LimitsPage : ModalBase
 {
     readonly Entry _daily = new() { Keyboard = Keyboard.Numeric };
@@ -140,9 +130,6 @@ public class LimitsPage : ModalBase
     }
 }
 
-// Hint
-// Notifications
-// Hint
 public class NotificationsPage : ModalBase
 {
     bool _busy;
@@ -155,7 +142,6 @@ public class NotificationsPage : ModalBase
         if (!Reminders.NotificationsAllowed())
             root.Add(new Label { Text = L.T("⚠️ ফোনের সেটিংসে এই অ্যাপের নোটিফিকেশন বন্ধ আছে। নোটিফিকেশন পেতে সেটা চালু করুন।", "⚠️ Notifications are turned off for this app in phone settings. Turn them on to get reminders."), TextColor = Ui.Red, FontSize = 13 });
 
-        // daily
         var dailySwitch = new Switch { IsToggled = Reminders.DailyOn, VerticalOptions = LayoutOptions.Center };
         var dailyTime = new TimePicker { Time = TimeSpan.FromMinutes(Reminders.DailyMinutes), Format = "hh:mm tt", TextColor = Ui.Ink };
         var dTop = new Grid { ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) } };
@@ -187,7 +173,6 @@ public class NotificationsPage : ModalBase
         };
         root.Add(FUi.Card(dBox, null, 14));
 
-        // loans
         var loanSwitch = new Switch { IsToggled = Reminders.LoanOn, VerticalOptions = LayoutOptions.Center };
         var loanTime = new TimePicker { Time = TimeSpan.FromMinutes(Reminders.LoanMinutes), Format = "hh:mm tt", TextColor = Ui.Ink };
         var days = new Picker
@@ -242,6 +227,23 @@ public class NotificationsPage : ModalBase
         };
         root.Add(FUi.Card(lBox, null, 14));
 
+        var updSwitch = new Switch { IsToggled = UpdateChecker.On, VerticalOptions = LayoutOptions.Center };
+        var uTop = new Grid { ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) } };
+        var uTitle = new VerticalStackLayout { Spacing = 0 };
+        uTitle.Add(new Label { Text = L.T("অ্যাপ আপডেটের নোটিফিকেশন", "App update notifications"), FontSize = 15, FontAttributes = FontAttributes.Bold });
+        uTitle.Add(new Label { Text = L.T("প্রতিদিন একবার নতুন ভার্সন এসেছে কি না দেখবে (ইন্টারনেট লাগবে); এলে জানাবে", "Checks once a day for a new version (needs internet) and lets you know"), FontSize = 12, TextColor = Ui.Muted });
+        uTop.Add(uTitle, 0);
+        uTop.Add(updSwitch, 1);
+        updSwitch.Toggled += (_, e) =>
+        {
+            if (_busy) return;
+            UpdateChecker.On = e.Value;
+            var ctx = global::Android.App.Application.Context;
+            if (e.Value) { Reminders.AskPermission(); UpdateChecker.Schedule(ctx); }
+            else UpdateChecker.Cancel(ctx);
+        };
+        root.Add(FUi.Card(uTop, null, 14));
+
         var test = new Button { Text = L.T("🔔 টেস্ট নোটিফিকেশন পাঠান", "🔔 Send a test notification"), StyleClass = new[] { "Outline" }, HeightRequest = 44, FontSize = 14 };
         test.Clicked += (_, _) =>
         {
@@ -255,9 +257,6 @@ public class NotificationsPage : ModalBase
     }
 }
 
-// Hint
-// Categories & options
-// Hint
 public class CategoriesPage : ModalBase
 {
     readonly VerticalStackLayout _stack = new() { Spacing = 12 };
@@ -472,9 +471,6 @@ public class CategoriesPage : ModalBase
     }
 }
 
-// Hint
-// Backup & restore
-// Hint
 public class BackupPage : ModalBase
 {
     readonly VerticalStackLayout _root = NewRoot();
@@ -490,7 +486,6 @@ public class BackupPage : ModalBase
         await BuildAsync();
     }
 
-    // Status text +
     public static async Task<(string Title, string Sub, Color Color)> StatusAsync()
     {
         var last = Backup.LastBackup;
@@ -514,7 +509,6 @@ public class BackupPage : ModalBase
         {
             _root.Children.Clear();
 
-            // status
             var (title, sub, color) = await StatusAsync();
             var st = new VerticalStackLayout { Spacing = 4 };
             st.Add(new Label { Text = title, FontSize = 16, FontAttributes = FontAttributes.Bold, TextColor = color });
@@ -530,7 +524,6 @@ public class BackupPage : ModalBase
                 });
             _root.Add(FUi.Card(st, color.WithAlpha(0.5f), 14));
 
-            // where
             _root.Add(new Label { Text = L.T("📍 কোথায় রাখবেন", "📍 Where to keep it"), FontSize = 17, FontAttributes = FontAttributes.Bold, Margin = new Thickness(0, 4, 0, 0) });
 
             bool linked = Backup.HasLinked;
@@ -572,7 +565,6 @@ public class BackupPage : ModalBase
                     await BuildAsync();
                 }));
 
-            // how often
             _root.Add(new Label { Text = L.T("🗓 কতদিন পর পর", "🗓 How often"), FontSize = 17, FontAttributes = FontAttributes.Bold, Margin = new Thickness(0, 8, 0, 0) });
             var fg = new Grid
             {
@@ -614,7 +606,6 @@ public class BackupPage : ModalBase
                 TextColor = Ui.Muted
             });
 
-            // actions
             var now = new Button
             {
                 Text = linked ? L.T("⬆ এখনই ব্যাকআপ নিন", "⬆ Back up now") : L.T("⬆ জায়গা বেছে ব্যাকআপ নিন", "⬆ Choose place & back up"),
@@ -655,7 +646,6 @@ public class BackupPage : ModalBase
         catch (Exception ex) { AppLog.Error("BackupPage.Build", ex); }
     }
 
-    // Pick a backup
     public static async Task RestoreFlowAsync(Page page)
     {
         try

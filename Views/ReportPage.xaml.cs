@@ -32,7 +32,6 @@ public partial class ReportPage : ContentPage
         Store.Changed -= OnStoreChanged;
         Store.Changed += OnStoreChanged;
 
-        // Open range form
         if (Ui.PendingOpenRange)
         {
             Ui.PendingOpenRange = false;
@@ -46,7 +45,7 @@ public partial class ReportPage : ContentPage
         base.OnDisappearing();
         _appeared = false;
         Store.Changed -= OnStoreChanged;
-        Ui.ReturnRoute = null;   // Reset return route
+        Ui.ReturnRoute = null;
     }
 
     async Task LoadAsync()
@@ -70,7 +69,6 @@ public partial class ReportPage : ContentPage
 
             ShowCompare(Period.Ledger(start, endEx, list), days);
 
-            // Period limit bar
             var limit = Period.PeriodLimit(start, endEx);
             if (limit > 0)
             {
@@ -91,7 +89,6 @@ public partial class ReportPage : ContentPage
 
             BuildHistory(start, endEx, list, total);
 
-            // Percent by category
             ItemsStack.Children.Clear();
             if (list.Count == 0 || total <= 0)
             {
@@ -143,7 +140,6 @@ public partial class ReportPage : ContentPage
                 box.Add(top);
                 box.Add(Ui.Bar(share, color, null, 8));
 
-                // Category breakdown; tap
                 var parts = InsideParts(grp.Items);
                 if (parts.Count > 0)
                 {
@@ -198,7 +194,6 @@ public partial class ReportPage : ContentPage
         catch (Exception ex) { AppLog.Error("Report.Animation", ex); }
     }
 
-    // Sub-split of a
     static List<(string Key, decimal Sum)> InsideParts(List<Expense> items)
     {
         var parts = items
@@ -217,7 +212,6 @@ public partial class ReportPage : ContentPage
         return parts;
     }
 
-    // Total spent vs
     void ShowCompare(List<DayBal> ledger, int days)
     {
         if (days <= 0)
@@ -254,8 +248,6 @@ public partial class ReportPage : ContentPage
         CmpInfo.Text = days.ToString(Fmt.Inv) + L.T(" দিনে অনুমোদিত ") + Fmt.Money0(allowed);
     }
 
-    // history (per day)
-
     void BuildHistory(DateTime start, DateTime endEx, List<Expense> list, decimal total)
     {
         var today = DateTime.Today;
@@ -288,7 +280,7 @@ public partial class ReportPage : ContentPage
         }
 
         var byDay = list.GroupBy(x => x.Date.Date).ToDictionary(g => g.Key, g => g.ToList());
-        bool includeEmpty = dayCount <= 62;   // Skip empty days on long ranges
+        bool includeEmpty = dayCount <= 62;
 
         for (var d = last; d >= start; d = d.AddDays(-1))
         {
@@ -301,7 +293,6 @@ public partial class ReportPage : ContentPage
             ListStack.Add(new Label { Text = L.T("এই সময়ে কোনো খরচ নেই"), TextColor = Ui.Muted, Margin = new Thickness(0, 20) });
     }
 
-    // Day card; tap
     View DayRow(DateTime day, List<Expense> entries, decimal dailyLimit, DateTime today)
     {
         var sum = entries.Sum(x => x.Amount);
@@ -334,7 +325,6 @@ public partial class ReportPage : ContentPage
             badgeFg = Ui.Primary;
         }
 
-        // left: date badge
         var badgeBox = new VerticalStackLayout { Spacing = 0, VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.Center };
         badgeBox.Add(new Label { Text = day.Day.ToString(Fmt.Inv), FontSize = 19, FontAttributes = FontAttributes.Bold, TextColor = badgeFg, HorizontalTextAlignment = TextAlignment.Center });
         badgeBox.Add(new Label { Text = Fmt.BnWeekdayShort(day), FontSize = 11, TextColor = badgeFg, HorizontalTextAlignment = TextAlignment.Center });
@@ -349,7 +339,6 @@ public partial class ReportPage : ContentPage
             Content = badgeBox
         };
 
-        // middle: weekday +
         var mid = new VerticalStackLayout { Spacing = 2, VerticalOptions = LayoutOptions.Center };
         mid.Add(new Label
         {
@@ -368,7 +357,6 @@ public partial class ReportPage : ContentPage
         }
         mid.Add(new Label { Text = what, FontSize = 12, TextColor = Ui.Muted, MaxLines = 2, LineBreakMode = LineBreakMode.TailTruncation });
 
-        // right: amount +
         var right = new VerticalStackLayout { Spacing = 2, VerticalOptions = LayoutOptions.Center, HorizontalOptions = LayoutOptions.End };
         right.Add(new Label
         {

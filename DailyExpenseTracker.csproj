@@ -11,9 +11,11 @@
     <ApplicationId>com.abdulmalek.dailyexpense</ApplicationId>
     <ApplicationDisplayVersion>5.9</ApplicationDisplayVersion>
     <ApplicationVersion>14</ApplicationVersion>
+    <Authors>Abdul Malek</Authors>
+    <Company>Abdul Malek</Company>
+    <AssemblyName>DailyExpenseTracker</AssemblyName>
     <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">21.0</SupportedOSPlatformVersion>
 
-    <!-- Keep app light -->
     <InvariantGlobalization>true</InvariantGlobalization>
     <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
   </PropertyGroup>
@@ -22,14 +24,11 @@
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidUseAapt2>true</AndroidUseAapt2>
 
-    <!-- Real phones only -->
     <RuntimeIdentifier>android-arm64</RuntimeIdentifier>
 
-    <!-- AOT off: smaller -->
     <RunAOTCompilation>false</RunAOTCompilation>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
 
-    <!-- Trim unused code -->
     <PublishTrimmed>true</PublishTrimmed>
     <TrimMode>partial</TrimMode>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
@@ -42,7 +41,7 @@
   <ItemGroup>
     <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#3A97F6" />
     <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#3A97F6" BaseSize="128,128" />
-    <!-- Tab bar icons -->
+
     <MauiImage Include="Resources\Images\*.svg" BaseSize="24,24" />
   </ItemGroup>
   <ItemGroup>

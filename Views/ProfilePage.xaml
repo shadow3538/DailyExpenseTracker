@@ -7,7 +7,6 @@
     <ScrollView>
         <VerticalStackLayout Padding="16,14,16,28" Spacing="12">
 
-            <!-- Photo + name -->
             <Border StrokeThickness="0" Padding="20,22">
                 <Border.StrokeShape><RoundRectangle CornerRadius="24" /></Border.StrokeShape>
                 <Border.Background>
@@ -24,7 +23,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Stats -->
             <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
                 <Border Grid.Column="0" Style="{StaticResource Card}" Padding="8,12">
                     <VerticalStackLayout Spacing="2">
@@ -46,7 +44,6 @@
                 </Border>
             </Grid>
 
-            <!-- About -->
             <Border x:Name="BioCard" Style="{StaticResource Card}" IsVisible="False">
                 <VerticalStackLayout Spacing="4">
                     <Label Text="{local:T 'আমার সম্পর্কে'}" StyleClass="Muted" />
@@ -54,7 +51,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Personal info -->
             <Border Style="{StaticResource Card}">
                 <VerticalStackLayout x:Name="InfoStack" Spacing="14" />
             </Border>

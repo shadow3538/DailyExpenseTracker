@@ -12,27 +12,24 @@ using ACanvas = Android.Graphics.Canvas;
 
 namespace DailyExpenseTracker;
 
-// Home screen widget
 [BroadcastReceiver(Label = "পকেটনামা", Exported = true)]
 [IntentFilter(new[]
 {
     "android.appwidget.action.APPWIDGET_UPDATE",
-    "android.intent.action.DATE_CHANGED",      // midnight day change
+    "android.intent.action.DATE_CHANGED",
     "android.intent.action.TIME_SET",
     "android.intent.action.TIMEZONE_CHANGED"
 })]
 [MetaData("android.appwidget.provider", Resource = "@xml/expense_widget_info")]
 public class ExpenseWidget : AppWidgetProvider
 {
-    // Size thresholds (dp)
-    const int SmallMaxWidthDp = 190;   // narrower = small layout
-    const int LargeMinHeightDp = 175;  // taller = large layout
 
-    static readonly AColor OverText = AColor.ParseColor("#FFB4A8");   // light red text
+    const int SmallMaxWidthDp = 190;
+    const int LargeMinHeightDp = 175;
+
+    static readonly AColor OverText = AColor.ParseColor("#FFB4A8");
     static readonly AColor OverFill = AColor.ParseColor("#FF8A80");
     static readonly AColor WarnFill = AColor.ParseColor("#FFD180");
-
-    // system callbacks
 
     public override void OnReceive(Context? context, Intent? intent)
     {
@@ -54,7 +51,6 @@ public class ExpenseWidget : AppWidgetProvider
         Run(context, appWidgetIds, GoAsync());
     }
 
-    // Widget resized
     public override void OnAppWidgetOptionsChanged(Context? context, AppWidgetManager? appWidgetManager, int appWidgetId, Bundle? newOptions)
     {
         base.OnAppWidgetOptionsChanged(context, appWidgetManager, appWidgetId, newOptions);
@@ -62,10 +58,7 @@ public class ExpenseWidget : AppWidgetProvider
         Run(context, new[] { appWidgetId }, GoAsync());
     }
 
-    // Refresh all widgets
     public static void Refresh(Context ctx) => Run(ctx, null, null);
-
-    // update
 
     static void Run(Context ctx, int[]? ids, BroadcastReceiver.PendingResult? pending)
     {
@@ -133,7 +126,6 @@ public class ExpenseWidget : AppWidgetProvider
                 try { rv.SetTextViewText(Resource.Id.btn_add, L.T("+ খরচ যোগ", "+ Add")); } catch { }
                 rv.SetTextViewText(Resource.Id.header_title, L.T("পকেটনামা · ") + Fmt.BnWeekday(d.Today) + ", " + Fmt.DayMonth(d.Today));
 
-                // Chart gets height
                 float chartH = Math.Clamp(h - 137, 40, 150);
                 rv.SetImageViewBitmap(Resource.Id.chart, ChartBitmap(den, w - 20, chartH, d));
                 rv.SetOnClickPendingIntent(Resource.Id.chart, Open(ctx, "report", 4));
@@ -148,7 +140,6 @@ public class ExpenseWidget : AppWidgetProvider
         return rv;
     }
 
-    // Tap opens app
     static PendingIntent Open(Context ctx, string route, int code)
     {
         var i = new Intent(ctx, typeof(MainActivity));
@@ -156,8 +147,6 @@ public class ExpenseWidget : AppWidgetProvider
         i.PutExtra("route", route);
         return PendingIntent.GetActivity(ctx, code, i, PendingIntentFlags.UpdateCurrent | PendingIntentFlags.Immutable)!;
     }
-
-    // card texts
 
     class Card
     {
@@ -221,9 +210,6 @@ public class ExpenseWidget : AppWidgetProvider
         else rv.SetViewVisibility(bar, ViewStates.Invisible);
     }
 
-    // drawing (bar, chart)
-
-    // Limit bar: orange
     static Bitmap BarBitmap(float den, float wDp, float hDp, double frac)
     {
         int W = Math.Max(1, (int)(wDp * den)), H = Math.Max(1, (int)(hDp * den));
@@ -244,7 +230,6 @@ public class ExpenseWidget : AppWidgetProvider
         return bmp;
     }
 
-    // 7-day bar chart
     static Bitmap ChartBitmap(float den, float wDp, float hDp, WidgetData d)
     {
         int W = Math.Max(1, (int)(wDp * den)), H = Math.Max(1, (int)(hDp * den));
@@ -265,7 +250,6 @@ public class ExpenseWidget : AppWidgetProvider
         float bw = slot * 0.46f;
         float rad = 4 * den;
 
-        // Dotted limit line
         p.SetStyle(APaint.Style.Stroke);
         p.StrokeWidth = 1f * den;
         p.Color = AColor.Argb(120, 255, 255, 255);

@@ -3,13 +3,11 @@ using Microsoft.Maui.Dispatching;
 
 namespace DailyExpenseTracker;
 
-// Custom top bar
 public sealed class RootChrome
 {
-    // Chrome of the
+
     public static RootChrome? Active;
 
-    // Attach to a
     public static RootChrome Attach(ContentPage page, View? titleView = null) => new RootChrome(page, titleView);
 
     readonly ContentPage _page;
@@ -19,8 +17,8 @@ public sealed class RootChrome
     readonly Border _bar;
     readonly VerticalStackLayout _drawer;
     readonly Grid _drawerHost;
-    double _inset;     // status bar padding (dp)
-    double _w = 220;   // drawer width
+    double _inset;
+    double _w = 220;
     bool _anim;
 
     public bool IsOpen { get; private set; }
@@ -34,10 +32,8 @@ public sealed class RootChrome
         var inner = page.Content;
         page.Content = null;
 
-        // top bar
         _bar = BuildBar(titleView);
 
-        // pushed layer: bar
         _push = new Grid
         {
             RowSpacing = 0,
@@ -52,7 +48,6 @@ public sealed class RootChrome
         _scrim.GestureRecognizers.Add(new TapGestureRecognizer { Command = new Command(() => _ = CloseAsync()) });
         _push.Add(_scrim, 0, 0);
 
-        // drawer sits under
         _drawer = new VerticalStackLayout { Spacing = 2 };
         _drawerHost = new Grid
         {
@@ -84,8 +79,6 @@ public sealed class RootChrome
     {
         try { _page.Dispatcher.DispatchDelayed(TimeSpan.FromMilliseconds(60), a); } catch { }
     }
-
-    // top bar
 
     Border BuildBar(View? titleView)
     {
@@ -131,7 +124,6 @@ public sealed class RootChrome
         };
     }
 
-    // Pad bar below
     void MeasureInset()
     {
         try
@@ -152,14 +144,11 @@ public sealed class RootChrome
         catch (Exception ex) { AppLog.Error("Chrome.Inset", ex); }
     }
 
-    // drawer
-
     void BuildDrawer()
     {
         _drawer.Children.Clear();
         _drawer.Padding = new Thickness(12, _inset + 14, 10, 16);
 
-        // header: avatar +
         var texts = new VerticalStackLayout { Spacing = 0, VerticalOptions = LayoutOptions.Center };
         texts.Add(new Label
         {
@@ -225,8 +214,6 @@ public sealed class RootChrome
         _drawer.Add(b);
     }
 
-    // open / close
-
     void SetWidth()
     {
         double sw = _root.Width > 0 ? _root.Width : 400;
@@ -288,7 +275,6 @@ public sealed class RootChrome
         }
     }
 
-    // Instant close (page
     void ForceClose()
     {
         if (!IsOpen) return;

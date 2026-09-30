@@ -7,7 +7,6 @@
     <ScrollView>
         <VerticalStackLayout Padding="16,14,16,24" Spacing="12">
 
-            <!-- Top card: day -->
             <Border StrokeThickness="0" Padding="10,14">
                 <Border.StrokeShape>
                     <RoundRectangle CornerRadius="24" />
@@ -35,7 +34,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Per-category totals -->
             <FlexLayout x:Name="ChipsBox" Wrap="Wrap" Direction="Row" />
 
             <Label x:Name="ListTitle" Text="{local:T 'এন্ট্রি'}" StyleClass="H2" Margin="0,4,0,0" />

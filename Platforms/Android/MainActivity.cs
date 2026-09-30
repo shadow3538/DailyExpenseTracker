@@ -10,7 +10,7 @@ namespace DailyExpenseTracker;
     Theme = "@style/Maui.SplashTheme",
     MainLauncher = true,
     LaunchMode = LaunchMode.SingleTop,
-    WindowSoftInputMode = SoftInput.AdjustResize,   // keyboard resizes page
+    WindowSoftInputMode = SoftInput.AdjustResize,
     ConfigurationChanges = ConfigChanges.ScreenSize |
                            ConfigChanges.Orientation |
                            ConfigChanges.UiMode |
@@ -23,16 +23,8 @@ public class MainActivity : MauiAppCompatActivity
     {
         base.OnCreate(savedInstanceState);
         KeyboardWatcher.Attach(this);
-        _ = UpdateChecker.CheckDailyAsync();
-        // Fresh launch
-        if (savedInstanceState == null) Capture(Intent);
-    }
 
-    // Widget tap while
-    protected override void OnResume()
-    {
-        base.OnResume();
-        _ = UpdateChecker.CheckDailyAsync();
+        if (savedInstanceState == null) Capture(Intent);
     }
 
     protected override void OnNewIntent(Intent? intent)
@@ -42,14 +34,12 @@ public class MainActivity : MauiAppCompatActivity
         WidgetNav.TryGo();
     }
 
-    // Peek at every
     public override bool DispatchTouchEvent(MotionEvent? e)
     {
         try { TabSwipe.Feed(e, this); } catch { }
         return base.DispatchTouchEvent(e);
     }
 
-    // Folder / file
     protected override void OnActivityResult(int requestCode, Result resultCode, Intent? data)
     {
         base.OnActivityResult(requestCode, resultCode, data);
@@ -61,6 +51,6 @@ public class MainActivity : MauiAppCompatActivity
         var route = i?.GetStringExtra("route");
         if (string.IsNullOrEmpty(route)) return;
         WidgetNav.Pending = route;
-        i!.RemoveExtra("route");   // avoid double navigation
+        i!.RemoveExtra("route");
     }
 }

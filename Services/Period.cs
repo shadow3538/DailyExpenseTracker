@@ -2,19 +2,17 @@ using DailyExpenseTracker.Models;
 
 namespace DailyExpenseTracker;
 
-// One day: spent
 public class DayBal
 {
     public DateTime Day { get; set; }
     public decimal Spent { get; set; }
     public decimal Allowed { get; set; }
-    // Allowed - Spent
+
     public decimal Diff => Allowed - Spent;
-    // Running saved (+)
+
     public decimal Cum { get; set; }
 }
 
-// Active period: month
 public static class Period
 {
     public static bool IsCustom
@@ -35,7 +33,6 @@ public static class Period
         set => Preferences.Default.Set("period_end", value.Date);
     }
 
-    // Range total limit
     public static decimal RangeLimit
     {
         get => (decimal)Preferences.Default.Get("period_limit", 0.0);
@@ -44,10 +41,8 @@ public static class Period
 
     static DateTime SafeEnd => CustomEnd < CustomStart ? CustomStart : CustomEnd;
 
-    // Days in range
     public static int RangeDays => (SafeEnd - CustomStart).Days + 1;
 
-    // Period [start, endExclusive)
     public static void Resolve(DateTime monthStart, out DateTime start, out DateTime endExclusive)
     {
         if (IsCustom)
@@ -62,7 +57,6 @@ public static class Period
         }
     }
 
-    // Days elapsed incl
     public static int ElapsedDays(DateTime start, DateTime endExclusive)
     {
         var stop = endExclusive < DateTime.Today.AddDays(1) ? endExclusive : DateTime.Today.AddDays(1);
@@ -76,9 +70,6 @@ public static class Period
         return Fmt.RangeTitle(CustomStart, SafeEnd);
     }
 
-    // limits
-
-    // Allowed spend for
     public static decimal DailyLimitFor(DateTime day)
     {
         day = day.Date;
@@ -90,7 +81,6 @@ public static class Period
         return 0;
     }
 
-    // Total limit for
     public static decimal PeriodLimit(DateTime start, DateTime endExclusive)
     {
         if (IsCustom)
@@ -104,7 +94,6 @@ public static class Period
         return sum;
     }
 
-    // Per-day rows, oldest
     public static List<DayBal> Ledger(DateTime start, DateTime endExclusive, IEnumerable<Expense> list)
     {
         var res = new List<DayBal>();

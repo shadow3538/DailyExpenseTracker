@@ -1,11 +1,9 @@
 namespace DailyExpenseTracker;
 
-// Shrink profile photo
 public static class PhotoHelper
 {
     const int MaxSide = 600;
 
-    // Save resized copy
     public static async Task<string?> PrepareAsync(FileResult file)
     {
         var id = Guid.NewGuid().ToString("N");
@@ -32,7 +30,7 @@ public static class PhotoHelper
 
     static bool Resize(string srcPath, string dstPath)
     {
-        // Read size first
+
         var bounds = new global::Android.Graphics.BitmapFactory.Options { InJustDecodeBounds = true };
         global::Android.Graphics.BitmapFactory.DecodeFile(srcPath, bounds);
         if (bounds.OutWidth <= 0 || bounds.OutHeight <= 0) return false;

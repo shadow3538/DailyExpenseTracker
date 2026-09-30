@@ -4,7 +4,6 @@ using DailyExpenseTracker.Models;
 
 namespace DailyExpenseTracker;
 
-// Donut ring chart
 public class RingDrawable : IDrawable
 {
     public double Frac { get; set; }
@@ -34,7 +33,7 @@ public class RingDrawable : IDrawable
         int steps = Math.Max(4, (int)(f * 120));
         for (int i = 0; i <= steps; i++)
         {
-            double a = 2 * Math.PI * f * i / steps;      // clockwise from top
+            double a = 2 * Math.PI * f * i / steps;
             float x = cx + rad * (float)Math.Sin(a);
             float y = cy - rad * (float)Math.Cos(a);
             if (i == 0) p.MoveTo(x, y); else p.LineTo(x, y);
@@ -43,17 +42,16 @@ public class RingDrawable : IDrawable
     }
 }
 
-// UI helpers
 public static class Ui
 {
-    // theme colors (by
+
     static bool D => Theme.IsDark;
     static Color C(string light, string dark) => Color.FromArgb(D ? dark : light);
 
     public static Color Primary => C("#00897B", "#12A594");
     public static Color PrimaryLight => Color.FromArgb("#80CBC4");
     public static Color PrimarySoft => C("#E0F2F1", "#153634");
-    // Calculator symbol text
+
     public static Color PrimaryOn => C("#00695C", "#7FDCCF");
     public static Color Ink => C("#1B1F23", "#E8EDF0");
     public static Color Muted => C("#6B7785", "#98A6B2");
@@ -65,34 +63,27 @@ public static class Ui
     public static Color RedSoft => C("#FCE8E6", "#3F2220");
     public static Color Gray => C("#EEF1F3", "#25313A");
 
-    // Page, card and
     public static Color PageBg => C("#F3F6F6", "#0E1418");
     public static Color Surface => C("#FFFFFF", "#182229");
     public static Color FieldBg => C("#F7FAFA", "#202D35");
     public static Color Sep => C("#DDE3E8", "#2C3A44");
-    // Top bar color
+
     public static Color NavBar => C("#00897B", "#0F3F3A");
 
-    // Gradient card colors
     public static readonly Color PrimaryDark = Color.FromArgb("#00695C");
     public static readonly Color PrimaryBright = Color.FromArgb("#00A896");
 
-    // Range mode color
     public static readonly Color RangeColor = Color.FromArgb("#5C4DB1");
     public static readonly Color RangeDark = Color.FromArgb("#3F3480");
     public static Color RangeSoft => C("#ECE9F9", "#2A2650");
 
-    // Limit color: green
     public static Color LimitColor(double frac) => frac >= 1 ? Red : frac >= 0.75 ? Orange : Green;
-
-    // category colors &
 
     static readonly string[] Palette =
     {
         "#00897B", "#F59E0B", "#3B82F6", "#8B5CF6", "#EC4899", "#EF4444", "#14B8A6", "#84CC16"
     };
 
-    // Category color/icon caches
     static Dictionary<string, string> _catColors = new();
     static Dictionary<string, string> _catIcons = new();
 
@@ -120,7 +111,6 @@ public static class Ui
         return Color.FromArgb(Palette[h % Palette.Length]);
     }
 
-    // Icon by name
     static string? KeywordIcon(string name)
     {
         var n = (name ?? "").ToLowerInvariant();
@@ -135,7 +125,7 @@ public static class Ui
         if (n.Contains("বাস") || n.Contains("ভাড়া") || n.Contains("যাতায়াত") || n.Contains("গাড়ি")) return "🚌";
         if (n.Contains("ঔষধ") || n.Contains("ওষুধ")) return "💊";
         if (n.Contains("বাজার")) return "🛒";
-        // English names
+
         if (n.Contains("breakfast")) return "🍳";
         if (n.Contains("lunch")) return "🍛";
         if (n.Contains("dinner")) return "🍽️";
@@ -149,14 +139,12 @@ public static class Ui
         return null;
     }
 
-    // Icon for category/option
     public static string ItemIcon(string name)
     {
         if (name != null && _catIcons.TryGetValue(name, out var ic)) return ic;
         return KeywordIcon(name ?? "") ?? "🧾";
     }
 
-    // Icon for an
     public static string EntryIcon(Expense e)
     {
         var kw = KeywordIcon(e.Item ?? "");
@@ -164,7 +152,6 @@ public static class Ui
         return ItemIcon(e.Cat);
     }
 
-    // Icon badge on
     public static View ItemBadge(string name, double size = 44) => Badge(ItemColor(name), ItemIcon(name), size);
 
     public static View Badge(Color c, string icon, double size = 44)
@@ -187,7 +174,6 @@ public static class Ui
         };
     }
 
-    // Small rounded chip
     public static View Chip(string text, Color bg, Color fg, double size = 12)
     {
         return new Border
@@ -200,9 +186,6 @@ public static class Ui
         };
     }
 
-    // profile photo
-
-    // Round avatar (initial
     public static View Avatar(double size = 44, bool ring = false) =>
         AvatarFrom(Profile.PhotoPath, Profile.Name, size, ring);
 
@@ -244,9 +227,6 @@ public static class Ui
         };
     }
 
-    // bar & ring
-
-    // Progress bar (frac
     public static View Bar(double frac, Color fill, Color? track = null, double height = 10)
     {
         if (double.IsNaN(frac) || frac < 0) frac = 0;
@@ -264,7 +244,6 @@ public static class Ui
         return g;
     }
 
-    // Donut chart (frac
     public static GraphicsView Ring(double frac, Color fill, double size = 120, float thickness = 14)
     {
         return new GraphicsView
@@ -275,14 +254,11 @@ public static class Ui
         };
     }
 
-    // expense card
-
-    // Expense card; tap
     public static View EntryRow(Expense e, Action<Expense> onTap, bool showDate = false)
     {
         var mid = new VerticalStackLayout { Spacing = 2, VerticalOptions = LayoutOptions.Center };
         mid.Add(new Label { Text = string.IsNullOrWhiteSpace(e.Item) ? "Extra" : e.Item, FontSize = 16, FontAttributes = FontAttributes.Bold });
-        // Show category under
+
         if (!string.IsNullOrWhiteSpace(e.Category) && !string.Equals(e.Item, e.Category, StringComparison.Ordinal))
             mid.Add(new Label { Text = e.Category, FontSize = 12, TextColor = ItemColor(e.Category), FontAttributes = FontAttributes.Bold });
 
@@ -327,9 +303,6 @@ public static class Ui
         return b;
     }
 
-    // light animation
-
-    // Fade + slide
     public static async Task AnimateInAsync(View view, uint duration = 220, int delay = 0)
     {
         if (delay > 0) await Task.Delay(delay);
@@ -340,7 +313,6 @@ public static class Ui
             view.TranslateTo(0, 0, duration, Easing.CubicOut));
     }
 
-    // Tiny tap pulse
     public static async Task TapPulseAsync(VisualElement view)
     {
         try
@@ -351,9 +323,6 @@ public static class Ui
         catch (Exception ex) { AppLog.Error("TapPulse", ex); }
     }
 
-    // navigation
-
-    // Open edit page
     public static void OpenEdit(Page from, Expense e)
     {
         var nav = new NavigationPage(new EditPage(e))
@@ -364,7 +333,6 @@ public static class Ui
         _ = from.Navigation.PushModalAsync(nav);
     }
 
-    // Open day detail
     public static void OpenDay(Page from, DateTime day)
     {
         var nav = new NavigationPage(new DayDetailPage(day))
@@ -375,7 +343,6 @@ public static class Ui
         _ = from.Navigation.PushModalAsync(nav);
     }
 
-    // Open any page
     public static void OpenModal(Page from, Page page)
     {
         var nav = new NavigationPage(page)
@@ -386,7 +353,6 @@ public static class Ui
         _ = from.Navigation.PushModalAsync(nav);
     }
 
-    // Open profile
     public static void OpenProfile(Page from)
     {
         var nav = new NavigationPage(new ProfilePage())
@@ -397,7 +363,6 @@ public static class Ui
         _ = from.Navigation.PushModalAsync(nav);
     }
 
-    // Open profile edit
     public static void OpenProfileEdit(Page from)
     {
         var nav = new NavigationPage(new ProfileEditPage())
@@ -408,26 +373,21 @@ public static class Ui
         _ = from.Navigation.PushModalAsync(nav);
     }
 
-    // Date for Add
     public static DateTime? PendingAddDate;
 
-    // Current and previous
     public static string? CurrentRoute;
     public static string? PrevRoute;
 
-    // Tab to return
     public static string? ReturnRoute;
 
-    // Open range form
     public static bool PendingOpenRange;
 
     public static Task GoTo(string route)
     {
-        if (route == "history") route = "report";   // history merged into report
+        if (route == "history") route = "report";
         return Shell.Current.GoToAsync("//" + route);
     }
 
-    // Back to origin
     public static Task GoBackToOrigin()
     {
         var r = PrevRoute;
@@ -435,7 +395,6 @@ public static class Ui
         return GoTo(r);
     }
 
-    // Android toast
     public static void Toast(string text)
     {
         try

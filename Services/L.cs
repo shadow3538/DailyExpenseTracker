@@ -1,6 +1,5 @@
 namespace DailyExpenseTracker;
 
-// Language: Bangla text
 public static partial class L
 {
     static bool? _en;
@@ -14,7 +13,6 @@ public static partial class L
         }
     }
 
-    // Language chosen before?
     public static bool IsChosen => Preferences.Default.ContainsKey("lang");
 
     public static void Set(string lang)
@@ -23,7 +21,6 @@ public static partial class L
         _en = lang == "en";
     }
 
-    // Bangla key ->
     public static string T(string bn)
     {
         if (!IsEn) return bn;
@@ -32,6 +29,5 @@ public static partial class L
 
     public static string T(string bn, string en) => IsEn ? en : bn;
 
-    // English from dictionary
     public static string ToEn(string bn) => En.TryGetValue(bn, out var e) ? e : bn;
 }

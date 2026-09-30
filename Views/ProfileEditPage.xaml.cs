@@ -2,7 +2,6 @@ using Microsoft.Maui.Controls.Shapes;
 
 namespace DailyExpenseTracker;
 
-// Profile edit page
 public partial class ProfileEditPage : ContentPage
 {
     static readonly string[] Genders = { "পুরুষ", "নারী", "অন্যান্য" };
@@ -10,7 +9,7 @@ public partial class ProfileEditPage : ContentPage
 
     string _gender = "";
     string _blood = "";
-    string? _tempPhoto;        // new photo (cache until Save)
+    string? _tempPhoto;
     bool _removePhoto;
 
     public ProfileEditPage()
@@ -45,7 +44,6 @@ public partial class ProfileEditPage : ContentPage
         NameEntry.Unfocused += (_, _) => RefreshAvatar();
     }
 
-    // Back closes page
     protected override bool OnBackButtonPressed()
     {
         _ = CloseAsync();
@@ -56,8 +54,6 @@ public partial class ProfileEditPage : ContentPage
     {
         try { await Navigation.PopModalAsync(); } catch { }
     }
-
-    // photo
 
     void RefreshAvatar()
     {
@@ -107,13 +103,8 @@ public partial class ProfileEditPage : ContentPage
         RefreshAvatar();
     }
 
-    // birth date
-
     void OnDobToggled(object? sender, ToggledEventArgs e) => DobBox.IsVisible = e.Value;
 
-    // tags (gender /
-
-    // Option chips; tap
     static void BuildChips(FlexLayout box, string[] items, Func<string> get, Action<string> set)
     {
         box.Children.Clear();
@@ -148,8 +139,6 @@ public partial class ProfileEditPage : ContentPage
             box.Children.Add(chip);
         }
     }
-
-    // save
 
     async void OnSave(object? sender, EventArgs e)
     {

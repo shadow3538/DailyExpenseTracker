@@ -4,7 +4,6 @@ using DailyExpenseTracker.Models;
 
 namespace DailyExpenseTracker;
 
-// Small helpers for
 static class FUi
 {
     public static Border Card(View content, Color? stroke = null, double pad = 14) => new Border
@@ -48,7 +47,6 @@ static class FUi
 
     public static string Money(decimal v) => Fmt.Money0(v);
 
-    // Bordered box like
     public static View Box(View content) => new Border
     {
         Content = content,
@@ -59,7 +57,6 @@ static class FUi
         StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(20) }
     };
 
-    // Selectable row: icon
     public static View Option(string icon, string title, string? sub, bool selected, Func<Task> onTap)
     {
         var col = new VerticalStackLayout { Spacing = 1, VerticalOptions = LayoutOptions.Center };
@@ -93,7 +90,6 @@ static class FUi
         return b;
     }
 
-    // Fieldset-like box: bordered
     public static View Fieldset(string legend, View content)
     {
         var box = new Border
@@ -127,9 +123,6 @@ static class FUi
     }
 }
 
-// Hint
-// Loan list (iOwe
-// Hint
 public class LoanPage : ContentPage
 {
     readonly bool _iOwe;
@@ -181,7 +174,6 @@ public class LoanPage : ContentPage
         Store.Changed -= OnChanged;
     }
 
-    // Back closes page
     protected override bool OnBackButtonPressed()
     {
         if (Navigation.NavigationStack.Count > 1) return base.OnBackButtonPressed();
@@ -268,9 +260,6 @@ public class LoanPage : ContentPage
     }
 }
 
-// Hint
-// Loan add /
-// Hint
 public class LoanEditPage : ContentPage
 {
     readonly bool _iOwe;
@@ -330,7 +319,6 @@ public class LoanEditPage : ContentPage
         s.Add(FUi.Field(_paid));
         s.Add(_remLbl);
 
-        // Quick payment add
         if (!isNew)
         {
             var payRow = new Grid { ColumnSpacing = 8, ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Auto) } };
@@ -458,9 +446,6 @@ public class LoanEditPage : ContentPage
     }
 }
 
-// Hint
-// Salary: mode 0
-// Hint
 public class SalaryPage : ContentPage
 {
     readonly int _mode;
@@ -554,7 +539,6 @@ public class SalaryPage : ContentPage
 
             _body.Children.Clear();
 
-            // summary card
             var sum = new VerticalStackLayout { Spacing = 8 };
             sum.Add(SumRow(L.T("💼 বেতন পেয়েছেন", "💼 Salary received"), FUi.Money(got), Ui.Green));
             sum.Add(SumRow(L.T("🧾 খরচ করেছেন", "🧾 Spent"), FUi.Money(spent), Ui.Red));
@@ -642,9 +626,6 @@ public class SalaryPage : ContentPage
     }
 }
 
-// Hint
-// Salary add /
-// Hint
 public class SalaryEditPage : ContentPage
 {
     readonly Salary _s;

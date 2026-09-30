@@ -2,7 +2,6 @@ using DailyExpenseTracker.Data;
 
 namespace DailyExpenseTracker;
 
-// Day detail: total
 public partial class DayDetailPage : ContentPage
 {
     DateTime _day;
@@ -39,7 +38,6 @@ public partial class DayDetailPage : ContentPage
         Store.Changed -= OnStoreChanged;
     }
 
-    // Back closes page
     protected override bool OnBackButtonPressed()
     {
         _ = CloseAsync();
@@ -103,7 +101,6 @@ public partial class DayDetailPage : ContentPage
                 StatusLabel.TextColor = Colors.White;
             }
 
-            // Category tags
             ChipsBox.Children.Clear();
             foreach (var grp in list.GroupBy(x => x.Cat)
                                     .Select(g => new { Name = g.Key, Sum = g.Sum(x => x.Amount) })

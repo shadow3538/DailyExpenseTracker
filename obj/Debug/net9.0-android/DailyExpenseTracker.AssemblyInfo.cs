@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Abdul Malek")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("5.9.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("5.9+455d8597322438cf1701cc6341e27ecd7d650b7f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("5.9+fde364f85102ad5da1392f15a97d9cc0892fc50d")]
 [assembly: System.Reflection.AssemblyProductAttribute("DailyExpenseTracker")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DailyExpenseTracker")]
 [assembly: System.Reflection.AssemblyVersionAttribute("5.9.0.0")]

@@ -44,6 +44,12 @@
                 <Label x:Name="HistTotal" StyleClass="Muted" />
                 <Label x:Name="HistCmp" FontSize="13" FontAttributes="Bold" />
                 <VerticalStackLayout x:Name="ListStack" Spacing="8" />
+
+                <Grid x:Name="HistoryPager" IsVisible="False" ColumnDefinitions="Auto,*,Auto" ColumnSpacing="10" Margin="0,2,0,0">
+                    <Button x:Name="HistoryPrevButton" Grid.Column="0" Text="‹" WidthRequest="52" HeightRequest="44" Clicked="OnHistoryPrevious" />
+                    <Label x:Name="HistoryPageInfo" Grid.Column="1" HorizontalTextAlignment="Center" VerticalTextAlignment="Center" StyleClass="Muted" />
+                    <Button x:Name="HistoryNextButton" Grid.Column="2" Text="›" WidthRequest="52" HeightRequest="44" Clicked="OnHistoryNext" />
+                </Grid>
             </VerticalStackLayout>
         </ScrollView>
     </Grid>

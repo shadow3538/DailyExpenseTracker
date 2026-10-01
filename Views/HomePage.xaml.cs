@@ -3,7 +3,7 @@ using DailyExpenseTracker.Models;
 
 namespace DailyExpenseTracker;
 
-public partial class HomePage : ContentPage
+public partial class HomePage : ContentPage, IHostActivatable
 {
     const double BarMax = 72;
     const int LedgerRows = 7;
@@ -82,7 +82,11 @@ public partial class HomePage : ContentPage
 
     void OnStoreChanged() { if (_appeared) _ = LoadAsync(); }
 
-    protected override async void OnAppearing()
+    public async Task ActivateForHostAsync() => await ActivateCoreAsync();
+
+    public void DeactivateForHost() { OnDisappearing(); }
+
+    async Task ActivateCoreAsync()
     {
         base.OnAppearing();
         _appeared = true;

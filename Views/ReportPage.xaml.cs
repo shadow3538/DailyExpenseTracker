@@ -4,11 +4,13 @@ using DailyExpenseTracker.Models;
 
 namespace DailyExpenseTracker;
 
-public partial class ReportPage : ContentPage
+public partial class ReportPage : ContentPage, IHostActivatable
 {
     DateTime _month = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
     bool _appeared;
     bool _animateFirstLoad;
+    int _historyPage;
+    const int HistoryPageSize = 10;
 
     public ReportPage()
     {
@@ -17,6 +19,7 @@ public partial class ReportPage : ContentPage
         RangeBox.MonthStep += async d =>
         {
             _month = _month.AddMonths(d);
+            _historyPage = 0;
             await LoadAsync();
         };
         RootChrome.Attach(this);
@@ -24,7 +27,11 @@ public partial class ReportPage : ContentPage
 
     void OnStoreChanged() { if (_appeared) _ = LoadAsync(); }
 
-    protected override async void OnAppearing()
+    public async Task ActivateForHostAsync() => await ActivateCoreAsync();
+
+    public void DeactivateForHost() { OnDisappearing(); }
+
+    async Task ActivateCoreAsync()
     {
         base.OnAppearing();
         _appeared = true;
@@ -281,16 +288,54 @@ public partial class ReportPage : ContentPage
 
         var byDay = list.GroupBy(x => x.Date.Date).ToDictionary(g => g.Key, g => g.ToList());
         bool includeEmpty = dayCount <= 62;
+        var days = new List<DateTime>();
 
         for (var d = last; d >= start; d = d.AddDays(-1))
         {
             byDay.TryGetValue(d, out var entries);
             if (entries == null && !includeEmpty) continue;
+            days.Add(d);
+        }
+
+        int totalPages = Math.Max(1, (int)Math.Ceiling(days.Count / (double)HistoryPageSize));
+        _historyPage = Math.Clamp(_historyPage, 0, totalPages - 1);
+        int skip = _historyPage * HistoryPageSize;
+
+        foreach (var d in days.Skip(skip).Take(HistoryPageSize))
+        {
+            byDay.TryGetValue(d, out var entries);
             ListStack.Add(DayRow(d, entries ?? new List<Expense>(), Period.DailyLimitFor(d), today));
         }
 
         if (ListStack.Children.Count == 0)
+        {
             ListStack.Add(new Label { Text = L.T("এই সময়ে কোনো খরচ নেই"), TextColor = Ui.Muted, Margin = new Thickness(0, 20) });
+            HistoryPager.IsVisible = false;
+        }
+        else if (days.Count > HistoryPageSize)
+        {
+            HistoryPager.IsVisible = true;
+            HistoryPageInfo.Text = $"{(_historyPage * HistoryPageSize + 1).ToString(Fmt.Inv)}–{Math.Min((_historyPage + 1) * HistoryPageSize, days.Count).ToString(Fmt.Inv)} / {days.Count.ToString(Fmt.Inv)}";
+            HistoryPrevButton.IsEnabled = _historyPage > 0;
+            HistoryNextButton.IsEnabled = _historyPage < totalPages - 1;
+        }
+        else
+        {
+            HistoryPager.IsVisible = false;
+        }
+    }
+
+    async void OnHistoryPrevious(object sender, EventArgs e)
+    {
+        if (_historyPage <= 0) return;
+        _historyPage--;
+        await LoadAsync();
+    }
+
+    async void OnHistoryNext(object sender, EventArgs e)
+    {
+        _historyPage++;
+        await LoadAsync();
     }
 
     View DayRow(DateTime day, List<Expense> entries, decimal dailyLimit, DateTime today)

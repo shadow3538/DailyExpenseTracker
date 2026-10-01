@@ -88,6 +88,89 @@ public static class InfoLinks
     }
 }
 
+public static class DownloadUpdateUi
+{
+
+    public static VerticalStackLayout DownloadContent()
+    {
+        var dl = new VerticalStackLayout { Spacing = 10 };
+        if (InfoLinks.Has(AppInfo.DownloadUrl))
+        {
+            dl.Add(new Label { Text = L.T("অ্যাপটি এখান থেকে ডাউনলোড করা যাবে:", "You can download the app from here:"), FontSize = 13, TextColor = Ui.Muted });
+            dl.Add(new Label
+            {
+                Text = AppInfo.DownloadUrl,
+                FontSize = 14,
+                TextColor = Ui.Primary,
+                TextDecorations = TextDecorations.Underline,
+                LineBreakMode = LineBreakMode.CharacterWrap
+            });
+            var row = new Grid { ColumnSpacing = 8, ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Star) } };
+            row.Add(FUi.Btn(L.T("🌐 খুলুন", "🌐 Open"), Ui.Primary, true, () => _ = InfoLinks.OpenAsync(AppInfo.DownloadUrl), 44), 0);
+            row.Add(FUi.Btn(L.T("📋 কপি", "📋 Copy"), Ui.Primary, false, () => _ = InfoLinks.CopyAsync(AppInfo.DownloadUrl), 44), 1);
+            dl.Add(row);
+        }
+        else
+        {
+            dl.Add(new Label
+            {
+                Text = L.T("ডাউনলোড লিংক শীঘ্রই যোগ করা হবে।", "The download link will be added soon."),
+                FontSize = 14,
+                TextColor = Ui.Muted
+            });
+        }
+        return dl;
+    }
+
+
+    public static VerticalStackLayout UpdateContent()
+    {
+        var up = new VerticalStackLayout { Spacing = 10 };
+        var status = new Label { FontSize = 14 };
+        up.Add(status);
+        var btn = FUi.Btn(L.T("🔍 এখনই চেক করুন", "🔍 Check now"), Ui.Primary, false, () => { }, 44);
+        var open = FUi.Btn(L.T("⬇️ নতুন ভার্সন ডাউনলোড", "⬇️ Download the new version"), Ui.Primary, true, () => { }, 44);
+        open.IsVisible = false;
+        string openUrl = "";
+
+        void Show(bool known, string latest)
+        {
+            if (known)
+            {
+                status.Text = L.T($"নতুন ভার্সন {latest} পাওয়া যাচ্ছে (আপনার ভার্সন {AppInfo.Version})।", $"Version {latest} is available (you have {AppInfo.Version}).");
+                status.TextColor = Ui.Orange;
+                openUrl = InfoLinks.Has(UpdateChecker.LatestUrl) ? UpdateChecker.LatestUrl : AppInfo.DownloadUrl;
+                open.IsVisible = true;
+            }
+            else
+            {
+                status.Text = L.T($"আপনি সর্বশেষ ভার্সন (v{AppInfo.Version}) ব্যবহার করছেন।", $"You are on the latest version (v{AppInfo.Version}).");
+                status.TextColor = Ui.Muted;
+                open.IsVisible = false;
+            }
+        }
+        Show(UpdateChecker.UpdateKnown, UpdateChecker.LatestSeen);
+        open.Clicked += (_, _) => _ = InfoLinks.OpenAsync(openUrl);
+        btn.Clicked += async (_, _) =>
+        {
+            btn.IsEnabled = false;
+            status.Text = L.T("চেক করা হচ্ছে…", "Checking…");
+            status.TextColor = Ui.Muted;
+            var r = await UpdateChecker.CheckAsync(notify: false);
+            if (!r.Ok)
+            {
+                status.Text = L.T("চেক করা যায়নি। ইন্টারনেট আছে কি না দেখুন।", "Could not check. Please check your internet connection.");
+                status.TextColor = Ui.Red;
+            }
+            else Show(r.HasUpdate, r.Latest);
+            btn.IsEnabled = true;
+        };
+        up.Add(btn);
+        up.Add(open);
+        return up;
+    }
+}
+
 public class AboutAppPage : ModalBase
 {
     public AboutAppPage() : base(L.T("অ্যাপ সম্পর্কে", "About the app"))
@@ -136,79 +219,13 @@ public class AboutAppPage : ModalBase
         root.Add(FUi.Card(feats, null, 14));
 
         root.Add(new Label { Text = L.T("⬇️ ডাউনলোড", "⬇️ Download"), StyleClass = new[] { "H2" }, Margin = new Thickness(0, 8, 0, 0) });
-        var dl = new VerticalStackLayout { Spacing = 10 };
-        if (InfoLinks.Has(AppInfo.DownloadUrl))
-        {
-            dl.Add(new Label { Text = L.T("অ্যাপটি এখান থেকে ডাউনলোড করা যাবে:", "You can download the app from here:"), FontSize = 13, TextColor = Ui.Muted });
-            dl.Add(new Label
-            {
-                Text = AppInfo.DownloadUrl,
-                FontSize = 14,
-                TextColor = Ui.Primary,
-                TextDecorations = TextDecorations.Underline,
-                LineBreakMode = LineBreakMode.CharacterWrap
-            });
-            var row = new Grid { ColumnSpacing = 8, ColumnDefinitions = { new ColumnDefinition(GridLength.Star), new ColumnDefinition(GridLength.Star) } };
-            row.Add(FUi.Btn(L.T("🌐 খুলুন", "🌐 Open"), Ui.Primary, true, () => _ = InfoLinks.OpenAsync(AppInfo.DownloadUrl), 44), 0);
-            row.Add(FUi.Btn(L.T("📋 কপি", "📋 Copy"), Ui.Primary, false, () => _ = InfoLinks.CopyAsync(AppInfo.DownloadUrl), 44), 1);
-            dl.Add(row);
-        }
-        else
-        {
-            dl.Add(new Label
-            {
-                Text = L.T("ডাউনলোড লিংক শীঘ্রই যোগ করা হবে।", "The download link will be added soon."),
-                FontSize = 14,
-                TextColor = Ui.Muted
-            });
-        }
+        var dl = DownloadUpdateUi.DownloadContent();
         root.Add(FUi.Card(dl, null, 14));
 
         if (InfoLinks.Has(AppInfo.GitHubUrl))
         {
             root.Add(new Label { Text = L.T("🔄 আপডেট", "🔄 Updates"), StyleClass = new[] { "H2" }, Margin = new Thickness(0, 8, 0, 0) });
-            var up = new VerticalStackLayout { Spacing = 10 };
-            var status = new Label { FontSize = 14 };
-            up.Add(status);
-            var btn = FUi.Btn(L.T("🔍 এখনই চেক করুন", "🔍 Check now"), Ui.Primary, false, () => { }, 44);
-            var open = FUi.Btn(L.T("⬇️ নতুন ভার্সন ডাউনলোড", "⬇️ Download the new version"), Ui.Primary, true, () => { }, 44);
-            open.IsVisible = false;
-            string openUrl = "";
-
-            void Show(bool known, string latest)
-            {
-                if (known)
-                {
-                    status.Text = L.T($"নতুন ভার্সন {latest} পাওয়া যাচ্ছে (আপনার ভার্সন {AppInfo.Version})।", $"Version {latest} is available (you have {AppInfo.Version}).");
-                    status.TextColor = Ui.Orange;
-                    openUrl = InfoLinks.Has(UpdateChecker.LatestUrl) ? UpdateChecker.LatestUrl : AppInfo.DownloadUrl;
-                    open.IsVisible = true;
-                }
-                else
-                {
-                    status.Text = L.T($"আপনি সর্বশেষ ভার্সন (v{AppInfo.Version}) ব্যবহার করছেন।", $"You are on the latest version (v{AppInfo.Version}).");
-                    status.TextColor = Ui.Muted;
-                    open.IsVisible = false;
-                }
-            }
-            Show(UpdateChecker.UpdateKnown, UpdateChecker.LatestSeen);
-            open.Clicked += (_, _) => _ = InfoLinks.OpenAsync(openUrl);
-            btn.Clicked += async (_, _) =>
-            {
-                btn.IsEnabled = false;
-                status.Text = L.T("চেক করা হচ্ছে…", "Checking…");
-                status.TextColor = Ui.Muted;
-                var r = await UpdateChecker.CheckAsync(notify: false);
-                if (!r.Ok)
-                {
-                    status.Text = L.T("চেক করা যায়নি। ইন্টারনেট আছে কি না দেখুন।", "Could not check. Please check your internet connection.");
-                    status.TextColor = Ui.Red;
-                }
-                else Show(r.HasUpdate, r.Latest);
-                btn.IsEnabled = true;
-            };
-            up.Add(btn);
-            up.Add(open);
+            var up = DownloadUpdateUi.UpdateContent();
             root.Add(FUi.Card(up, null, 14));
         }
 

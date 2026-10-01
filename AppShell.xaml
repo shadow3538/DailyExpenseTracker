@@ -3,20 +3,8 @@
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:local="clr-namespace:DailyExpenseTracker"
        x:Class="DailyExpenseTracker.AppShell"
-       Shell.FlyoutBehavior="Disabled"
-       Shell.BackgroundColor="{StaticResource BarColor}"
-       Shell.ForegroundColor="White"
-       Shell.TitleColor="White"
-       Shell.TabBarBackgroundColor="{StaticResource SurfaceColor}"
-       Shell.TabBarForegroundColor="{StaticResource Primary}"
-       Shell.TabBarTitleColor="{StaticResource Primary}"
-       Shell.TabBarUnselectedColor="{StaticResource TabUnselected}"
-       Shell.TabBarDisabledColor="{StaticResource TabUnselected}">
-    <TabBar>
-        <ShellContent Title="{local:T 'হোম'}" Icon="tab_home.png" Route="home" ContentTemplate="{DataTemplate local:HomePage}" />
-        <ShellContent Title="{local:T 'যোগ করুন'}" Icon="tab_add.png" Route="add" ContentTemplate="{DataTemplate local:AddPage}" />
-        <ShellContent Title="{local:T 'রিপোর্ট'}" Icon="tab_report.png" Route="report" ContentTemplate="{DataTemplate local:ReportPage}" />
-        <ShellContent Title="{local:T 'ক্যালকুলেটর'}" Icon="tab_calc.png" Route="calc" ContentTemplate="{DataTemplate local:CalculatorPage}" />
-        <ShellContent Title="{local:T 'সেটিংস'}" Icon="tab_settings.png" Route="settings" ContentTemplate="{DataTemplate local:SettingsPage}" />
-    </TabBar>
+       FlyoutBehavior="Disabled"
+       Shell.NavBarIsVisible="False"
+       Shell.TabBarIsVisible="False">
+    <ShellContent Route="main" ContentTemplate="{DataTemplate local:MainTabPage}" />
 </Shell>

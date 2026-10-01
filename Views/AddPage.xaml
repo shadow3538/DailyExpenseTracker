@@ -60,12 +60,14 @@
             </VerticalStackLayout>
         </ScrollView>
 
-        <Border x:Name="ToastBox" IsVisible="False" VerticalOptions="End" HorizontalOptions="Center"
-                Margin="20,0,20,24" Padding="18,12" StrokeThickness="0" BackgroundColor="#1E8449">
+        <Border x:Name="ToastBox" IsVisible="False" InputTransparent="True"
+                VerticalOptions="Start" HorizontalOptions="Center"
+                Margin="16,10,16,0" Padding="14,8" StrokeThickness="0" BackgroundColor="#1E8449">
             <Border.StrokeShape>
-                <RoundRectangle CornerRadius="24" />
+                <RoundRectangle CornerRadius="12" />
             </Border.StrokeShape>
-            <Label x:Name="ToastLabel" TextColor="White" FontAttributes="Bold" />
+            <Label x:Name="ToastLabel" TextColor="White" FontAttributes="Bold" FontSize="14"
+                   MaxLines="1" LineBreakMode="TailTruncation" HorizontalTextAlignment="Center" />
         </Border>
     </Grid>
 </ContentPage>

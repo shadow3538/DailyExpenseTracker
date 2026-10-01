@@ -17,13 +17,13 @@ public class ReminderReceiver : BroadcastReceiver
         {
             try
             {
-                // Restore alarms
+
                 if (action == Intent.ActionBootCompleted || action == Intent.ActionMyPackageReplaced)
                 {
                     await Reminders.RescheduleAsync();
                     UpdateChecker.Schedule(context);
                 }
-                // Check update
+
                 else if (action == UpdateChecker.ActUpdate)
                 {
                     await UpdateChecker.CheckAsync(notify: true);

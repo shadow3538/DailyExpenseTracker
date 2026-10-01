@@ -16,10 +16,10 @@ public class MainApplication : MauiApplication
     {
         base.OnCreate();
 
-        // Widget refresh
+
         Store.Changed += () => ExpenseWidget.Refresh(this);
 
-        // Alarm restore
+
         _ = Reminders.RescheduleAsync();
     }
 

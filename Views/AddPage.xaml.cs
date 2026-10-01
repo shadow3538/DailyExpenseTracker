@@ -4,7 +4,7 @@ using DailyExpenseTracker.Models;
 
 namespace DailyExpenseTracker;
 
-public partial class AddPage : ContentPage
+public partial class AddPage : ContentPage, IHostActivatable
 {
     string _rowsKey = "";
     List<ExpenseCategory> _cats = new();
@@ -20,39 +20,23 @@ public partial class AddPage : ContentPage
         InitializeComponent();
         Store.Changed -= OnStoreChanged;
         TabSwipe.Guard(CatScroll);
-        Track(NoteEntry, NoteEntry);
-        Track(WhatEntry, WhatEntry);
-        Track(FreeAmount, FreeAmount);
         RootChrome.Attach(this);
-    }
-
-    View? _focusView;
-
-    void Track(Entry e, View row)
-    {
-        e.Focused += (_, _) => { _focusView = row; _ = ScrollToAsync(row); };
-        e.Unfocused += (_, _) => { if (_focusView == row) _focusView = null; };
-    }
-
-    async Task ScrollToAsync(View v)
-    {
-        try
-        {
-            await Task.Delay(230);
-            await MainScroll.ScrollToAsync(v, ScrollToPosition.Center, true);
-        }
-        catch { }
     }
 
     void OnKeyboard()
     {
+
+
         MainStack.Padding = new Thickness(16, 14, 16, KeyboardWatcher.Visible ? KeyboardWatcher.HeightDp + 30 : 90);
-        if (KeyboardWatcher.Visible && _focusView != null) _ = ScrollToAsync(_focusView);
     }
 
     void OnStoreChanged() { if (_appeared) _ = LoadEntriesAsync(); }
 
-    protected override async void OnAppearing()
+    public async Task ActivateForHostAsync() => await ActivateCoreAsync();
+
+    public void DeactivateForHost() { OnDisappearing(); }
+
+    async Task ActivateCoreAsync()
     {
         base.OnAppearing();
         _appeared = true;
@@ -275,7 +259,6 @@ public partial class AddPage : ContentPage
             StrokeThickness = 1,
             StrokeShape = new RoundRectangle { CornerRadius = new CornerRadius(16) }
         };
-        Track(entry, rowBox);
         return rowBox;
     }
 
@@ -305,7 +288,7 @@ public partial class AddPage : ContentPage
             entry.Text = "";
             NoteEntry.Text = "";
 
-            var msg = name + ": " + Fmt.Money(amt) + L.T(" যোগ হয়েছে");
+            var msg = Short(name) + ": " + Fmt.Money(amt) + L.T(" যোগ হয়েছে");
             if (!isToday) msg += " (" + day.ToString("dd MMM", Fmt.Inv) + ")";
             await ShowToast(msg, true);
         }
@@ -354,7 +337,7 @@ public partial class AddPage : ContentPage
             FreeAmount.Text = "";
             FreeAmount.Unfocus();
             WhatEntry.Unfocus();
-            var msg = cat.Name + " · " + what + ": " + Fmt.Money(amt) + L.T(" যোগ হয়েছে");
+            var msg = Short(cat.Name) + ": " + Fmt.Money(amt) + L.T(" যোগ হয়েছে");
             if (!isToday) msg += " (" + day.ToString("dd MMM", Fmt.Inv) + ")";
             await ShowToast(msg, true);
         }
@@ -364,6 +347,13 @@ public partial class AddPage : ContentPage
             await ShowToast(L.T("খরচ যোগ করা যায়নি"), false);
         }
         finally { _saving = false; }
+    }
+
+
+    static string Short(string s, int max = 14)
+    {
+        s = (s ?? "").Trim();
+        return s.Length <= max ? s : s.Substring(0, max - 1).TrimEnd() + "…";
     }
 
     async Task ShowToast(string text, bool ok)

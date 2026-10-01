@@ -28,39 +28,57 @@ public abstract class ModalBase : ContentPage
 
 public class LanguagePage : ModalBase
 {
+    readonly VerticalStackLayout _root = NewRoot();
+
     public LanguagePage() : base(L.T("ভাষা", "Language"))
     {
-        var root = NewRoot();
-        root.Add(FUi.Muted(L.T("অ্যাপ কোন ভাষায় দেখবেন বাছুন", "Choose the language of the app"), 14));
-        root.Add(FUi.Option("🇧🇩", "বাংলা", "Bangla", !L.IsEn, () => Pick("bn")));
-        root.Add(FUi.Option("🇬🇧", "English", "ইংরেজি", L.IsEn, () => Pick("en")));
-        Content = new ScrollView { Content = root };
+        Content = new ScrollView { Content = _root };
+        Build();
+    }
+
+    void Build()
+    {
+        _root.Children.Clear();
+        Title = L.T("ভাষা", "Language");
+        _root.Add(FUi.Muted(L.T("অ্যাপ কোন ভাষায় দেখবেন বাছুন", "Choose the language of the app"), 14));
+        _root.Add(FUi.Option("🇧🇩", "বাংলা", "Bangla", !L.IsEn, () => Pick("bn")));
+        _root.Add(FUi.Option("🇬🇧", "English", "ইংরেজি", L.IsEn, () => Pick("en")));
     }
 
     async Task Pick(string code)
     {
-        if ((code == "en") == L.IsEn) { await CloseAsync(); return; }
-        await LangSwitch.ApplyAsync(code, goToSettings: true);
+        if ((code == "en") == L.IsEn) return;
+        await LangSwitch.ApplyAsync(code, goToSettings: false);
+        Build();
     }
 }
 
 public class ThemePage : ModalBase
 {
+    readonly VerticalStackLayout _root = NewRoot();
+
     public ThemePage() : base(L.T("থিম", "Theme"))
     {
-        var root = NewRoot();
-        root.Add(FUi.Muted(L.T("লাইট বা ডার্ক — যেটা ভালো লাগে বেছে নিন। \"ফোনের মতো\" বাছলে ফোনের থিম অনুযায়ী নিজে বদলাবে।",
+        Content = new ScrollView { Content = _root };
+        Build();
+    }
+
+    void Build()
+    {
+        _root.Children.Clear();
+        Title = L.T("থিম", "Theme");
+        _root.Add(FUi.Muted(L.T("লাইট বা ডার্ক — যেটা ভালো লাগে বেছে নিন। \"ফোনের মতো\" বাছলে ফোনের থিম অনুযায়ী নিজে বদলাবে।",
             "Pick light or dark. \"Auto\" follows your phone's theme."), 14));
-        root.Add(FUi.Option("☀️", L.T("লাইট", "Light"), null, Theme.Mode == Theme.Light, () => Pick(Theme.Light)));
-        root.Add(FUi.Option("🌙", L.T("ডার্ক", "Dark"), null, Theme.Mode == Theme.Dark, () => Pick(Theme.Dark)));
-        root.Add(FUi.Option("📱", L.T("ফোনের মতো", "Auto"), L.T("ফোনের থিম অনুসরণ করবে", "Follows the phone"), Theme.Mode == Theme.System, () => Pick(Theme.System)));
-        Content = new ScrollView { Content = root };
+        _root.Add(FUi.Option("☀️", L.T("লাইট", "Light"), null, Theme.Mode == Theme.Light, () => Pick(Theme.Light)));
+        _root.Add(FUi.Option("🌙", L.T("ডার্ক", "Dark"), null, Theme.Mode == Theme.Dark, () => Pick(Theme.Dark)));
+        _root.Add(FUi.Option("📱", L.T("ফোনের মতো", "Auto"), L.T("ফোনের থিম অনুসরণ করবে", "Follows the phone"), Theme.Mode == Theme.System, () => Pick(Theme.System)));
     }
 
     async Task Pick(string mode)
     {
-        if (Theme.Mode == mode) { await CloseAsync(); return; }
-        await Theme.SetAsync(mode, goToSettings: true);
+        if (Theme.Mode == mode) return;
+        await Theme.SetAsync(mode, goToSettings: false);
+        Build();
     }
 }
 
@@ -650,7 +668,8 @@ public class BackupPage : ModalBase
     {
         try
         {
-            var ok = await page.DisplayAlert(L.T("ফিরিয়ে আনবেন?"),
+            var dialogPage = page is BackupPage ? page : (MainTabPage.Current ?? page);
+            var ok = await dialogPage.DisplayAlert(L.T("ফিরিয়ে আনবেন?"),
                 L.T("বর্তমানের সব খরচ, ক্যাটাগরি, লিমিট ও প্রোফাইল মুছে ব্যাকআপ ফাইলের ডেটা বসবে। আগে বর্তমান ডেটার ব্যাকআপ নিয়ে রাখা ভালো। এগিয়ে যাবেন?"),
                 L.T("হ্যাঁ, ফাইল বাছুন"), L.T("না"));
             if (!ok) return;
@@ -667,7 +686,7 @@ public class BackupPage : ModalBase
             }
             else
             {
-                await page.DisplayAlert(L.T("সমস্যা"), msg, L.T("ঠিক আছে"));
+                await dialogPage.DisplayAlert(L.T("সমস্যা"), msg, L.T("ঠিক আছে"));
             }
         }
         catch (Exception ex)

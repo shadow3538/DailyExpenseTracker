@@ -4,7 +4,7 @@ using DailyExpenseTracker.Models;
 
 namespace DailyExpenseTracker;
 
-public class CalculatorPage : ContentPage
+public class CalculatorPage : ContentPage, IHostActivatable
 {
     string _expr = "";
     bool _justEvaled;
@@ -118,7 +118,11 @@ public class CalculatorPage : ContentPage
 
     void OnStoreChanged() { if (_shown) _ = LoadCatsAsync(); }
 
-    protected override async void OnAppearing()
+    public async Task ActivateForHostAsync() => await ActivateCoreAsync();
+
+    public void DeactivateForHost() { OnDisappearing(); }
+
+    async Task ActivateCoreAsync()
     {
         base.OnAppearing();
         _shown = true;

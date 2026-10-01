@@ -1,1 +1,1 @@
-<!-- Teal gradient like --><shape android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android"><gradient android:startColor="#00A896" android:endColor="#00695C" android:angle="315" /><corners android:radius="22dp" /></shape>
+<shape android:shape="rectangle" xmlns:android="http://schemas.android.com/apk/res/android"><gradient android:startColor="#00A896" android:endColor="#00695C" android:angle="315" /><corners android:radius="22dp" /></shape>

@@ -42,6 +42,9 @@ public static class Store
         "সকালের নাস্তা", "দুপুরের খাবার", "নাস্তা", "রাতের খাবার", "Extra"
     };
 
+    // Data migration
+    public static async Task InitializeAsync() => await Db();
+
     static async Task<SQLiteAsyncConnection> Db()
     {
         _init ??= Setup();

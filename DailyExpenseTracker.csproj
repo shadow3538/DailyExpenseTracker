@@ -9,8 +9,8 @@
     <Nullable>enable</Nullable>
     <ApplicationTitle>পকেটনামা</ApplicationTitle>
     <ApplicationId>com.abdulmalek.dailyexpense</ApplicationId>
-    <ApplicationDisplayVersion>5.9</ApplicationDisplayVersion>
-    <ApplicationVersion>14</ApplicationVersion>
+    <ApplicationDisplayVersion>6.0</ApplicationDisplayVersion>
+    <ApplicationVersion>15</ApplicationVersion>
     <Authors>Abdul Malek</Authors>
     <Company>Abdul Malek</Company>
     <AssemblyName>DailyExpenseTracker</AssemblyName>

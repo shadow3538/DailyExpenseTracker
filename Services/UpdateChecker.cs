@@ -16,13 +16,14 @@ public static class UpdateChecker
     const int AlarmCode = 9101;
     const int NotifyId = 9102;
 
-    // Daily alarm
+
+    // Daily check
     const int CheckMinutes = 12 * 60;
 
-    // Repository URL
+
     static string Repo => AppInfo.GitHubUrl.TrimEnd('/');
 
-    // User setting
+
     public static bool On
     {
         get => Preferences.Default.Get("upd_on", true);
@@ -63,7 +64,7 @@ public static class UpdateChecker
     public static bool IsNewer(string? remote, string? local) =>
         TryParse(remote, out var r) && TryParse(local, out var l) && r > l;
 
-    // GitHub client
+
     static HttpClient NewClient()
     {
         var c = new HttpClient { Timeout = TimeSpan.FromSeconds(8) };
@@ -83,7 +84,7 @@ public static class UpdateChecker
             var owner = parts[0];
             var repo = parts[1];
 
-            // Version sources
+
             string latest = "", url = "";
             using var http = NewClient();
 
@@ -134,7 +135,7 @@ public static class UpdateChecker
         }
     }
 
-    // Notification channel
+
     static void EnsureChannel(Context ctx)
     {
         try
@@ -147,7 +148,7 @@ public static class UpdateChecker
         catch { }
     }
 
-    // Update notice
+
     static bool Notify(string version, string url)
     {
         try
@@ -162,15 +163,32 @@ public static class UpdateChecker
 
             var v = version.TrimStart('v', 'V');
             var title = L.T("পকেটনামা — নতুন আপডেট", "PocketNama — update available");
+
+
             var text = L.T(
-                $"নতুন ভার্সন {v} এসেছে (আপনার ভার্সন {AppInfo.Version})। ডাউনলোড করতে ট্যাপ করুন।",
-                $"Version {v} is available (you have {AppInfo.Version}). Tap to download.");
+                $"নতুন ভার্সন {v} এসেছে। অ্যাপ খুলে সেটিংস ট্যাবের ‘ডাউনলোড’ কার্ডে লিংক পাবেন।",
+                $"Version {v} is available. Open the app → Settings tab → ‘Download’ card for the link.");
+
+
+            var big = L.T(
+                $"নতুন ভার্সন {v} এসেছে (আপনার ভার্সন {AppInfo.Version})।\n\n" +
+                "ডাউনলোড লিংক কোথায় পাবেন:\n" +
+                "১. পকেটনামা অ্যাপ খুলুন\n" +
+                "২. নিচের বারের ‘সেটিংস’ ট্যাবে যান\n" +
+                "৩. ‘ব্যাকআপ ও রিস্টোর’ কার্ডের ঠিক নিচে ‘ডাউনলোড’ কার্ড আছে — সেখানে ‘খুলুন’ বা ‘কপি’ চাপুন। ‘আপডেট চেক’ কার্ড থেকেও নতুন ভার্সন ডাউনলোড করা যায়।\n\n" +
+                "অথবা এখনই এই নোটিফিকেশনে ট্যাপ করে ডাউনলোড পেজ খুলুন।",
+                $"Version {v} is available (you have {AppInfo.Version}).\n\n" +
+                "Where to find the download link:\n" +
+                "1. Open the PocketNama app\n" +
+                "2. Go to the ‘Settings’ tab in the bottom bar\n" +
+                "3. Right below the ‘Backup & restore’ card you'll find the ‘Download’ card — tap ‘Open’ or ‘Copy’. You can also download the new version from the ‘Check for updates’ card.\n\n" +
+                "Or tap this notification now to open the download page.");
 
             var b = new NotificationCompat.Builder(ctx, ChannelId)
                 .SetSmallIcon(Resource.Drawable.ic_notify)
                 .SetContentTitle(title)
                 .SetContentText(text)
-                .SetStyle(new NotificationCompat.BigTextStyle().BigText(text))
+                .SetStyle(new NotificationCompat.BigTextStyle().BigText(big))
                 .SetAutoCancel(true)
                 .SetContentIntent(pi);
 
@@ -185,7 +203,7 @@ public static class UpdateChecker
         }
     }
 
-    // Alarm intent
+
     static PendingIntent Pi(Context ctx)
     {
         var i = new Intent(ctx, typeof(ReminderReceiver));
@@ -230,7 +248,7 @@ public static class UpdateChecker
                 MainThread.BeginInvokeOnMainThread(Reminders.AskPermission);
             }
 
-            // Startup fallback
+
             if (DateTime.UtcNow - LastCheck > TimeSpan.FromHours(20))
                 await CheckAsync(notify: true);
         }

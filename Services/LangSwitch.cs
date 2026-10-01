@@ -10,9 +10,6 @@ public static class LangSwitch
         _busy = true;
         try
         {
-            Ui.Toast(L.T("অপেক্ষা করুন...", "Please wait..."));
-            await Task.Yield();
-
             Data.Store.Quiet = true;
             try
             {
@@ -24,50 +21,36 @@ public static class LangSwitch
 
             try { ExpenseWidget.Refresh(global::Android.App.Application.Context); } catch { }
 
-            await AppRebuild.RunAsync(goToSettings);
+            if (MainTabPage.Current != null)
+                await MainTabPage.Current.RefreshAfterPreferenceChangeAsync();
+
+            if (goToSettings)
+                await Ui.GoTo("settings");
         }
-        catch { }
+        catch (Exception ex) { AppLog.Error("Lang.Apply", ex); }
         finally { _busy = false; }
     }
 }
 
 public static class AppRebuild
 {
-    static bool _running;
-
     public static async Task RunAsync(bool goToSettings)
     {
-        if (_running) return;
-        _running = true;
+        if (MainTabPage.Current != null)
+        {
+            await MainTabPage.Current.RefreshAfterPreferenceChangeAsync();
+            if (goToSettings) await Ui.GoTo("settings");
+            return;
+        }
+
         try
         {
-            await MainThread.InvokeOnMainThreadAsync(async () =>
+            await MainThread.InvokeOnMainThreadAsync(() =>
             {
-
-                await Task.Delay(80);
-
-                Data.Store.ResetListeners();
-                Profile.ResetListeners();
-
                 var w = Application.Current?.Windows.FirstOrDefault();
-                if (w != null)
-                {
-                    Ui.CurrentRoute = "home";
-                    Ui.PrevRoute = null;
-                    w.Page = new AppShell();
-                }
+                if (w != null) w.Page = new AppShell();
             });
-
-            if (goToSettings)
-            {
-                await Task.Delay(350);
-                await MainThread.InvokeOnMainThreadAsync(async () =>
-                {
-                    try { await Ui.GoTo("settings"); } catch { }
-                });
-            }
         }
-        catch { }
-        finally { _running = false; }
+        catch (Exception ex) { AppLog.Error("App.Rebuild", ex); }
     }
 }

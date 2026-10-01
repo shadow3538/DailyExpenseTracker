@@ -5,6 +5,5 @@
     <IsFirstTimeProjectOpen>False</IsFirstTimeProjectOpen>
     <ActiveDebugFramework>net9.0-android</ActiveDebugFramework>
     <SelectedPlatformGroup>Emulator</SelectedPlatformGroup>
-    <SelectedDevice>Xiaomi M2103K19PG</SelectedDevice>
   </PropertyGroup>
 </Project>

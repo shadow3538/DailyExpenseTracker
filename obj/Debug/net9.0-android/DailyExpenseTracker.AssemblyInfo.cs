@@ -13,11 +13,11 @@ using System.Reflection;
 
 [assembly: System.Reflection.AssemblyCompanyAttribute("Abdul Malek")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
-[assembly: System.Reflection.AssemblyFileVersionAttribute("5.9.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("5.9+fde364f85102ad5da1392f15a97d9cc0892fc50d")]
+[assembly: System.Reflection.AssemblyFileVersionAttribute("6.0.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("6.0+9d5e4ceb0fb3fdf14fa9a46652a4ced1b685e559")]
 [assembly: System.Reflection.AssemblyProductAttribute("DailyExpenseTracker")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DailyExpenseTracker")]
-[assembly: System.Reflection.AssemblyVersionAttribute("5.9.0.0")]
+[assembly: System.Reflection.AssemblyVersionAttribute("6.0.0.0")]
 [assembly: System.Runtime.Versioning.TargetPlatformAttribute("Android35.0")]
 [assembly: System.Runtime.Versioning.SupportedOSPlatformAttribute("Android21.0")]
 

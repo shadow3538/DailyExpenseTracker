@@ -7,6 +7,7 @@ public sealed class RootChrome
 {
 
     public static RootChrome? Active;
+    static readonly Dictionary<ContentPage, RootChrome> Instances = new();
 
     public static RootChrome Attach(ContentPage page, View? titleView = null) => new RootChrome(page, titleView);
 
@@ -23,6 +24,11 @@ public sealed class RootChrome
 
     public bool IsOpen { get; private set; }
     public bool IsBusy => _anim;
+
+    public static void ActivateFor(ContentPage page)
+    {
+        if (Instances.TryGetValue(page, out var chrome)) Active = chrome;
+    }
 
     RootChrome(ContentPage page, View? titleView)
     {
@@ -62,6 +68,7 @@ public sealed class RootChrome
         _root.Add(_drawerHost);
         _root.Add(_push);
         page.Content = _root;
+        Instances[page] = this;
 
         page.Appearing += (_, _) =>
         {

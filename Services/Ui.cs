@@ -325,53 +325,52 @@ public static class Ui
 
     public static void OpenEdit(Page from, Expense e)
     {
-        var nav = new NavigationPage(new EditPage(e))
-        {
-            BarBackgroundColor = NavBar,
-            BarTextColor = Colors.White
-        };
-        _ = from.Navigation.PushModalAsync(nav);
+        PushModal(from, new EditPage(e));
     }
 
     public static void OpenDay(Page from, DateTime day)
     {
-        var nav = new NavigationPage(new DayDetailPage(day))
-        {
-            BarBackgroundColor = NavBar,
-            BarTextColor = Colors.White
-        };
-        _ = from.Navigation.PushModalAsync(nav);
+        PushModal(from, new DayDetailPage(day));
     }
 
-    public static void OpenModal(Page from, Page page)
+    static INavigation? ModalNavigation(Page from)
+    {
+        // Modal host
+        try
+        {
+            var main = MainTabPage.Current;
+            if (main?.Navigation != null) return main.Navigation;
+            if (from.Navigation != null) return from.Navigation;
+            return Application.Current?.Windows.FirstOrDefault()?.Page?.Navigation;
+        }
+        catch (Exception ex)
+        {
+            AppLog.Error("Ui.ModalHost", ex);
+            return null;
+        }
+    }
+
+    static void PushModal(Page from, Page page)
     {
         var nav = new NavigationPage(page)
         {
             BarBackgroundColor = NavBar,
             BarTextColor = Colors.White
         };
-        _ = from.Navigation.PushModalAsync(nav);
+        var host = ModalNavigation(from);
+        if (host == null) return;
+        MainThread.BeginInvokeOnMainThread(async () =>
+        {
+            try { await host.PushModalAsync(nav); }
+            catch (Exception ex) { AppLog.Error("Ui.PushModal", ex); }
+        });
     }
 
-    public static void OpenProfile(Page from)
-    {
-        var nav = new NavigationPage(new ProfilePage())
-        {
-            BarBackgroundColor = NavBar,
-            BarTextColor = Colors.White
-        };
-        _ = from.Navigation.PushModalAsync(nav);
-    }
+    public static void OpenModal(Page from, Page page) => PushModal(from, page);
 
-    public static void OpenProfileEdit(Page from)
-    {
-        var nav = new NavigationPage(new ProfileEditPage())
-        {
-            BarBackgroundColor = NavBar,
-            BarTextColor = Colors.White
-        };
-        _ = from.Navigation.PushModalAsync(nav);
-    }
+    public static void OpenProfile(Page from) => PushModal(from, new ProfilePage());
+
+    public static void OpenProfileEdit(Page from) => PushModal(from, new ProfileEditPage());
 
     public static DateTime? PendingAddDate;
 
@@ -385,6 +384,9 @@ public static class Ui
     public static Task GoTo(string route)
     {
         if (route == "history") route = "report";
+        var host = MainTabPage.Current;
+        if (host != null && (route is "home" or "add" or "report" or "calc" or "settings"))
+            return host.SwitchToAsync(route);
         return Shell.Current.GoToAsync("//" + route);
     }
 

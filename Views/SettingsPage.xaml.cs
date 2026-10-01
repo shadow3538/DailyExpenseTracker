@@ -4,7 +4,7 @@ using DailyExpenseTracker.Models;
 
 namespace DailyExpenseTracker;
 
-public partial class SettingsPage : ContentPage
+public partial class SettingsPage : ContentPage, IHostActivatable
 {
     public SettingsPage()
     {
@@ -50,7 +50,11 @@ public partial class SettingsPage : ContentPage
         Profile.Changed -= OnProfileChanged;
     }
 
-    protected override async void OnAppearing()
+    public async Task ActivateForHostAsync() => await ActivateCoreAsync();
+
+    public void DeactivateForHost() { OnDisappearing(); }
+
+    async Task ActivateCoreAsync()
     {
         base.OnAppearing();
         _appeared = true;
@@ -60,6 +64,7 @@ public partial class SettingsPage : ContentPage
         Profile.Changed += OnProfileChanged;
         RefreshProfile();
         BuildPrefBoxes();
+        BuildDownloadUpdateCard();
         BuildAboutSection();
         await RefreshFinanceAsync();
         await BuildCategoryCardAsync();
@@ -144,11 +149,6 @@ public partial class SettingsPage : ContentPage
         lBody.Add(new Label { Text = L.T("দৈনিক ", "Daily ") + (AppSettings.DailyLimit > 0 ? Fmt.Money0(AppSettings.DailyLimit) : L.T("নেই", "none")), FontSize = 14, FontAttributes = FontAttributes.Bold });
         lBody.Add(new Label { Text = L.T("মাসিক ", "Monthly ") + (AppSettings.MonthlyLimit > 0 ? Fmt.Money0(AppSettings.MonthlyLimit) : L.T("নেই", "none")), FontSize = 14, FontAttributes = FontAttributes.Bold });
 
-        var g1 = TwoCols(
-            MiniCard("🔔", L.T("নোটিফিকেশন", "Notifications"), nBody, Ui.Green, () => Ui.OpenModal(this, new NotificationsPage())),
-            MiniCard("📏", L.T("লিমিট", "Limits"), lBody, Ui.Orange, () => Ui.OpenModal(this, new LimitsPage())));
-        PrefHost.Add(FUi.Box(g1));
-
         var gBody = new VerticalStackLayout { Spacing = 2 };
         gBody.Add(new Label { Text = L.IsEn ? "English" : "বাংলা", FontSize = 20, FontAttributes = FontAttributes.Bold });
 
@@ -156,10 +156,15 @@ public partial class SettingsPage : ContentPage
         var tIcon = Theme.Mode == Theme.Dark ? "🌙 " : Theme.Mode == Theme.Light ? "☀️ " : "📱 ";
         tBody.Add(new Label { Text = tIcon + RootChrome.ThemeName(), FontSize = 20, FontAttributes = FontAttributes.Bold });
 
-        var g2 = TwoCols(
+
+        var all = new VerticalStackLayout { Spacing = 10 };
+        all.Add(TwoCols(
+            MiniCard("🔔", L.T("নোটিফিকেশন", "Notifications"), nBody, Ui.Green, () => Ui.OpenModal(this, new NotificationsPage())),
+            MiniCard("📏", L.T("লিমিট", "Limits"), lBody, Ui.Orange, () => Ui.OpenModal(this, new LimitsPage()))));
+        all.Add(TwoCols(
             MiniCard("🌐", L.T("ভাষা", "Language"), gBody, Ui.Primary, () => Ui.OpenModal(this, new LanguagePage())),
-            MiniCard("🎨", L.T("থিম", "Theme"), tBody, Color.FromArgb("#8B5CF6"), () => Ui.OpenModal(this, new ThemePage())));
-        PrefHost.Add(FUi.Box(g2));
+            MiniCard("🎨", L.T("থিম", "Theme"), tBody, Color.FromArgb("#8B5CF6"), () => Ui.OpenModal(this, new ThemePage()))));
+        PrefHost.Add(FUi.Box(all));
     }
 
     static Grid TwoCols(View a, View b)
@@ -282,6 +287,32 @@ public partial class SettingsPage : ContentPage
                 "Keep the backup in a phone folder, Google Drive or anywhere else. When a place is linked, the app knows whether the file was saved. If you change phones or delete the app, restore everything from that file.");
         }
         catch (Exception ex) { AppLog.Error("Settings.Backup", ex); }
+    }
+
+
+    void BuildDownloadUpdateCard()
+    {
+        try
+        {
+            DownloadHost.Children.Clear();
+            var all = new VerticalStackLayout { Spacing = 10 };
+
+            var dl = new VerticalStackLayout { Spacing = 8 };
+            dl.Add(new Label { Text = L.T("⬇️ ডাউনলোড", "⬇️ Download"), StyleClass = new[] { "H2" } });
+            dl.Add(DownloadUpdateUi.DownloadContent());
+            all.Add(FUi.Card(dl, Ui.Primary.WithAlpha(0.45f), 14));
+
+            if (InfoLinks.Has(AppInfo.GitHubUrl))
+            {
+                var up = new VerticalStackLayout { Spacing = 8 };
+                up.Add(new Label { Text = L.T("🔄 আপডেট চেক", "🔄 Check for updates"), StyleClass = new[] { "H2" } });
+                up.Add(DownloadUpdateUi.UpdateContent());
+                all.Add(FUi.Card(up, (UpdateChecker.UpdateKnown ? Ui.Orange : Ui.Green).WithAlpha(0.5f), 14));
+            }
+
+            DownloadHost.Add(FUi.Box(all));
+        }
+        catch (Exception ex) { AppLog.Error("Settings.Download", ex); }
     }
 
     void BuildAboutSection()

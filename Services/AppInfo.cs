@@ -4,7 +4,7 @@ public static class AppInfo
 {
     public const string AppNameBn = "পকেটনামা";
     public const string AppNameEn = "PocketNama";
-    public const string Version = "5.9";
+    public const string Version = "6.0";
 
     public const string DownloadUrl = "https://github.com/shadow3538/DailyExpenseTracker/releases/latest";
 

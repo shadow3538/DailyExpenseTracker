@@ -45,13 +45,10 @@
     </receiver>
     <provider android:name="mono.MonoRuntimeProvider" android:exported="false" android:initOrder="1999999999" android:authorities="com.abdulmalek.dailyexpense.mono.MonoRuntimeProvider.__mono_init__" />
   </application>
-  <!-- Profile photo camera -->
-  <!-- Reminders / notifications -->
   <queries>
     <intent>
       <action android:name="android.media.action.IMAGE_CAPTURE" />
     </intent>
-    <!-- Report: open mail -->
     <intent>
       <action android:name="android.intent.action.SENDTO" />
       <data android:scheme="mailto" />

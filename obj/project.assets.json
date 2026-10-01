@@ -10280,11 +10280,11 @@
   "project": {
     "version": "5.9.0",
     "restore": {
-      "projectUniqueName": "D:\\My Apps\\DailyExpenseTracker\\DailyExpenseTracker.csproj",
+      "projectUniqueName": "D:\\My Apps\\DailyExpense\\DailyExpenseTracker.csproj",
       "projectName": "DailyExpenseTracker",
-      "projectPath": "D:\\My Apps\\DailyExpenseTracker\\DailyExpenseTracker.csproj",
+      "projectPath": "D:\\My Apps\\DailyExpense\\DailyExpenseTracker.csproj",
       "packagesPath": "C:\\Users\\BlackHole\\.nuget\\packages\\",
-      "outputPath": "D:\\My Apps\\DailyExpenseTracker\\obj\\",
+      "outputPath": "D:\\My Apps\\DailyExpense\\obj\\",
       "projectStyle": "PackageReference",
       "crossTargeting": true,
       "fallbackFolders": [

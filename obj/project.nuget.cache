@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "7agDbvn/IgQ=",
+  "dgSpecHash": "W2/MpOxLD4o=",
   "success": true,
-  "projectFilePath": "D:\\My Apps\\DailyExpenseTracker\\DailyExpenseTracker.csproj",
+  "projectFilePath": "D:\\My Apps\\DailyExpense\\DailyExpenseTracker.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\BlackHole\\.nuget\\packages\\googlegson\\2.13.0.1\\googlegson.2.13.0.1.nupkg.sha512",
     "C:\\Users\\BlackHole\\.nuget\\packages\\microsoft.extensions.configuration\\9.0.9\\microsoft.extensions.configuration.9.0.9.nupkg.sha512",

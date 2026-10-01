@@ -15,73 +15,73 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property.EntryPointFilePath = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = DailyExpenseTracker
-build_property.ProjectDir = D:\My Apps\DailyExpenseTracker\
+build_property.ProjectDir = D:\My Apps\DailyExpense\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.EffectiveAnalysisLevelStyle = 9.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/My Apps/DailyExpenseTracker/App.xaml]
+[D:/My Apps/DailyExpense/App.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = DailyExpenseTracker.App.xaml
 build_metadata.AdditionalFiles.TargetPath = App.xaml
 build_metadata.AdditionalFiles.RelativePath = App.xaml
 
-[D:/My Apps/DailyExpenseTracker/AppShell.xaml]
+[D:/My Apps/DailyExpense/AppShell.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = DailyExpenseTracker.AppShell.xaml
 build_metadata.AdditionalFiles.TargetPath = AppShell.xaml
 build_metadata.AdditionalFiles.RelativePath = AppShell.xaml
 
-[D:/My Apps/DailyExpenseTracker/Views/AddPage.xaml]
+[D:/My Apps/DailyExpense/Views/AddPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = DailyExpenseTracker.Views.AddPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\AddPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\AddPage.xaml
 
-[D:/My Apps/DailyExpenseTracker/Views/DayDetailPage.xaml]
+[D:/My Apps/DailyExpense/Views/DayDetailPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = DailyExpenseTracker.Views.DayDetailPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\DayDetailPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\DayDetailPage.xaml
 
-[D:/My Apps/DailyExpenseTracker/Views/EditPage.xaml]
+[D:/My Apps/DailyExpense/Views/EditPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = DailyExpenseTracker.Views.EditPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\EditPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\EditPage.xaml
 
-[D:/My Apps/DailyExpenseTracker/Views/HomePage.xaml]
+[D:/My Apps/DailyExpense/Views/HomePage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = DailyExpenseTracker.Views.HomePage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\HomePage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\HomePage.xaml
 
-[D:/My Apps/DailyExpenseTracker/Views/ProfileEditPage.xaml]
+[D:/My Apps/DailyExpense/Views/ProfileEditPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = DailyExpenseTracker.Views.ProfileEditPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\ProfileEditPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\ProfileEditPage.xaml
 
-[D:/My Apps/DailyExpenseTracker/Views/ProfilePage.xaml]
+[D:/My Apps/DailyExpense/Views/ProfilePage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = DailyExpenseTracker.Views.ProfilePage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\ProfilePage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\ProfilePage.xaml
 
-[D:/My Apps/DailyExpenseTracker/Views/RangePanel.xaml]
+[D:/My Apps/DailyExpense/Views/RangePanel.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = DailyExpenseTracker.Views.RangePanel.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\RangePanel.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\RangePanel.xaml
 
-[D:/My Apps/DailyExpenseTracker/Views/ReportPage.xaml]
+[D:/My Apps/DailyExpense/Views/ReportPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = DailyExpenseTracker.Views.ReportPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\ReportPage.xaml
 build_metadata.AdditionalFiles.RelativePath = Views\ReportPage.xaml
 
-[D:/My Apps/DailyExpenseTracker/Views/SettingsPage.xaml]
+[D:/My Apps/DailyExpense/Views/SettingsPage.xaml]
 build_metadata.AdditionalFiles.GenKind = Xaml
 build_metadata.AdditionalFiles.ManifestResourceName = DailyExpenseTracker.Views.SettingsPage.xaml
 build_metadata.AdditionalFiles.TargetPath = Views\SettingsPage.xaml

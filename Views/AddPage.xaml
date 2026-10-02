@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:DailyExpenseTracker"
+             x:Class="DailyExpenseTracker.AddPage"
+             Title="{local:T 'খরচ যোগ করুন'}">
+    <Grid>
+        <ScrollView x:Name="MainScroll">
+            <VerticalStackLayout x:Name="MainStack" Padding="16,14,16,90" Spacing="12">
+
+                <Border Style="{StaticResource Card}" Padding="6,4">
+                    <Grid ColumnDefinitions="Auto,*,Auto">
+                        <Button Grid.Column="0" Text="◀" StyleClass="Ghost" WidthRequest="52" Clicked="OnPrevDay" />
+                        <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="0">
+                            <Label x:Name="DayHint" StyleClass="Muted" HorizontalTextAlignment="Center" />
+                            <DatePicker x:Name="DatePick" Format="dd MMMM yyyy" HorizontalOptions="Center"
+                                        DateSelected="OnDateSelected" />
+                        </VerticalStackLayout>
+                        <Button x:Name="NextDayBtn" Grid.Column="2" Text="▶" StyleClass="Ghost" WidthRequest="52" Clicked="OnNextDay" />
+                    </Grid>
+                </Border>
+
+                <Label Text="{local:T 'কীসের খরচ? ধরন বেছে নিন'}" StyleClass="Muted" />
+                <ScrollView x:Name="CatScroll" Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Margin="-16,0">
+                    <HorizontalStackLayout x:Name="CatBar" Spacing="10" Padding="16,2" />
+                </ScrollView>
+
+                <Border x:Name="PanelCard" Style="{StaticResource Card}" Padding="14,12">
+                    <VerticalStackLayout Spacing="10">
+                        <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                            <ContentView x:Name="PanelBadge" Grid.Column="0" VerticalOptions="Center" />
+                            <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="0">
+                                <Label x:Name="PanelTitle" FontSize="18" FontAttributes="Bold" />
+                                <Label x:Name="PanelHint" StyleClass="Muted" FontSize="12" />
+                            </VerticalStackLayout>
+                        </Grid>
+
+                        <VerticalStackLayout x:Name="OptionsBox" Spacing="10">
+                            <Border Style="{StaticResource Field}">
+                                <Entry x:Name="NoteEntry" Placeholder="{local:T 'নোট (ঐচ্ছিক)'}" />
+                            </Border>
+                            <VerticalStackLayout x:Name="RowsStack" Spacing="10" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout x:Name="FreeBox" Spacing="10" IsVisible="False">
+                            <Border Style="{StaticResource Field}">
+                                <Entry x:Name="WhatEntry" Placeholder="{local:T 'কী কিনলেন?'}" />
+                            </Border>
+                            <Border Style="{StaticResource Field}">
+                                <Entry x:Name="FreeAmount" Keyboard="Numeric" Placeholder="{local:T '৳ টাকা'}" FontSize="20" FontAttributes="Bold" />
+                            </Border>
+                            <Button x:Name="FreeAddBtn" Text="{local:T '+ খরচ যোগ করুন'}" HeightRequest="50" Clicked="OnFreeAdd" />
+                        </VerticalStackLayout>
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label x:Name="TodayHeader" Text="{local:T 'আজকের এন্ট্রি'}" StyleClass="H2" Margin="0,14,0,0" />
+                <Label Text="{local:T 'ভুল হলে ট্যাপ করে এডিট বা মুছুন'}" StyleClass="Muted" />
+                <VerticalStackLayout x:Name="EntriesStack" Spacing="8" />
+            </VerticalStackLayout>
+        </ScrollView>
+
+        <Border x:Name="ToastBox" IsVisible="False" InputTransparent="True"
+                VerticalOptions="Start" HorizontalOptions="Center"
+                Margin="16,10,16,0" Padding="14,8" StrokeThickness="0" BackgroundColor="#1E8449">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="12" />
+            </Border.StrokeShape>
+            <Label x:Name="ToastLabel" TextColor="White" FontAttributes="Bold" FontSize="14"
+                   MaxLines="1" LineBreakMode="TailTruncation" HorizontalTextAlignment="Center" />
+        </Border>
+    </Grid>
+</ContentPage>

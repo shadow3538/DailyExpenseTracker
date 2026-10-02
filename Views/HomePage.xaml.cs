@@ -74,9 +74,9 @@ public partial class HomePage : ContentPage, IHostActivatable
         try
         {
             await Task.WhenAll(
-                Ui.AnimateInAsync(TodayCard, 290, 0),
-                Ui.AnimateInAsync(MonthCard, 290, 70),
-                Ui.AnimateInAsync(WeekCard, 290, 140));
+                Ui.AnimateInAsync(TodayCard, 320, 0),
+                Ui.AnimateInAsync(MonthCard, 320, 55),
+                Ui.AnimateInAsync(WeekCard, 320, 110));
         }
         catch (Exception ex) { AppLog.Error("Home.Animation", ex); }
     }
@@ -103,8 +103,11 @@ public partial class HomePage : ContentPage, IHostActivatable
             _animateDashboard = false;
             _ = AnimateDashboardAsync();
         }
-        await AskLanguageOnceAsync();
-        await AutoBackupOnceAsync();
+
+        // Do not hold up the tab host after Home data is ready. Preference prompts
+        // and backup checks run independently so the other pages can warm immediately.
+        _ = AskLanguageOnceAsync();
+        _ = AutoBackupOnceAsync();
     }
 
     static bool _backupChecked;

@@ -56,6 +56,10 @@ public sealed class MainTabPage : ContentPage
         }
 
         _tabBar = BuildTabBar();
+        // Keep the first layout pass invisible. Home is activated and measured
+        // before the host is revealed, so startup rendering is not exposed to
+        // the user.
+        _contentHost.Opacity = 0;
         Content = new Grid
         {
             RowDefinitions = { new RowDefinition(GridLength.Star), new RowDefinition(GridLength.Auto) },
@@ -135,22 +139,14 @@ public sealed class MainTabPage : ContentPage
             newView.Opacity = 0;
             newView.TranslationX = forward ? 8 : -8;
 
-            await Task.WhenAll(
-                oldView.FadeTo(0, 110, Easing.CubicIn),
-                newView.FadeTo(1, 220, Easing.CubicOut),
-                newView.TranslateTo(0, 0, 220, Easing.CubicOut));
-
-            oldView.IsVisible = false;
-            oldView.Opacity = 1;
-            oldView.TranslationX = 0;
-
+            // Finish any first activation while the page is invisible. This keeps
+            // data/layout work out of the visible transition. Once the page is
+            // ready, the user sees only the normal horizontal swipe/fade.
             RootChrome.ActivateFor(newPage);
             if (!_activated[next])
             {
                 if (_warming[next])
                 {
-                    // The background warm pass is already preparing this page.
-                    // Let that same activation finish instead of starting a second one.
                     while (_warming[next])
                         await Task.Yield();
                 }
@@ -162,6 +158,15 @@ public sealed class MainTabPage : ContentPage
                 }
                 _priorityIndex = -1;
             }
+
+            await Task.WhenAll(
+                oldView.FadeTo(0, 110, Easing.CubicIn),
+                newView.FadeTo(1, 220, Easing.CubicOut),
+                newView.TranslateTo(0, 0, 220, Easing.CubicOut));
+
+            oldView.IsVisible = false;
+            oldView.Opacity = 1;
+            oldView.TranslationX = 0;
             UpdateTabBar();
         }
         catch (Exception ex) { AppLog.Error("TabHost.Switch", ex); }
@@ -180,6 +185,11 @@ public sealed class MainTabPage : ContentPage
                 if (_pages[_index] is IHostActivatable activatable)
                     await activatable.ActivateForHostAsync();
             }
+
+            // Reveal only after Home has completed its initial data/layout pass.
+            // The Home cards then animate in, while the remaining tabs warm in the
+            // background without a visible first-render.
+            _contentHost.Opacity = 1;
             _ = WarmTabsAsync();
         }
         catch (Exception ex) { AppLog.Error("TabHost.Start", ex); }
